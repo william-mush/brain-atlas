@@ -19,6 +19,7 @@ const SHELL_REGION_IDS = new Set([
 interface Props {
   selectedId: string | null;
   hoveredId: string | null;
+  visibleIds: Set<string>;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -44,7 +45,14 @@ export default function BrainCanvas(props: Props) {
         <pointLight position={[0, -2, 4]} intensity={0.4} color="#f7c79a" />
 
         <Suspense fallback={null}>
-          <Scene {...props} shellOpacity={shellOpacity} />
+          <Scene
+            selectedId={props.selectedId}
+            hoveredId={props.hoveredId}
+            visibleIds={props.visibleIds}
+            onSelect={props.onSelect}
+            onHover={props.onHover}
+            shellOpacity={shellOpacity}
+          />
         </Suspense>
 
         <OrbitControls
@@ -89,7 +97,14 @@ interface SceneProps extends Props {
   shellOpacity: number;
 }
 
-function Scene({ selectedId, hoveredId, onSelect, onHover, shellOpacity }: SceneProps) {
+function Scene({
+  selectedId,
+  hoveredId,
+  visibleIds,
+  onSelect,
+  onHover,
+  shellOpacity,
+}: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
   const [autoRotate, setAutoRotate] = useState(true);
@@ -121,9 +136,14 @@ function Scene({ selectedId, hoveredId, onSelect, onHover, shellOpacity }: Scene
     return items;
   }, [gltf.scene]);
 
+  const visibleMeshes = useMemo(
+    () => meshChildren.filter(({ region }) => visibleIds.has(region.id)),
+    [meshChildren, visibleIds],
+  );
+
   return (
     <group ref={groupRef}>
-      {meshChildren.map(({ region, mesh }) => (
+      {visibleMeshes.map(({ region, mesh }) => (
         <RealMesh
           key={region.id}
           region={region}
@@ -136,6 +156,13 @@ function Scene({ selectedId, hoveredId, onSelect, onHover, shellOpacity }: Scene
           onHover={onHover}
         />
       ))}
+      {visibleMeshes.length === 0 && (
+        <Html center style={{ pointerEvents: 'none' }}>
+          <div className="text-ink-300 text-sm whitespace-nowrap bg-ink-900/85 px-4 py-2.5 rounded-md border border-ink-700 backdrop-blur">
+            Nothing selected. Check a part on the left to add it.
+          </div>
+        </Html>
+      )}
     </group>
   );
 }

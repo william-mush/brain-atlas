@@ -5,8 +5,10 @@ import { REGIONS, CATEGORY_LABELS, type RegionCategory } from '@/lib/regions';
 
 interface Props {
   selectedId: string | null;
+  visibleIds: Set<string>;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
+  onToggleVisible: (id: string) => void;
 }
 
 const ORDER: RegionCategory[] = [
@@ -21,23 +23,24 @@ const ORDER: RegionCategory[] = [
   'enteric',
 ];
 
-export default function RegionList({ selectedId, onSelect, onHover }: Props) {
+export default function RegionList({
+  selectedId,
+  visibleIds,
+  onSelect,
+  onHover,
+  onToggleVisible,
+}: Props) {
   const grouped = useMemo(() => {
     const map: Record<string, typeof REGIONS> = {};
-    for (const r of REGIONS) {
+    // Only include regions that have a real mesh — those are the ones we can toggle.
+    for (const r of REGIONS.filter((r) => r.meshNode)) {
       (map[r.category] ||= []).push(r);
     }
     return map;
   }, []);
 
   return (
-    <div className="h-full overflow-y-auto p-5 space-y-5">
-      <div>
-        <h2 className="font-serif text-lg text-ink-50">Regions</h2>
-        <p className="text-xs text-ink-300 mt-1">
-          Grouped by anatomical system.
-        </p>
-      </div>
+    <div className="h-full overflow-y-auto p-4 space-y-4">
       {ORDER.map((cat) => {
         const regions = grouped[cat];
         if (!regions?.length) return null;
@@ -49,26 +52,50 @@ export default function RegionList({ selectedId, onSelect, onHover }: Props) {
             <ul className="space-y-0.5">
               {regions.map((r) => {
                 const active = r.id === selectedId;
+                const visible = visibleIds.has(r.id);
                 return (
                   <li key={r.id}>
-                    <button
-                      onClick={() => onSelect(r.id)}
-                      onMouseEnter={() => onHover(r.id)}
-                      onMouseLeave={() => onHover(null)}
-                      className={`w-full text-left text-sm flex items-center gap-2 px-2 py-1 rounded transition ${
-                        active
-                          ? 'bg-ink-700 text-ink-50'
-                          : 'text-ink-200 hover:bg-ink-800 hover:text-ink-50'
+                    <div
+                      className={`group flex items-center gap-2 px-2 py-1 rounded transition ${
+                        active ? 'bg-ink-700' : 'hover:bg-ink-800'
                       }`}
+                      onMouseEnter={() => visible && onHover(r.id)}
+                      onMouseLeave={() => onHover(null)}
                     >
-                      <span
-                        className="w-2 h-2 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: r.color }}
+                      {/* Visibility checkbox */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleVisible(r.id);
+                        }}
+                        className={`w-3.5 h-3.5 rounded-sm border flex-shrink-0 transition ${
+                          visible
+                            ? 'border-transparent'
+                            : 'border-ink-500 bg-transparent hover:border-ink-300'
+                        }`}
+                        style={{
+                          backgroundColor: visible ? r.color : 'transparent',
+                        }}
+                        aria-label={visible ? `Hide ${r.name}` : `Show ${r.name}`}
+                        title={visible ? 'Hide' : 'Show'}
                       />
-                      <span className="leading-tight">
+                      {/* Name — clicks select the region (and ensure it's visible) */}
+                      <button
+                        onClick={() => {
+                          if (!visible) onToggleVisible(r.id);
+                          onSelect(r.id);
+                        }}
+                        className={`flex-1 text-left text-sm leading-tight ${
+                          active
+                            ? 'text-ink-50'
+                            : visible
+                              ? 'text-ink-100 group-hover:text-ink-50'
+                              : 'text-ink-400 group-hover:text-ink-200'
+                        }`}
+                      >
                         {r.shortName || r.name}
-                      </span>
-                    </button>
+                      </button>
+                    </div>
                   </li>
                 );
               })}
