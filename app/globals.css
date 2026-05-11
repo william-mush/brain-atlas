@@ -1,6 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-ink-50: #f6f5f1;
+  --color-ink-100: #eae6da;
+  --color-ink-200: #cfc7b1;
+  --color-ink-300: #a99e7e;
+  --color-ink-400: #7a6f52;
+  --color-ink-500: #574d36;
+  --color-ink-600: #3d3625;
+  --color-ink-700: #2a2519;
+  --color-ink-800: #1a1610;
+  --color-ink-900: #0e0c08;
+
+  --color-neural-rose: #e89aa3;
+  --color-neural-coral: #f0a878;
+  --color-neural-amber: #e8b04a;
+  --color-neural-moss: #7a9461;
+  --color-neural-teal: #4f8a8b;
+  --color-neural-slate: #5a6b7a;
+  --color-neural-violet: #8a6fa3;
+  --color-neural-plum: #6b4869;
+
+  --font-serif: Georgia, "Iowan Old Style", Cambria, serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
 :root {
   color-scheme: dark;
@@ -10,20 +34,19 @@ html,
 body {
   background: #0e0c08;
   color: #eae6da;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Long-form content typography */
 .prose-atlas {
   max-width: 70ch;
-  font-family: Georgia, 'Iowan Old Style', Cambria, serif;
+  font-family: var(--font-serif);
   font-size: 1.05rem;
   line-height: 1.75;
   color: #eae6da;
 }
 .prose-atlas h1 {
-  font-family: Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 2.4rem;
   line-height: 1.15;
   margin-top: 0.5rem;
@@ -31,14 +54,14 @@ body {
   color: #f6f5f1;
 }
 .prose-atlas h2 {
-  font-family: Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 1.6rem;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   color: #f6f5f1;
 }
 .prose-atlas h3 {
-  font-family: Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 1.2rem;
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
@@ -74,7 +97,7 @@ body {
   color: #7a6f52;
 }
 .prose-atlas code {
-  font-family: ui-monospace, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.92em;
   background: #1a1610;
   padding: 0.1em 0.35em;

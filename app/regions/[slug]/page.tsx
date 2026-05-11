@@ -6,18 +6,24 @@ export function generateStaticParams() {
   return Object.keys(REGION_ESSAYS).map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const essay = REGION_ESSAYS[params.slug];
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const essay = REGION_ESSAYS[slug];
   if (!essay) return { title: 'Not found' };
   return { title: `${essay.title} · The Brain Atlas` };
 }
 
-export default function RegionEssayPage({
+export default async function RegionEssayPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const essay = REGION_ESSAYS[params.slug];
+  const { slug } = await params;
+  const essay = REGION_ESSAYS[slug];
   if (!essay) notFound();
 
   return (
