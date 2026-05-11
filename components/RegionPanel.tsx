@@ -1,7 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { CATEGORY_LABELS, getRegion } from '@/lib/regions';
+import {
+  CATEGORY_LABELS,
+  getRegion,
+  AUTONOMIC_TAG_LABELS,
+  AUTONOMIC_TAG_COLORS,
+} from '@/lib/regions';
+import { getAutonomicNote } from '@/lib/autonomic';
 
 interface Props {
   regionId: string | null;
@@ -50,6 +56,7 @@ export default function RegionPanel({ regionId, onClose, onSelect }: Props) {
   const connected = (region.connects || [])
     .map((id) => getRegion(id))
     .filter((r): r is NonNullable<typeof r> => Boolean(r));
+  const autonomic = getAutonomicNote(region.id);
 
   return (
     <div className="h-full flex flex-col">
@@ -93,6 +100,32 @@ export default function RegionPanel({ regionId, onClose, onSelect }: Props) {
             ))}
           </ul>
         </section>
+
+        {autonomic && (
+          <section className="border-t border-ink-700/60 pt-5">
+            <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">
+              Autonomic role
+            </h3>
+            {autonomic.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-2.5">
+                {autonomic.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border"
+                    style={{
+                      borderColor: AUTONOMIC_TAG_COLORS[tag] + '88',
+                      color: AUTONOMIC_TAG_COLORS[tag],
+                      backgroundColor: AUTONOMIC_TAG_COLORS[tag] + '14',
+                    }}
+                  >
+                    {AUTONOMIC_TAG_LABELS[tag]}
+                  </span>
+                ))}
+              </div>
+            )}
+            <p className="text-sm text-ink-100 leading-relaxed">{autonomic.text}</p>
+          </section>
+        )}
 
         {connected.length > 0 && (
           <section>

@@ -227,7 +227,7 @@ export default function BrainExplorer() {
           onHover={setHoveredId}
         />
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
-          Drag to rotate · scroll to zoom · click a region
+          Drag to rotate · right-drag to pan · scroll to zoom
         </div>
         <a
           href="/credits"

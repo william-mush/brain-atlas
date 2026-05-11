@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { REGIONS, type BrainRegion } from '@/lib/regions';
@@ -23,13 +23,19 @@ interface Props {
   onHover: (id: string | null) => void;
 }
 
+// Default camera position — also used by the reset button.
+const DEFAULT_CAMERA_POS: [number, number, number] = [4.5, 1.2, 5.0];
+const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0.1, 0];
+
 export default function BrainCanvas(props: Props) {
   const [shellOpacity, setShellOpacity] = useState(0.18);
+  // Bumping this counter triggers the in-canvas reset effect.
+  const [resetTick, setResetTick] = useState(0);
 
   return (
     <div className="relative w-full h-full">
       <Canvas
-        camera={{ position: [4.5, 1.2, 5.0], fov: 38 }}
+        camera={{ position: DEFAULT_CAMERA_POS, fov: 38 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
@@ -51,6 +57,7 @@ export default function BrainCanvas(props: Props) {
             onSelect={props.onSelect}
             onHover={props.onHover}
             shellOpacity={shellOpacity}
+            resetTick={resetTick}
           />
         </Suspense>
 
@@ -59,32 +66,57 @@ export default function BrainCanvas(props: Props) {
           dampingFactor={0.09}
           rotateSpeed={0.85}
           zoomSpeed={0.6}
+          panSpeed={0.9}
           minDistance={1.2}
           maxDistance={16}
-          target={[0, 0.1, 0]}
+          target={DEFAULT_CAMERA_TARGET}
+          enablePan
+          screenSpacePanning
+          mouseButtons={{
+            LEFT: THREE.MOUSE.ROTATE,
+            MIDDLE: THREE.MOUSE.DOLLY,
+            RIGHT: THREE.MOUSE.PAN,
+          }}
+          touches={{
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_PAN,
+          }}
           makeDefault
         />
       </Canvas>
 
-      <div className="absolute top-3 right-3 flex items-center gap-2 text-[11px] text-ink-200 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur">
-        <span className="text-ink-300">Cerebrum</span>
+      <div className="absolute top-3 right-3 flex items-center gap-2">
+        <div className="flex items-center gap-2 text-[11px] text-ink-200 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur">
+          <span className="text-ink-300">Cerebrum</span>
+          <button
+            onClick={() => setShellOpacity(0.05)}
+            className={`px-2 py-0.5 rounded-full transition ${shellOpacity <= 0.06 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
+          >
+            x-ray
+          </button>
+          <button
+            onClick={() => setShellOpacity(0.18)}
+            className={`px-2 py-0.5 rounded-full transition ${shellOpacity > 0.06 && shellOpacity < 0.5 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
+          >
+            ghost
+          </button>
+          <button
+            onClick={() => setShellOpacity(0.85)}
+            className={`px-2 py-0.5 rounded-full transition ${shellOpacity >= 0.5 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
+          >
+            solid
+          </button>
+        </div>
         <button
-          onClick={() => setShellOpacity(0.05)}
-          className={`px-2 py-0.5 rounded-full transition ${shellOpacity <= 0.06 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
+          onClick={() => setResetTick((n) => n + 1)}
+          className="flex items-center gap-1.5 text-[11px] text-ink-100 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 hover:bg-ink-800 hover:border-ink-500 backdrop-blur transition"
+          title="Reset camera position and zoom"
         >
-          x-ray
-        </button>
-        <button
-          onClick={() => setShellOpacity(0.18)}
-          className={`px-2 py-0.5 rounded-full transition ${shellOpacity > 0.06 && shellOpacity < 0.5 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
-        >
-          ghost
-        </button>
-        <button
-          onClick={() => setShellOpacity(0.85)}
-          className={`px-2 py-0.5 rounded-full transition ${shellOpacity >= 0.5 ? 'bg-ink-700 text-ink-50' : 'hover:bg-ink-800'}`}
-        >
-          solid
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 8a6 6 0 1 1-1.76-4.24" />
+            <polyline points="14 2 14 6 10 6" />
+          </svg>
+          Reset view
         </button>
       </div>
     </div>
@@ -93,6 +125,7 @@ export default function BrainCanvas(props: Props) {
 
 interface SceneProps extends Props {
   shellOpacity: number;
+  resetTick: number;
 }
 
 function Scene({
@@ -102,10 +135,27 @@ function Scene({
   onSelect,
   onHover,
   shellOpacity,
+  resetTick,
 }: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
+  const { camera, controls } = useThree();
   const [autoRotate, setAutoRotate] = useState(true);
+
+  // Reset the view when the resetTick changes.
+  useEffect(() => {
+    if (resetTick === 0) return;
+    camera.position.set(...DEFAULT_CAMERA_POS);
+    if (groupRef.current) {
+      groupRef.current.rotation.set(0, 0, 0);
+    }
+    // `controls` is the makeDefault OrbitControls instance
+    const c = controls as unknown as { target?: THREE.Vector3; update?: () => void } | null;
+    if (c && c.target && c.update) {
+      c.target.set(...DEFAULT_CAMERA_TARGET);
+      c.update();
+    }
+  }, [resetTick, camera, controls]);
 
   useEffect(() => {
     if (selectedId || hoveredId) {

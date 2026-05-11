@@ -37,6 +37,42 @@ export const SOURCE_LABELS: Record<RegionSource, string> = {
   procedural: 'Procedural',
 };
 
+/** Tags for autonomic / arousal / interoceptive role. */
+export type AutonomicTag =
+  | 'sympathetic'
+  | 'parasympathetic'
+  | 'arousal'
+  | 'interoception'
+  | 'hpa'
+  | 'modulator'
+  | 'none';
+
+export interface AutonomicNote {
+  tags: AutonomicTag[];
+  /** One paragraph. Direct, specific, honest — say "no direct role" when that's true. */
+  text: string;
+}
+
+export const AUTONOMIC_TAG_LABELS: Record<AutonomicTag, string> = {
+  sympathetic: 'Sympathetic',
+  parasympathetic: 'Parasympathetic',
+  arousal: 'Arousal',
+  interoception: 'Interoception',
+  hpa: 'HPA / stress axis',
+  modulator: 'Top-down modulator',
+  none: 'No direct autonomic role',
+};
+
+export const AUTONOMIC_TAG_COLORS: Record<AutonomicTag, string> = {
+  sympathetic: '#e89aa3',
+  parasympathetic: '#7a9461',
+  arousal: '#e8b04a',
+  interoception: '#4f8a8b',
+  hpa: '#c47480',
+  modulator: '#8a6fa3',
+  none: '#574d36',
+};
+
 export interface BrainRegion {
   id: string;
   name: string;
@@ -56,6 +92,7 @@ export interface BrainRegion {
   source: RegionSource;
   summary: string;
   functions: string[];
+  autonomic?: AutonomicNote;
   connects?: string[];
   essay?: string;
 }
