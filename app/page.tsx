@@ -74,9 +74,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-ink-700 py-10 text-center text-xs text-ink-400">
-        Built with care. Anatomy summarized for general readers — not medical
-        advice.
+      <footer className="border-t border-ink-700 py-10 text-center text-xs text-ink-400 space-y-2">
+        <p>
+          Built with care. Anatomy summarized for general readers — not
+          medical advice.
+        </p>
+        <p>
+          3D meshes derived from{' '}
+          <a
+            href="https://lifesciencedb.jp/bp3d/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline decoration-ink-500 hover:decoration-ink-200"
+          >
+            BodyParts3D
+          </a>
+          , © DBCLS, CC BY-SA 2.1 JP. ·{' '}
+          <a href="/credits" className="underline decoration-ink-500 hover:decoration-ink-200">
+            Full credits
+          </a>
+        </p>
       </footer>
     </main>
   );
