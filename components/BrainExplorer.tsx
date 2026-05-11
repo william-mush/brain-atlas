@@ -151,7 +151,7 @@ export default function BrainExplorer() {
           : 'grid grid-cols-1 lg:grid-cols-[280px_1fr_360px] h-[calc(100vh-64px)] bg-ink-900'
       }
     >
-      <aside className={`${fullscreen ? 'hidden' : 'hidden lg:flex'} flex-col border-r border-ink-700 bg-ink-800/60`}>
+      <aside className={`${fullscreen ? 'hidden' : 'hidden lg:flex'} flex-col border-r border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden`}>
         <div className="p-4 border-b border-ink-700 space-y-3">
           <div>
             <h2 className="font-serif text-lg text-ink-50 leading-tight">Build a brain</h2>
@@ -235,7 +235,7 @@ export default function BrainExplorer() {
         </div>
       </aside>
 
-      <main className="relative">
+      <main className="relative min-h-0 h-full overflow-hidden">
         <BrainCanvas
           selectedId={selectedId}
           hoveredId={hoveredId}

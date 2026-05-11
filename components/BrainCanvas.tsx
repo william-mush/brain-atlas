@@ -37,12 +37,12 @@ export default function BrainCanvas(props: Props) {
   const [resetTick, setResetTick] = useState(0);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="absolute inset-0">
       <Canvas
         camera={{ position: DEFAULT_CAMERA_POS, fov: 38 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
+        style={{ background: 'transparent', width: '100%', height: '100%' }}
       >
         <color attach="background" args={[0.055, 0.047, 0.031]} />
         <fog attach="fog" args={['#0e0c08', 8, 18]} />
