@@ -32,8 +32,8 @@ export default function RegionList({
 }: Props) {
   const grouped = useMemo(() => {
     const map: Record<string, typeof REGIONS> = {};
-    // Only include regions that have a real mesh — those are the ones we can toggle.
-    for (const r of REGIONS.filter((r) => r.meshNode)) {
+    // Include anything we can actually render in 3D: real meshes or procedural nerves.
+    for (const r of REGIONS.filter((r) => r.meshNode || r.nerveId)) {
       (map[r.category] ||= []).push(r);
     }
     return map;

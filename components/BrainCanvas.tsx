@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { REGIONS, type BrainRegion } from '@/lib/regions';
+import { getCranialNerve } from '@/lib/cranial-nerves';
 
 const MODEL_URL = '/models/brain.glb';
 useGLTF.preload(MODEL_URL);
@@ -141,6 +142,13 @@ function Scene({
     [meshChildren, visibleIds],
   );
 
+  const visibleNerves = useMemo(
+    () => REGIONS.filter((r) => r.nerveId && visibleIds.has(r.id)),
+    [visibleIds],
+  );
+
+  const totalVisible = visibleMeshes.length + visibleNerves.length;
+
   return (
     <group ref={groupRef}>
       {visibleMeshes.map(({ region, mesh }) => (
@@ -156,10 +164,132 @@ function Scene({
           onHover={onHover}
         />
       ))}
-      {visibleMeshes.length === 0 && (
+
+      {visibleNerves.map((region) => (
+        <NerveTube
+          key={region.id}
+          region={region}
+          selectedId={selectedId}
+          hoveredId={hoveredId}
+          onSelect={onSelect}
+          onHover={onHover}
+        />
+      ))}
+
+      {totalVisible === 0 && (
         <Html center style={{ pointerEvents: 'none' }}>
           <div className="text-ink-300 text-sm whitespace-nowrap bg-ink-900/85 px-4 py-2.5 rounded-md border border-ink-700 backdrop-blur">
             Nothing selected. Check a part on the left to add it.
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+}
+
+interface NerveTubeProps {
+  region: BrainRegion;
+  selectedId: string | null;
+  hoveredId: string | null;
+  onSelect: (id: string | null) => void;
+  onHover: (id: string | null) => void;
+}
+
+function NerveTube({ region, selectedId, hoveredId, onSelect, onHover }: NerveTubeProps) {
+  const nerve = getCranialNerve(region.nerveId!);
+  const isSelected = selectedId === region.id;
+  const isHovered = hoveredId === region.id;
+  const anyFocus = Boolean(selectedId || hoveredId);
+  const dimmed = anyFocus && !isSelected && !isHovered;
+
+  // Build TubeGeometry for each path (left + right branches)
+  const tubes = useMemo(() => {
+    if (!nerve) return [];
+    return nerve.paths.map((p, i) => {
+      const pts = p.points.map((pt) => new THREE.Vector3(pt[0], pt[1], pt[2]));
+      // Catmull–Rom curve through the control points for a smooth path
+      const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.25);
+      const segments = Math.max(24, pts.length * 12);
+      const geometry = new THREE.TubeGeometry(curve, segments, nerve.radius, 10, false);
+      return { key: `${p.side}-${i}`, geometry };
+    });
+  }, [nerve]);
+
+  const material = useMemo(() => {
+    const base = new THREE.Color(nerve?.color || region.color);
+    return new THREE.MeshStandardMaterial({
+      color: base,
+      emissive: base.clone().multiplyScalar(0.15),
+      emissiveIntensity: 0.6,
+      roughness: 0.45,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 1.0,
+    });
+  }, [nerve, region.color]);
+
+  useEffect(() => {
+    const base = new THREE.Color(nerve?.color || region.color);
+    if (isSelected) {
+      material.emissive = base.clone().multiplyScalar(0.7);
+      material.emissiveIntensity = 1.3;
+      material.opacity = 1.0;
+    } else if (isHovered) {
+      material.emissive = base.clone().multiplyScalar(0.45);
+      material.emissiveIntensity = 1.0;
+      material.opacity = 1.0;
+    } else if (dimmed) {
+      material.emissive = base.clone().multiplyScalar(0.05);
+      material.emissiveIntensity = 0.2;
+      material.opacity = 0.35;
+    } else {
+      material.emissive = base.clone().multiplyScalar(0.18);
+      material.emissiveIntensity = 0.55;
+      material.opacity = 0.95;
+    }
+    material.needsUpdate = true;
+  }, [isSelected, isHovered, dimmed, material, nerve, region.color]);
+
+  // Label at the start of the first path (the brainstem emergence point)
+  const labelPos = useMemo<[number, number, number] | null>(() => {
+    if (!nerve || nerve.paths.length === 0) return null;
+    const first = nerve.paths[0].points[0];
+    return [first[0] * 1.18, first[1] + 0.08, first[2] * 1.05];
+  }, [nerve]);
+
+  if (!nerve) return null;
+
+  return (
+    <group>
+      {tubes.map(({ key, geometry }) => (
+        <mesh
+          key={key}
+          geometry={geometry}
+          material={material}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(isSelected ? null : region.id);
+          }}
+          onPointerOver={(e) => {
+            e.stopPropagation();
+            onHover(region.id);
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerOut={() => {
+            onHover(null);
+            document.body.style.cursor = 'auto';
+          }}
+        />
+      ))}
+      {(isHovered || isSelected) && labelPos && (
+        <Html
+          center
+          position={labelPos as unknown as THREE.Vector3}
+          distanceFactor={6}
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="px-2 py-1 rounded-md bg-ink-900/90 text-ink-50 text-xs font-medium whitespace-nowrap shadow-lg border border-ink-700 backdrop-blur">
+            {nerve.roman} · {nerve.name.replace(' Nerve', '')}
           </div>
         </Html>
       )}

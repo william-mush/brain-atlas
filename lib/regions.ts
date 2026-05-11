@@ -36,6 +36,8 @@ export interface BrainRegion {
   /** procedural fallback scale */
   scale?: [number, number, number];
   rotation?: [number, number, number];
+  /** id of a CranialNerve in lib/cranial-nerves.ts — if set, render as tube paths */
+  nerveId?: string;
   summary: string;
   functions: string[];
   connects?: string[];
@@ -443,17 +445,165 @@ export const REGIONS: BrainRegion[] = [
     connects: ['corpus-callosum'],
   },
 
-  // ---------- VAGUS & AUTONOMIC ----------
+  // ---------- CRANIAL NERVES ----------
+  // The vagus is the longest and most consequential; it kept its short
+  // canonical id ('vagus-nerve') for the many essays that link to it.
+  // The other eleven cranial nerves are listed alongside with the 'cn#-'
+  // prefix and share the same `nerveId` mechanism for procedural tube rendering.
+  {
+    id: 'cn1-olfactory',
+    name: 'Olfactory Nerve (CN I)',
+    shortName: 'CN I — Olfactory',
+    category: 'cranial-nerve',
+    color: '#d8a3ce',
+    nerveId: 'cn1-olfactory',
+    summary:
+      'The shortest cranial nerve. Carries smell from the nasal mucosa to the olfactory bulbs — the only sensory pathway that does not relay through the thalamus.',
+    functions: [
+      'Sense of smell',
+      'Direct projection from periphery to forebrain (no thalamic relay)',
+      'Closely tied to memory and emotion via direct connections to limbic structures',
+    ],
+    connects: ['hippocampus', 'amygdala'],
+  },
+  {
+    id: 'cn2-optic',
+    name: 'Optic Nerve (CN II)',
+    shortName: 'CN II — Optic',
+    category: 'cranial-nerve',
+    color: '#e8b04a',
+    nerveId: 'cn2-optic',
+    summary:
+      'About a million axons carrying vision from the retina to the brain. Fibers from the nasal half of each retina cross at the optic chiasm so the left visual world ends up entirely in the right hemisphere.',
+    functions: [
+      'Vision: retinal ganglion cells to LGN of the thalamus',
+      'Crossing at the optic chiasm splits visual fields between hemispheres',
+      'Drives pupillary reflexes via the pretectal nucleus',
+    ],
+    connects: ['thalamus', 'occipital-lobe'],
+  },
+  {
+    id: 'cn3-oculomotor',
+    name: 'Oculomotor Nerve (CN III)',
+    shortName: 'CN III — Oculomotor',
+    category: 'cranial-nerve',
+    color: '#e89aa3',
+    nerveId: 'cn3-oculomotor',
+    summary:
+      'Emerges from the front of the midbrain and runs forward to the eye. Drives most of the muscles that move the eyeball plus the muscle that lifts the upper lid, and the parasympathetic fibers that constrict the pupil.',
+    functions: [
+      'Movement of four of the six extraocular muscles',
+      'Elevation of the upper eyelid (levator palpebrae)',
+      'Parasympathetic pupil constriction and lens accommodation',
+    ],
+    connects: ['midbrain'],
+  },
+  {
+    id: 'cn4-trochlear',
+    name: 'Trochlear Nerve (CN IV)',
+    shortName: 'CN IV — Trochlear',
+    category: 'cranial-nerve',
+    color: '#c47480',
+    nerveId: 'cn4-trochlear',
+    summary:
+      'The smallest cranial nerve and the only one to emerge from the back of the brainstem. Wraps around the midbrain and innervates a single eye muscle, the superior oblique.',
+    functions: [
+      'Innervates the superior oblique muscle of the eye',
+      'Causes downward and inward rotation of the eye',
+    ],
+    connects: ['midbrain'],
+  },
+  {
+    id: 'cn5-trigeminal',
+    name: 'Trigeminal Nerve (CN V)',
+    shortName: 'CN V — Trigeminal',
+    category: 'cranial-nerve',
+    color: '#b8956b',
+    nerveId: 'cn5-trigeminal',
+    summary:
+      'The largest cranial nerve. Carries sensation from almost the entire face and motor control of the muscles of chewing. Three divisions — ophthalmic, maxillary, mandibular — fan out toward forehead, cheek, and jaw.',
+    functions: [
+      'Sensation from face, scalp, cornea, oral cavity',
+      'Motor control of the muscles of mastication',
+      'Substrate of trigeminal neuralgia — one of the most intense pains known',
+    ],
+    connects: ['pons', 'thalamus'],
+  },
+  {
+    id: 'cn6-abducens',
+    name: 'Abducens Nerve (CN VI)',
+    shortName: 'CN VI — Abducens',
+    category: 'cranial-nerve',
+    color: '#e89aa3',
+    nerveId: 'cn6-abducens',
+    summary:
+      'Emerges near the midline at the pontomedullary junction and runs forward to a single muscle: the lateral rectus, which abducts the eye.',
+    functions: [
+      'Innervates the lateral rectus muscle',
+      'Abduction of the eye (turning it outward)',
+      'Particularly vulnerable to raised intracranial pressure',
+    ],
+    connects: ['pons'],
+  },
+  {
+    id: 'cn7-facial',
+    name: 'Facial Nerve (CN VII)',
+    shortName: 'CN VII — Facial',
+    category: 'cranial-nerve',
+    color: '#e89c70',
+    nerveId: 'cn7-facial',
+    summary:
+      "Motor control of the muscles of facial expression, plus taste from the front of the tongue and parasympathetic fibers to salivary and lacrimal glands. When it fails on one side, half the face droops — Bell's palsy.",
+    functions: [
+      'Motor: muscles of facial expression',
+      'Taste from the anterior two-thirds of the tongue',
+      'Parasympathetic to lacrimal and salivary glands',
+      'Stapedius muscle (dampens loud sounds in the inner ear)',
+    ],
+    connects: ['pons'],
+  },
+  {
+    id: 'cn8-vestibulocochlear',
+    name: 'Vestibulocochlear Nerve (CN VIII)',
+    shortName: 'CN VIII — Vestibulocochlear',
+    category: 'cranial-nerve',
+    color: '#4f8a8b',
+    nerveId: 'cn8-vestibulocochlear',
+    summary:
+      'Two nerves traveling together. The cochlear branch carries hearing from the cochlea. The vestibular branch carries balance from the semicircular canals — your sense of head position and motion.',
+    functions: [
+      'Hearing (cochlear division)',
+      'Balance and head position (vestibular division)',
+      'Damage produces deafness, tinnitus, vertigo',
+    ],
+    connects: ['pons', 'cerebellum', 'temporal-lobe'],
+  },
+  {
+    id: 'cn9-glossopharyngeal',
+    name: 'Glossopharyngeal Nerve (CN IX)',
+    shortName: 'CN IX — Glossopharyngeal',
+    category: 'cranial-nerve',
+    color: '#7a9461',
+    nerveId: 'cn9-glossopharyngeal',
+    summary:
+      'Motor to one swallowing muscle, sensation from the back of the tongue and pharynx, taste from the posterior third of the tongue, and parasympathetic to the parotid gland. Also carries carotid baroreceptor signals.',
+    functions: [
+      'Taste from the posterior third of the tongue',
+      'Sensation from pharynx (afferent limb of the gag reflex)',
+      'Parasympathetic to parotid salivary gland',
+      'Carotid baroreceptors and chemoreceptors',
+    ],
+    connects: ['medulla'],
+  },
   {
     id: 'vagus-nerve',
     name: 'Vagus Nerve (CN X)',
-    shortName: 'Vagus',
+    shortName: 'CN X — Vagus',
     category: 'cranial-nerve',
     color: '#7a9461',
-    position: [0.18, -1.4, 0.0],
-    scale: [0.05, 0.85, 0.05],
+    nerveId: 'cn10-vagus',
     summary:
-      'The wanderer. Tenth cranial nerve. ~80% of its fibers carry information up from the body — heart, lungs, gut — to the brainstem.',
+      'The wanderer. Tenth cranial nerve. ~80% of its fibers carry information up from the body — heart, lungs, gut — to the brainstem. Workhorse of the parasympathetic nervous system.',
     functions: [
       'Parasympathetic supply to heart, lungs, larynx, stomach, liver, pancreas, intestines',
       'Carries gut and visceral sensation up to the brainstem',
@@ -463,6 +613,36 @@ export const REGIONS: BrainRegion[] = [
     ],
     connects: ['medulla', 'hypothalamus', 'enteric-nervous-system', 'insula'],
     essay: 'vagus-nerve',
+  },
+  {
+    id: 'cn11-accessory',
+    name: 'Accessory Nerve (CN XI)',
+    shortName: 'CN XI — Accessory',
+    category: 'cranial-nerve',
+    color: '#c47480',
+    nerveId: 'cn11-accessory',
+    summary:
+      'A pure motor nerve with an unusual origin: fibers from the medulla and the upper cervical spinal cord. Innervates two large neck muscles — sternocleidomastoid and trapezius.',
+    functions: [
+      'Innervates sternocleidomastoid (turning the head)',
+      'Innervates trapezius (shrugging the shoulder)',
+    ],
+    connects: ['medulla', 'spinal-cord'],
+  },
+  {
+    id: 'cn12-hypoglossal',
+    name: 'Hypoglossal Nerve (CN XII)',
+    shortName: 'CN XII — Hypoglossal',
+    category: 'cranial-nerve',
+    color: '#e89aa3',
+    nerveId: 'cn12-hypoglossal',
+    summary:
+      'Motor innervation of the tongue. When it fails on one side, the tongue deviates toward the weak side on protrusion because the strong side pushes harder.',
+    functions: [
+      'Motor control of all intrinsic and most extrinsic tongue muscles',
+      'Essential for speech, chewing, and swallowing',
+    ],
+    connects: ['medulla'],
   },
 
   // ---------- SPINAL ----------

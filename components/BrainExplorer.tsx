@@ -8,14 +8,20 @@ import { REGIONS } from '@/lib/regions';
 
 const BrainCanvas = dynamic(() => import('./BrainCanvas'), { ssr: false });
 
-// Initial set: show everything that has a real mesh
-const INITIAL_VISIBLE = new Set(REGIONS.filter((r) => r.meshNode).map((r) => r.id));
+// Anything renderable: meshes from BP3D plus the 12 procedural cranial nerves.
+const RENDERABLE_IDS = REGIONS.filter((r) => r.meshNode || r.nerveId).map((r) => r.id);
+const MESH_IDS = REGIONS.filter((r) => r.meshNode).map((r) => r.id);
+const NERVE_IDS = REGIONS.filter((r) => r.nerveId).map((r) => r.id);
+
+// Initial set: show the brain (meshes), not yet the cranial nerves.
+const INITIAL_VISIBLE = new Set(MESH_IDS);
 
 const PRESETS: { id: string; label: string; regionIds: string[] }[] = [
+  { id: 'all', label: 'Whole brain', regionIds: MESH_IDS },
   {
-    id: 'all',
-    label: 'Whole brain',
-    regionIds: REGIONS.filter((r) => r.meshNode).map((r) => r.id),
+    id: 'everything',
+    label: 'Brain + nerves',
+    regionIds: RENDERABLE_IDS,
   },
   {
     id: 'brainstem',
@@ -41,6 +47,21 @@ const PRESETS: { id: string; label: string; regionIds: string[] }[] = [
     id: 'autonomic-core',
     label: 'Autonomic core',
     regionIds: ['hypothalamus', 'medulla', 'pons', 'insula', 'anterior-cingulate'],
+  },
+  {
+    id: 'cranial-nerves',
+    label: '12 cranial nerves',
+    regionIds: [...NERVE_IDS, 'midbrain', 'pons', 'medulla'],
+  },
+  {
+    id: 'vision',
+    label: 'Vision pathway',
+    regionIds: ['cn2-optic', 'thalamus', 'occipital-lobe'],
+  },
+  {
+    id: 'eye-movements',
+    label: 'Eye movements',
+    regionIds: ['cn3-oculomotor', 'cn4-trochlear', 'cn6-abducens', 'midbrain', 'pons'],
   },
 ];
 
@@ -77,19 +98,15 @@ export default function BrainExplorer() {
   };
 
   const showAll = () => {
-    setVisibleIds(new Set(REGIONS.filter((r) => r.meshNode).map((r) => r.id)));
+    setVisibleIds(new Set(RENDERABLE_IDS));
   };
 
   const hideAll = () => {
     setVisibleIds(new Set());
   };
 
-  // Visible-set summary for header
   const visibleCount = useMemo(() => visibleIds.size, [visibleIds]);
-  const meshRegionCount = useMemo(
-    () => REGIONS.filter((r) => r.meshNode).length,
-    [],
-  );
+  const totalCount = RENDERABLE_IDS.length;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_360px] h-[calc(100vh-64px)] bg-ink-900">
@@ -98,7 +115,7 @@ export default function BrainExplorer() {
           <div>
             <h2 className="font-serif text-lg text-ink-50 leading-tight">Build a brain</h2>
             <p className="text-[11px] text-ink-300 mt-0.5">
-              Check the parts you want to see. {visibleCount}/{meshRegionCount} shown.
+              Check the parts you want to see. {visibleCount}/{totalCount} shown.
             </p>
           </div>
           <div className="flex gap-1.5">
