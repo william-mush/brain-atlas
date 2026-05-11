@@ -237,7 +237,7 @@ export default function BrainExplorer() {
         </a>
       </main>
 
-      <aside className="border-l border-ink-700 bg-ink-800/60">
+      <aside className="border-l border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden">
         <RegionPanel
           regionId={selectedId}
           onClose={() => setSelectedId(null)}

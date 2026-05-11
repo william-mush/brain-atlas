@@ -59,9 +59,9 @@ export default function RegionPanel({ regionId, onClose, onSelect }: Props) {
   const autonomic = getAutonomicNote(region.id);
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex items-start justify-between gap-4 p-6 pb-3 border-b border-ink-700">
-        <div>
+    <div className="h-full flex flex-col min-h-0">
+      <div className="flex items-start justify-between gap-4 p-6 pb-3 border-b border-ink-700 bg-ink-800/95 backdrop-blur sticky top-0 z-10 flex-shrink-0">
+        <div className="min-w-0">
           <p
             className="text-xs uppercase tracking-widest mb-1"
             style={{ color: region.color }}
@@ -74,14 +74,14 @@ export default function RegionPanel({ regionId, onClose, onSelect }: Props) {
         </div>
         <button
           onClick={onClose}
-          className="text-ink-300 hover:text-ink-50 text-xl leading-none"
+          className="text-ink-300 hover:text-ink-50 text-xl leading-none flex-shrink-0"
           aria-label="Close"
         >
           ×
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-5">
+      <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5">
         <p className="text-ink-100 leading-relaxed">{region.summary}</p>
 
         <section>
