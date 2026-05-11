@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import RegionPanel from './RegionPanel';
 import RegionList from './RegionList';
 import { REGIONS, SOURCE_LABELS, type RegionSource } from '@/lib/regions';
@@ -57,6 +57,17 @@ export default function BrainExplorer() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(INITIAL_VISIBLE);
   const [enabledSources, setEnabledSources] = useState<Set<RegionSource>>(DEFAULT_SOURCES);
+  const [fullscreen, setFullscreen] = useState(false);
+
+  // Escape exits fullscreen
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFullscreen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [fullscreen]);
 
   const toggleVisible = (id: string) => {
     setVisibleIds((prev) => {
@@ -133,8 +144,14 @@ export default function BrainExplorer() {
   }, [enabledSources]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_360px] h-[calc(100vh-64px)] bg-ink-900">
-      <aside className="hidden lg:flex flex-col border-r border-ink-700 bg-ink-800/60">
+    <div
+      className={
+        fullscreen
+          ? 'fixed inset-0 z-50 grid grid-cols-1 h-screen w-screen bg-ink-900'
+          : 'grid grid-cols-1 lg:grid-cols-[280px_1fr_360px] h-[calc(100vh-64px)] bg-ink-900'
+      }
+    >
+      <aside className={`${fullscreen ? 'hidden' : 'hidden lg:flex'} flex-col border-r border-ink-700 bg-ink-800/60`}>
         <div className="p-4 border-b border-ink-700 space-y-3">
           <div>
             <h2 className="font-serif text-lg text-ink-50 leading-tight">Build a brain</h2>
@@ -226,18 +243,42 @@ export default function BrainExplorer() {
           onSelect={selectAndShow}
           onHover={setHoveredId}
         />
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
-          Drag to rotate · right-drag to pan · scroll to zoom
-        </div>
-        <a
-          href="/credits"
-          className="absolute bottom-3 right-3 text-[10px] text-ink-400 hover:text-ink-200 underline decoration-ink-700 underline-offset-2"
+        <button
+          onClick={() => setFullscreen((v) => !v)}
+          className="absolute top-3 left-3 z-20 flex items-center gap-1.5 text-[11px] text-ink-100 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 hover:bg-ink-800 hover:border-ink-500 backdrop-blur transition"
+          title={fullscreen ? 'Exit fullscreen (Esc)' : 'Enter fullscreen'}
+          aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
         >
-          Credits & licenses
-        </a>
+          {fullscreen ? (
+            <>
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 3v2H3M11 3v2h2M5 13v-2H3M11 13v-2h2" />
+              </svg>
+              Exit fullscreen
+            </>
+          ) : (
+            <>
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6V3h3M13 6V3h-3M3 10v3h3M13 10v3h-3" />
+              </svg>
+              Fullscreen
+            </>
+          )}
+        </button>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
+          Drag to rotate · right-drag to pan · scroll to zoom{fullscreen ? ' · Esc to exit' : ''}
+        </div>
+        {!fullscreen && (
+          <a
+            href="/credits"
+            className="absolute bottom-3 right-3 text-[10px] text-ink-400 hover:text-ink-200 underline decoration-ink-700 underline-offset-2"
+          >
+            Credits & licenses
+          </a>
+        )}
       </main>
 
-      <aside className="border-l border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden">
+      <aside className={`${fullscreen ? 'hidden' : ''} border-l border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden`}>
         <RegionPanel
           regionId={selectedId}
           onClose={() => setSelectedId(null)}

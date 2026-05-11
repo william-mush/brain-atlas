@@ -23,9 +23,13 @@ interface Props {
   onHover: (id: string | null) => void;
 }
 
-// Default camera position — also used by the reset button.
-const DEFAULT_CAMERA_POS: [number, number, number] = [4.5, 1.2, 5.0];
-const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0.1, 0];
+// Default camera position. The brain extends roughly x ±1.5, y -1.4 to 1.4,
+// z ±1.5 in our scene units, so we sit ~8 units back with FOV 38° to fit
+// the whole thing including the brainstem and cerebellum hanging below.
+// Target is at y=0.3 (a bit above origin) because the cerebrum's center of
+// mass is above the brainstem.
+const DEFAULT_CAMERA_POS: [number, number, number] = [5.0, 1.5, 6.5];
+const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0.3, 0];
 
 export default function BrainCanvas(props: Props) {
   const [shellOpacity, setShellOpacity] = useState(0.18);
