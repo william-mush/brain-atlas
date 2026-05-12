@@ -21,6 +21,7 @@ export default function Nav() {
           <NavLink href="/systems/hemispheres">Hemispheres</NavLink>
           <NavLink href="/systems/time">Brain Over Time</NavLink>
           <NavLink href="/awareness">Eight Limbs</NavLink>
+          <NavLink href="/compendium">Compendium</NavLink>
         </nav>
       </div>
     </header>
