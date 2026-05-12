@@ -44,7 +44,7 @@ export default function BodyList({
   }, []);
 
   return (
-    <div className="h-full overflow-y-auto p-3 space-y-4">
+    <div className="space-y-4">
       {REGION_ORDER.filter((r) => enabledRegions.has(r)).map((region) => {
         const bucket = grouped[region];
         if (!bucket || (bucket.muscles.length === 0 && bucket.bones.length === 0)) return null;

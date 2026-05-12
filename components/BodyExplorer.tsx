@@ -197,25 +197,28 @@ export default function BodyExplorer() {
         : 'grid grid-cols-1 lg:grid-cols-[280px_1fr_360px] h-[calc(100vh-64px)] bg-ink-900'
     }>
       <aside className={`${fullscreen ? 'hidden' : 'hidden lg:flex'} flex-col border-r border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden`}>
-        <div className="p-4 border-b border-ink-700 space-y-3">
-          <div>
-            <h2 className="font-serif text-lg text-ink-50 leading-tight">Body Atlas</h2>
-            <p className="text-[11px] text-ink-300 mt-0.5">
-              {visibleCount} of {totalCount} shown · Ashtanga lens
-            </p>
-          </div>
+        {/* Fixed header */}
+        <div className="px-4 py-3 border-b border-ink-700 flex-shrink-0">
+          <h2 className="font-serif text-lg text-ink-50 leading-tight">Body Atlas</h2>
+          <p className="text-[11px] text-ink-300 mt-0.5">
+            {visibleCount} of {totalCount} shown · Ashtanga lens
+          </p>
+        </div>
 
-          {/* Regions */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-ink-300">Sections</p>
+        {/* Scrollable column with collapsible groups */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          <Collapsible
+            title="Sections"
+            defaultOpen={false}
+            actions={
               <button
-                onClick={() => setRangeRegions(ALL_REGIONS)}
+                onClick={(e) => { e.stopPropagation(); setRangeRegions(ALL_REGIONS); }}
                 className="text-[10px] text-ink-400 hover:text-ink-100"
               >
                 reset
               </button>
-            </div>
+            }
+          >
             <div className="grid grid-cols-2 gap-1">
               {ALL_REGIONS.map((r) => {
                 const enabled = enabledRegions.has(r);
@@ -235,7 +238,7 @@ export default function BodyExplorer() {
                 );
               })}
             </div>
-            <div className="flex flex-wrap gap-1 pt-1">
+            <div className="flex flex-wrap gap-1 pt-2">
               {RANGE_PRESETS.map((p) => (
                 <button
                   key={p.id}
@@ -246,22 +249,32 @@ export default function BodyExplorer() {
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="flex gap-1.5">
-            <button onClick={showAllParts} className="flex-1 text-[11px] px-2 py-1.5 rounded border border-ink-600 text-ink-100 hover:bg-ink-700 transition">All parts</button>
-            <button onClick={hideAllParts} className="flex-1 text-[11px] px-2 py-1.5 rounded border border-ink-600 text-ink-100 hover:bg-ink-700 transition">None</button>
-          </div>
-
-          {/* Bone groups */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-ink-300">Bones</p>
-              <div className="flex gap-2">
-                <button onClick={showAllBones} className="text-[10px] text-ink-400 hover:text-ink-100">all</button>
-                <button onClick={hideAllBones} className="text-[10px] text-ink-400 hover:text-ink-100">none</button>
-              </div>
+            <div className="flex gap-1.5 pt-2">
+              <button onClick={showAllParts} className="flex-1 text-[10px] px-2 py-1 rounded border border-ink-700 text-ink-200 hover:bg-ink-700 transition">Show all parts</button>
+              <button onClick={hideAllParts} className="flex-1 text-[10px] px-2 py-1 rounded border border-ink-700 text-ink-200 hover:bg-ink-700 transition">Hide all</button>
             </div>
+          </Collapsible>
+
+          <Collapsible
+            title="Bones"
+            defaultOpen={false}
+            actions={
+              <span className="flex gap-2 text-[10px]">
+                <button
+                  onClick={(e) => { e.stopPropagation(); showAllBones(); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  all
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); hideAllBones(); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  none
+                </button>
+              </span>
+            }
+          >
             <div className="grid grid-cols-2 gap-1">
               {Array.from(BONE_GROUPS.keys()).map((g) => {
                 const vis = groupVisibility[g] || 'none';
@@ -289,25 +302,41 @@ export default function BodyExplorer() {
                 );
               })}
             </div>
-          </div>
+          </Collapsible>
 
-          {/* Pose selector */}
-          <PoseSelector
-            poses={POSES}
-            activePoseId={activePoseId}
-            onSelect={setActivePoseId}
-          />
-        </div>
+          <Collapsible
+            title="Yoga Poses"
+            count={POSES.length}
+            defaultOpen={true}
+            actions={
+              activePoseId && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActivePoseId(null); }}
+                  className="text-[10px] text-ink-400 hover:text-ink-100"
+                >
+                  clear
+                </button>
+              )
+            }
+          >
+            <PoseSelector
+              poses={POSES}
+              activePoseId={activePoseId}
+              onSelect={setActivePoseId}
+              hideHeader
+            />
+          </Collapsible>
 
-        <div className="flex-1 min-h-0 overflow-hidden">
-          <BodyList
-            selectedId={selectedId}
-            visibleIds={visibleIds}
-            enabledRegions={enabledRegions}
-            onSelect={selectAndShow}
-            onHover={setHoveredId}
-            onToggleVisible={toggleVisible}
-          />
+          <Collapsible title="Browse parts" defaultOpen={true}>
+            <BodyList
+              selectedId={selectedId}
+              visibleIds={visibleIds}
+              enabledRegions={enabledRegions}
+              onSelect={selectAndShow}
+              onHover={setHoveredId}
+              onToggleVisible={toggleVisible}
+            />
+          </Collapsible>
         </div>
       </aside>
 
@@ -384,6 +413,40 @@ export default function BodyExplorer() {
           onClearPose={() => setActivePoseId(null)}
         />
       </aside>
+    </div>
+  );
+}
+
+interface CollapsibleProps {
+  title: string;
+  count?: number;
+  defaultOpen?: boolean;
+  actions?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function Collapsible({ title, count, defaultOpen = true, actions, children }: CollapsibleProps) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border-b border-ink-700/60 last:border-b-0">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full px-4 py-2.5 flex items-center justify-between gap-2 hover:bg-ink-800/50 transition"
+      >
+        <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ink-200">
+          <span className={`inline-block transition-transform text-ink-400 ${open ? 'rotate-90' : ''}`}>
+            ▸
+          </span>
+          <span>{title}</span>
+          {count !== undefined && (
+            <span className="text-ink-500 font-mono normal-case tracking-normal">({count})</span>
+          )}
+        </span>
+        {actions && (
+          <span onClick={(e) => e.stopPropagation()}>{actions}</span>
+        )}
+      </button>
+      {open && <div className="px-4 pb-3 pt-1">{children}</div>}
     </div>
   );
 }
