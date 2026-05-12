@@ -41,14 +41,36 @@ const GROUPS: JointGroup[] = [
     label: 'Limbs',
     defaultOpen: true,
     joints: [
-      { id: 'UpperArm_r', label: 'Right shoulder', axis: 'x', min: -90, max: 180 },
-      { id: 'UpperArm_l', label: 'Left shoulder', axis: 'x', min: -90, max: 180 },
+      // SHOULDERS — three axes per side (glenohumeral is a ball-and-socket joint).
+      // FLEXION range goes past 180° so the arm can reach overhead AND behind
+      // the head — needed for full Wheel (Urdhva Dhanurasana) when the hands
+      // land on the floor.
+      { id: 'UpperArm_r', label: 'Right shoulder — flex / extend', axis: 'x', min: -60, max: 220 },
+      { id: 'UpperArm_l', label: 'Left shoulder — flex / extend',  axis: 'x', min: -60, max: 220 },
+      { id: 'UpperArm_r', label: 'Right shoulder — abduct',         axis: 'z', min: -180, max: 30 },
+      { id: 'UpperArm_l', label: 'Left shoulder — abduct',          axis: 'z', min: -30, max: 180 },
+      { id: 'UpperArm_r', label: 'Right shoulder — rotate',         axis: 'y', min: -90, max: 90 },
+      { id: 'UpperArm_l', label: 'Left shoulder — rotate',          axis: 'y', min: -90, max: 90 },
+
+      // ELBOW — flexion only (the elbow is a hinge, no abduction).
       { id: 'Forearm_r', label: 'Right elbow', axis: 'x', min: -150, max: 0 },
-      { id: 'Forearm_l', label: 'Left elbow', axis: 'x', min: -150, max: 0 },
-      { id: 'Thigh_r', label: 'Right hip flex', axis: 'x', min: -30, max: 120 },
-      { id: 'Thigh_l', label: 'Left hip flex', axis: 'x', min: -30, max: 120 },
-      { id: 'Shin_r', label: 'Right knee', axis: 'x', min: -120, max: 0 },
-      { id: 'Shin_l', label: 'Left knee', axis: 'x', min: -120, max: 0 },
+      { id: 'Forearm_l', label: 'Left elbow',  axis: 'x', min: -150, max: 0 },
+
+      // WRIST / HAND — for floor placement in full Wheel the wrists extend
+      // dramatically. Real wrist extension is ~70-80°.
+      { id: 'Hand_r', label: 'Right wrist — flex / extend', axis: 'x', min: -80, max: 80 },
+      { id: 'Hand_l', label: 'Left wrist — flex / extend',  axis: 'x', min: -80, max: 80 },
+
+      // HIPS — primary flexion. Real-life flexion ~120°; extension ~30°.
+      { id: 'Thigh_r', label: 'Right hip — flex / extend', axis: 'x', min: -30, max: 120 },
+      { id: 'Thigh_l', label: 'Left hip — flex / extend',  axis: 'x', min: -30, max: 120 },
+      // Hip abduction (Y in our frame) for wide stances
+      { id: 'Thigh_r', label: 'Right hip — abduct', axis: 'z', min: -45, max: 45 },
+      { id: 'Thigh_l', label: 'Left hip — abduct',  axis: 'z', min: -45, max: 45 },
+
+      // KNEES — hinges. Real flexion 130-150°.
+      { id: 'Shin_r', label: 'Right knee', axis: 'x', min: -150, max: 0 },
+      { id: 'Shin_l', label: 'Left knee',  axis: 'x', min: -150, max: 0 },
     ],
   },
   {
