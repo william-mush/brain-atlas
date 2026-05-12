@@ -211,12 +211,21 @@ export default function BodyExplorer() {
             title="Sections"
             defaultOpen={false}
             actions={
-              <button
-                onClick={(e) => { e.stopPropagation(); setRangeRegions(ALL_REGIONS); }}
-                className="text-[10px] text-ink-400 hover:text-ink-100"
-              >
-                reset
-              </button>
+              <span className="flex gap-2 text-[10px]">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setRangeRegions(ALL_REGIONS); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  all
+                </button>
+                <span className="text-ink-600">·</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setEnabledRegions(new Set()); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  none
+                </button>
+              </span>
             }
           >
             <div className="grid grid-cols-2 gap-1">
@@ -327,7 +336,27 @@ export default function BodyExplorer() {
             />
           </Collapsible>
 
-          <Collapsible title="Browse parts" defaultOpen={true}>
+          <Collapsible
+            title="Browse parts"
+            defaultOpen={true}
+            actions={
+              <span className="flex gap-2 text-[10px]">
+                <button
+                  onClick={(e) => { e.stopPropagation(); showAllParts(); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  all
+                </button>
+                <span className="text-ink-600">·</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); hideAllParts(); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  none
+                </button>
+              </span>
+            }
+          >
             <BodyList
               selectedId={selectedId}
               visibleIds={visibleIds}

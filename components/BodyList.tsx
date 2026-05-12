@@ -103,36 +103,36 @@ export default function BodyList({
 
         return (
           <section key={region} className="border-b border-ink-700/40 last:border-b-0">
-            <button
-              onClick={() => toggleRegion(region)}
-              className="w-full px-2 py-1.5 flex items-center justify-between gap-2 hover:bg-ink-800/40 rounded transition"
-            >
-              <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ink-300">
+            <div className="w-full px-2 py-1.5 flex items-center justify-between gap-2 hover:bg-ink-800/40 rounded transition">
+              <button
+                onClick={() => toggleRegion(region)}
+                className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ink-300 hover:text-ink-100 flex-1 text-left"
+              >
                 <span className={`text-ink-500 transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
                 <span>{REGION_LABELS[region]}</span>
-              </span>
-              <span className="text-[10px] text-ink-500 font-mono">
-                {visibleCount}/{totalCount}
-              </span>
-            </button>
+              </button>
+              <div className="flex items-center gap-2 text-[10px]">
+                <button
+                  onClick={(e) => { e.stopPropagation(); toggleAllInRegion(region, 'all'); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  all
+                </button>
+                <span className="text-ink-600">·</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); toggleAllInRegion(region, 'none'); }}
+                  className="text-ink-400 hover:text-ink-100"
+                >
+                  none
+                </button>
+                <span className="text-ink-500 font-mono ml-1 min-w-[3em] text-right">
+                  {visibleCount}/{totalCount}
+                </span>
+              </div>
+            </div>
 
             {open && (
               <div className="pl-2 pb-2">
-                <div className="flex justify-end gap-2 px-2 pb-1 text-[10px] text-ink-400">
-                  <button
-                    onClick={() => toggleAllInRegion(region, 'all')}
-                    className="hover:text-ink-100"
-                  >
-                    all
-                  </button>
-                  <span className="text-ink-600">·</span>
-                  <button
-                    onClick={() => toggleAllInRegion(region, 'none')}
-                    className="hover:text-ink-100"
-                  >
-                    none
-                  </button>
-                </div>
                 {bucket.muscles.length > 0 && (
                   <ul className="space-y-0.5 mb-1.5">
                     {bucket.muscles.map((r) => {
