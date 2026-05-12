@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import BodyPanel from './BodyPanel';
 import BodyList from './BodyList';
-import { BODY_PARTS } from '@/lib/body';
+import { BODY_PARTS, getBodyPart } from '@/lib/body';
 
 const BodyCanvas = dynamic(() => import('./BodyCanvas'), { ssr: false });
 
@@ -98,6 +98,10 @@ export default function BodyExplorer() {
   const visibleCount = useMemo(() => visibleIds.size, [visibleIds]);
   const totalCount = BODY_PARTS.length;
 
+  // Active = the thing the user is currently pointing at (hover wins over select)
+  const activeId = hoveredId || selectedId;
+  const activePart = activeId ? getBodyPart(activeId) : null;
+
   return (
     <div className={
       fullscreen
@@ -158,6 +162,32 @@ export default function BodyExplorer() {
         >
           {fullscreen ? 'Exit fullscreen' : 'Fullscreen'}
         </button>
+
+        {/* Active-part label — fixed at top center so it never covers the body */}
+        {activePart && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 text-sm text-ink-50 bg-ink-900/90 px-4 py-2 rounded-full border border-ink-700 backdrop-blur shadow-lg pointer-events-none">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: activePart.kind === 'muscle' ? '#c45050' : '#e8dec5' }}
+            />
+            <span className="font-medium">{activePart.name}</span>
+            {activePart.side && (
+              <span className="text-ink-400 text-xs font-mono">
+                {activePart.side === 'l' ? 'L' : 'R'}
+              </span>
+            )}
+            {hoveredId && selectedId && hoveredId !== selectedId && (
+              <span className="text-ink-400 text-xs">· hovering</span>
+            )}
+          </div>
+        )}
+
+        {visibleCount === 0 && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-ink-300 text-sm bg-ink-900/85 px-4 py-2.5 rounded-md border border-ink-700 backdrop-blur pointer-events-none">
+            Nothing selected. Check a part on the left to add it.
+          </div>
+        )}
+
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
           Drag to rotate · right-drag to pan · scroll to zoom
         </div>

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Html } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { BODY_PARTS, ATTACHMENTS, type BodyPart } from '@/lib/body';
 
@@ -186,13 +186,6 @@ function Scene({
       {/* Attachment markers for selected muscle */}
       {selectedId && <AttachmentMarkers partId={selectedId} />}
 
-      {visibleMeshes.length === 0 && (
-        <Html center style={{ pointerEvents: 'none' }}>
-          <div className="text-ink-300 text-sm whitespace-nowrap bg-ink-900/85 px-4 py-2.5 rounded-md border border-ink-700 backdrop-blur">
-            Nothing selected. Check a part on the left to add it.
-          </div>
-        </Html>
-      )}
     </group>
   );
 }
@@ -303,47 +296,23 @@ function BodyMesh({
     material.needsUpdate = true;
   }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity]);
 
-  const labelPos = useMemo(() => {
-    const pos = sourceMesh.geometry.attributes.position as THREE.BufferAttribute;
-    const box = new THREE.Box3().setFromBufferAttribute(pos);
-    const center = box.getCenter(new THREE.Vector3());
-    return [center.x, box.max.y + 0.05, center.z] as const;
-  }, [sourceMesh.geometry]);
-
   return (
-    <group>
-      <mesh
-        geometry={sourceMesh.geometry}
-        material={material}
-        onClick={(e) => {
-          e.stopPropagation();
-          onSelect(isSelected ? null : part.id);
-        }}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          onHover(part.id);
-          document.body.style.cursor = 'pointer';
-        }}
-        onPointerOut={() => {
-          onHover(null);
-          document.body.style.cursor = 'auto';
-        }}
-      />
-      {(isHovered || isSelected) && (
-        <Html
-          center
-          position={labelPos as unknown as THREE.Vector3}
-          distanceFactor={6}
-          style={{ pointerEvents: 'none' }}
-        >
-          <div className="px-2 py-1 rounded-md bg-ink-900/90 text-ink-50 text-xs font-medium whitespace-nowrap shadow-lg border border-ink-700 backdrop-blur">
-            {part.shortName || part.name}
-            {part.side && (
-              <span className="text-ink-400 ml-1">({part.side.toUpperCase()})</span>
-            )}
-          </div>
-        </Html>
-      )}
-    </group>
+    <mesh
+      geometry={sourceMesh.geometry}
+      material={material}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect(isSelected ? null : part.id);
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        onHover(part.id);
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        onHover(null);
+        document.body.style.cursor = 'auto';
+      }}
+    />
   );
 }

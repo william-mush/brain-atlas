@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import RegionPanel from './RegionPanel';
 import RegionList from './RegionList';
-import { REGIONS, SOURCE_LABELS, type RegionSource } from '@/lib/regions';
+import { REGIONS, SOURCE_LABELS, getRegion, type RegionSource } from '@/lib/regions';
 
 const BrainCanvas = dynamic(() => import('./BrainCanvas'), { ssr: false });
 
@@ -143,6 +143,9 @@ export default function BrainExplorer() {
     ).length;
   }, [enabledSources]);
 
+  const activeId = hoveredId || selectedId;
+  const activeRegion = activeId ? getRegion(activeId) : null;
+
   return (
     <div
       className={
@@ -265,6 +268,26 @@ export default function BrainExplorer() {
             </>
           )}
         </button>
+
+        {activeRegion && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 text-sm text-ink-50 bg-ink-900/90 px-4 py-2 rounded-full border border-ink-700 backdrop-blur shadow-lg pointer-events-none max-w-[60%]">
+            <span
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ backgroundColor: activeRegion.color }}
+            />
+            <span className="font-medium truncate">{activeRegion.shortName || activeRegion.name}</span>
+            {hoveredId && selectedId && hoveredId !== selectedId && (
+              <span className="text-ink-400 text-xs flex-shrink-0">· hovering</span>
+            )}
+          </div>
+        )}
+
+        {visibleCount === 0 && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-ink-300 text-sm bg-ink-900/85 px-4 py-2.5 rounded-md border border-ink-700 backdrop-blur pointer-events-none">
+            Nothing selected. Check a part on the left to add it.
+          </div>
+        )}
+
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
           Drag to rotate · right-drag to pan · scroll to zoom{fullscreen ? ' · Esc to exit' : ''}
         </div>
