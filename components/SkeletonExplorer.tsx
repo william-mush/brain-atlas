@@ -16,6 +16,14 @@ interface Joint {
   axis: 'x' | 'y' | 'z';
   min: number;
   max: number;
+  /**
+   * If set, the slider's value is *distributed* across these bones rather
+   * than applied to one. Use for regional spine sliders. Each entry is a
+   * weight; the slider value is divided by total-weight, then each bone
+   * gets weight × per-unit angle. Weights typically reflect anatomical
+   * mobility — e.g. lower lumbar contributes more than upper to flexion.
+   */
+  distribute?: { boneId: string; weight: number }[];
 }
 
 // Joints organized into anatomical groups. Each group is a collapsible
@@ -48,18 +56,67 @@ const GROUPS: JointGroup[] = [
     label: 'Spine — by region',
     defaultOpen: true,
     joints: [
-      // Single-bone shortcuts per region — drives the whole region as a chunk.
-      // Lumbar — L3 is the middle, so rotating it tips the upper body.
-      { id: 'Spine_L3', label: 'Lumbar flex', axis: 'x', min: -45, max: 30 },
-      // Thoracic — T7 mid-back
-      { id: 'Spine_T7', label: 'Thoracic flex', axis: 'x', min: -30, max: 30 },
-      // Cervical — C5 mid-neck
-      { id: 'Neck_C5', label: 'Cervical flex', axis: 'x', min: -45, max: 45 },
-      // Atlas (C1) — head nod
+      // LUMBAR — distributed across L1–L5.
+      // In Z-Anatomy's bone-frame, NEGATIVE X = backbend (extension);
+      // POSITIVE X = forward fold (flexion).
+      // Anatomically: lumbar flexion ~50–60°; lumbar extension ~30–45°.
+      // Lower-lumbar contributes more than upper.
+      {
+        id: 'region:lumbar',
+        label: 'Lumbar (L1–L5)  — −back  /  fold +',
+        axis: 'x',
+        min: -45,
+        max: 60,
+        distribute: [
+          { boneId: 'Spine_L1', weight: 0.15 },
+          { boneId: 'Spine_L2', weight: 0.18 },
+          { boneId: 'Spine_L3', weight: 0.20 },
+          { boneId: 'Spine_L4', weight: 0.23 },
+          { boneId: 'Spine_L5', weight: 0.24 },
+        ],
+      },
+      // THORACIC — extension ~25–30°; flexion ~30–35°.
+      {
+        id: 'region:thoracic',
+        label: 'Thoracic (T1–T12)  — −back  /  fold +',
+        axis: 'x',
+        min: -30,
+        max: 35,
+        distribute: [
+          { boneId: 'Spine_T1', weight: 0.04 },
+          { boneId: 'Spine_T2', weight: 0.05 },
+          { boneId: 'Spine_T3', weight: 0.05 },
+          { boneId: 'Spine_T4', weight: 0.06 },
+          { boneId: 'Spine_T5', weight: 0.07 },
+          { boneId: 'Spine_T6', weight: 0.08 },
+          { boneId: 'Spine_T7', weight: 0.09 },
+          { boneId: 'Spine_T8', weight: 0.10 },
+          { boneId: 'Spine_T9', weight: 0.10 },
+          { boneId: 'Spine_T10', weight: 0.11 },
+          { boneId: 'Spine_T11', weight: 0.12 },
+          { boneId: 'Spine_T12', weight: 0.13 },
+        ],
+      },
+      // CERVICAL — flexion ~60°, extension ~70°.
+      {
+        id: 'region:cervical',
+        label: 'Cervical (C3–C7)  — −back  /  fold +',
+        axis: 'x',
+        min: -70,
+        max: 60,
+        distribute: [
+          { boneId: 'Neck_C3', weight: 0.20 },
+          { boneId: 'Neck_C4', weight: 0.22 },
+          { boneId: 'Neck_C5', weight: 0.22 },
+          { boneId: 'Neck_C6', weight: 0.20 },
+          { boneId: 'Neck_C7', weight: 0.16 },
+        ],
+      },
+      // Atlas — head nod (atlanto-occipital). Total range ~15-20° nod.
       { id: 'Neck_C1_Atlas', label: 'Head nod (atlanto-occipital)', axis: 'x', min: -25, max: 25 },
-      // Axis (C2) — head rotation
+      // Axis — head rotation (atlanto-axial). Real range ~45° each side.
       { id: 'Neck_C2_Axis', label: 'Head turn (atlanto-axial)', axis: 'y', min: -45, max: 45 },
-      // Sacrum nutation/counter-nutation
+      // Sacrum nutation/counter-nutation — small but real
       { id: 'Sacrum', label: 'Sacrum nutation', axis: 'x', min: -15, max: 15 },
       // Coccyx
       { id: 'Coccyx', label: 'Coccyx', axis: 'x', min: -10, max: 10 },
@@ -121,6 +178,21 @@ const ALL_JOINT_KEYS = (() => {
   return Array.from(set);
 })();
 
+// All joints with their distribute info, flat — used by the frame loop.
+const ALL_JOINTS: Joint[] = (() => {
+  const seen = new Set<string>();
+  const out: Joint[] = [];
+  for (const g of GROUPS) {
+    for (const j of g.joints) {
+      const k = `${j.id}__${j.axis}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      out.push(j);
+    }
+  }
+  return out;
+})();
+
 interface SceneProps {
   jointRotations: Record<string, number>; // key = `${boneId}__${axis}`, value = degrees
 }
@@ -141,23 +213,50 @@ function Scene({ jointRotations }: SceneProps) {
     });
   }, [gltf.scene]);
 
-  // Apply rotations every frame
+  // Build per-bone aggregate deltas from all controllable joints, then apply.
   useFrame(() => {
+    // delta[boneName][axis] = total radians to add to rest
+    const deltas: Map<string, { x: number; y: number; z: number }> = new Map();
+
+    const accumulate = (boneName: string, axis: 'x' | 'y' | 'z', rad: number) => {
+      let d = deltas.get(boneName);
+      if (!d) {
+        d = { x: 0, y: 0, z: 0 };
+        deltas.set(boneName, d);
+      }
+      d[axis] += rad;
+    };
+
+    for (const j of ALL_JOINTS) {
+      const key = `${j.id}__${j.axis}`;
+      const v = jointRotations[key];
+      if (!v) continue;
+      const rad = (v * Math.PI) / 180;
+
+      if (j.distribute && j.distribute.length > 0) {
+        const totalWeight = j.distribute.reduce((s, e) => s + e.weight, 0) || 1;
+        for (const entry of j.distribute) {
+          accumulate(entry.boneId, j.axis, rad * (entry.weight / totalWeight));
+        }
+      } else {
+        // Single-bone joint: id is the actual bone name
+        accumulate(j.id, j.axis, rad);
+      }
+    }
+
+    // Apply: rest + delta per bone
     gltf.scene.traverse((o) => {
       if ((o as THREE.Object3D).type !== 'Bone') return;
       const b = o as THREE.Bone;
       const rest = restRotations.current.get(b.name);
       if (!rest) return;
-
-      // Sum up user rotations on this bone across axes
-      const xKey = `${b.name}__x`;
-      const yKey = `${b.name}__y`;
-      const zKey = `${b.name}__z`;
-      const dx = (jointRotations[xKey] ?? 0) * (Math.PI / 180);
-      const dy = (jointRotations[yKey] ?? 0) * (Math.PI / 180);
-      const dz = (jointRotations[zKey] ?? 0) * (Math.PI / 180);
-
-      b.rotation.set(rest.x + dx, rest.y + dy, rest.z + dz);
+      const d = deltas.get(b.name);
+      if (d) {
+        b.rotation.set(rest.x + d.x, rest.y + d.y, rest.z + d.z);
+      } else {
+        // No user input on this bone — keep rest
+        b.rotation.copy(rest);
+      }
     });
   });
 
