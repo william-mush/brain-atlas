@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { BODY_PARTS, ATTACHMENTS, type BodyPart } from '@/lib/body';
+import { getStateForPart, STATE_COLORS, type Pose, type MuscleState } from '@/lib/poses';
 
 const MODEL_URL = '/models/body.glb';
 useGLTF.preload(MODEL_URL);
@@ -18,6 +19,7 @@ interface Props {
   selectedId: string | null;
   hoveredId: string | null;
   visibleIds: Set<string>;
+  activePose: Pose | null;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -116,6 +118,7 @@ function Scene({
   selectedId,
   hoveredId,
   visibleIds,
+  activePose,
   onSelect,
   onHover,
   skinOpacity,
@@ -170,22 +173,25 @@ function Scene({
 
   return (
     <group ref={groupRef}>
-      {visibleMeshes.map(({ part, mesh }) => (
-        <BodyMesh
-          key={part.id}
-          part={part}
-          sourceMesh={mesh}
-          selectedId={selectedId}
-          hoveredId={hoveredId}
-          skinOpacity={skinOpacity}
-          onSelect={onSelect}
-          onHover={onHover}
-        />
-      ))}
+      {visibleMeshes.map(({ part, mesh }) => {
+        const state = getStateForPart(activePose, part);
+        return (
+          <BodyMesh
+            key={part.id}
+            part={part}
+            sourceMesh={mesh}
+            selectedId={selectedId}
+            hoveredId={hoveredId}
+            skinOpacity={skinOpacity}
+            poseActive={!!activePose}
+            poseState={state}
+            onSelect={onSelect}
+            onHover={onHover}
+          />
+        );
+      })}
 
-      {/* Attachment markers for selected muscle */}
       {selectedId && <AttachmentMarkers partId={selectedId} />}
-
     </group>
   );
 }
@@ -237,6 +243,8 @@ interface BodyMeshProps {
   selectedId: string | null;
   hoveredId: string | null;
   skinOpacity: number;
+  poseActive: boolean;
+  poseState: MuscleState | null;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -247,6 +255,8 @@ function BodyMesh({
   selectedId,
   hoveredId,
   skinOpacity,
+  poseActive,
+  poseState,
   onSelect,
   onHover,
 }: BodyMeshProps) {
@@ -257,10 +267,19 @@ function BodyMesh({
 
   const isBone = part.kind === 'bone';
 
+  // Determine the BASE color for this part, given pose state if any.
+  const baseColorHex = useMemo(() => {
+    if (isBone) return '#e8dec5';
+    if (poseActive) {
+      if (poseState) return STATE_COLORS[poseState];
+      // No state for this muscle in this pose: very muted
+      return STATE_COLORS.unloaded;
+    }
+    return '#c45050';
+  }, [isBone, poseActive, poseState]);
+
   const material = useMemo(() => {
-    const baseColor = isBone
-      ? new THREE.Color('#e8dec5')
-      : new THREE.Color('#c45050');
+    const baseColor = new THREE.Color(baseColorHex);
     return new THREE.MeshStandardMaterial({
       color: baseColor,
       emissive: baseColor.clone().multiplyScalar(0.05),
@@ -271,10 +290,11 @@ function BodyMesh({
       opacity: 1.0,
       side: THREE.FrontSide,
     });
-  }, [isBone]);
+  }, [baseColorHex]);
 
   useEffect(() => {
-    const baseColor = isBone ? new THREE.Color('#e8dec5') : new THREE.Color('#c45050');
+    const baseColor = new THREE.Color(baseColorHex);
+    material.color.copy(baseColor);
     if (isSelected) {
       material.emissive = baseColor.clone().multiplyScalar(0.55);
       material.emissiveIntensity = 1.0;
@@ -288,13 +308,20 @@ function BodyMesh({
       material.emissiveIntensity = 0.2;
       material.opacity = isBone ? 0.15 : 0.25;
     } else {
-      material.emissive = baseColor.clone().multiplyScalar(0.05);
-      material.emissiveIntensity = 0.35;
-      material.opacity = isBone ? skinOpacity : 0.92;
+      // When a pose is active, push muscles with no state to lower opacity
+      // so the colored ones pop. Bones stay at the user-controlled opacity.
+      const unloaded = poseActive && !poseState && !isBone;
+      material.emissive = baseColor.clone().multiplyScalar(unloaded ? 0.02 : 0.08);
+      material.emissiveIntensity = unloaded ? 0.15 : 0.45;
+      if (isBone) {
+        material.opacity = skinOpacity;
+      } else {
+        material.opacity = unloaded ? 0.35 : 0.95;
+      }
     }
     material.depthWrite = material.opacity > 0.6;
     material.needsUpdate = true;
-  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity]);
+  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, poseState]);
 
   return (
     <mesh

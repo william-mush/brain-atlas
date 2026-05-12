@@ -6,6 +6,7 @@ import { BODY_PARTS, REGION_LABELS, type BodyRegion } from '@/lib/body';
 interface Props {
   selectedId: string | null;
   visibleIds: Set<string>;
+  enabledRegions: Set<BodyRegion>;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
   onToggleVisible: (id: string) => void;
@@ -24,7 +25,14 @@ const REGION_ORDER: BodyRegion[] = [
   'skeleton',
 ];
 
-export default function BodyList({ selectedId, visibleIds, onSelect, onHover, onToggleVisible }: Props) {
+export default function BodyList({
+  selectedId,
+  visibleIds,
+  enabledRegions,
+  onSelect,
+  onHover,
+  onToggleVisible,
+}: Props) {
   const grouped = useMemo(() => {
     const map: Partial<Record<BodyRegion, { muscles: typeof BODY_PARTS; bones: typeof BODY_PARTS }>> = {};
     for (const p of BODY_PARTS) {
@@ -37,7 +45,7 @@ export default function BodyList({ selectedId, visibleIds, onSelect, onHover, on
 
   return (
     <div className="h-full overflow-y-auto p-3 space-y-4">
-      {REGION_ORDER.map((region) => {
+      {REGION_ORDER.filter((r) => enabledRegions.has(r)).map((region) => {
         const bucket = grouped[region];
         if (!bucket || (bucket.muscles.length === 0 && bucket.bones.length === 0)) return null;
 
