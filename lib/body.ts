@@ -33,6 +33,8 @@ export interface BodyPart {
   side: Side;
   /** Which anatomical region — used to group in the UI. */
   region: BodyRegion;
+  /** For bones, which bone-group it belongs to (skull/spine/ribs/...). Muscles: never set. */
+  boneGroup?: BoneGroup;
   /** Plain-English summary — what this is, in one or two sentences. */
   summary?: string;
   /** Anatomical origin (proximal attachment) — typically on a bone. */
@@ -870,17 +872,102 @@ const MUSCLE_INFO: Record<string, MuscleInfo> = {
 
 function inferRegionForBone(name: string): BodyRegion {
   const n = name.toLowerCase();
-  if (n.includes('skull') || n.includes('mandible')) return 'head-neck';
-  if (n.includes('cervical') || n.includes('hyoid')) return 'head-neck';
+  // Skull bones → head/neck
+  if (
+    n.includes('skull') || n.includes('mandible') ||
+    n.includes('parietal bone') || n.includes('temporal bone') ||
+    n.includes('frontal bone') || n.includes('occipital bone') ||
+    n.includes('maxilla') || n.includes('zygomatic') || n.includes('nasal bone') ||
+    n.includes('hyoid') || n.includes('atlas') || n.includes('axis')
+  ) return 'head-neck';
+  // Cervical vertebrae
+  if (/vertebra c\d/.test(n) || n.includes('cervical vertebra')) return 'head-neck';
+  // Shoulder girdle
   if (n.includes('scapula') || n.includes('clavic')) return 'shoulder-girdle';
+  // Arm bones
   if (n.includes('humer') || n.includes('radius') || n.includes('ulna')) return 'arm';
-  if (n.includes('thoracic') || n.includes('rib') || n.includes('sternum')) return 'chest';
-  if (n.includes('lumbar') || n.includes('sacrum') || n.includes('coccyx')) return 'core';
-  if (n.includes('hip') || n.includes('pelv') || n.includes('ilium') || n.includes('ischium') || n.includes('pubis')) return 'pelvis-hip';
+  // Hand bones (carpals, metacarpals)
+  if (
+    n.includes('scaphoid') || n.includes('lunate') || n.includes('triquetral') ||
+    n.includes('pisiform') || n.includes('trapezium') || n.includes('trapezoid') ||
+    n.includes('capitate') || n.includes('hamate') ||
+    /\bmetacarpal\b/.test(n)
+  ) return 'arm';
+  // Chest
+  if (/vertebra t\d/.test(n) || n.includes('thoracic vertebra') ||
+      n.includes('rib') || n.includes('sternum') || n.includes('manubrium')) return 'chest';
+  // Core (lumbar spine, sacrum, coccyx)
+  if (/vertebra l\d/.test(n) || n.includes('lumbar vertebra') ||
+      n.includes('sacrum') || n.includes('coccyx')) return 'core';
+  // Pelvis
+  if (n.includes('hip bone') || n.includes('pelv') || n.includes('ilium') ||
+      n.includes('ischium') || n.includes('pubis')) return 'pelvis-hip';
+  // Thigh
   if (n.includes('femur') || n.includes('patella')) return 'thigh';
-  if (n.includes('tibia') || n.includes('fibula') || n.includes('calcaneus') || n.includes('talus') || n.includes('navicular') || n.includes('cuboid') || n.includes('cuneiform') || n.includes('metatars') || n.includes('phalan')) return 'lower-leg-foot';
+  // Lower leg + foot
+  if (n.includes('tibia') || n.includes('fibula') ||
+      n.includes('calcaneus') || n.includes('talus') ||
+      n.includes('navicular') || n.includes('cuboid') || n.includes('cuneiform') ||
+      n.includes('metatars') || n.includes('phalan')) return 'lower-leg-foot';
   return 'skeleton';
 }
+
+// ---------- Bone group classification ----------
+//
+// Bones get organized into yoga-relevant groups so the user can show
+// "just the spine" or "just the leg bones." Each bone belongs to exactly
+// one group. Groups are independent of regions (a bone can be in the
+// 'spine' group AND the 'core' region).
+
+export type BoneGroup =
+  | 'skull'
+  | 'spine'        // all vertebrae + sacrum + coccyx
+  | 'ribs'         // ribs + sternum
+  | 'pelvis'       // hip bones
+  | 'arm-bones'    // clavicle + scapula + humerus + radius + ulna
+  | 'hand'         // carpals + metacarpals + phalanges
+  | 'leg-bones'    // femur + patella + tibia + fibula
+  | 'foot'         // tarsals + metatarsals + phalanges
+  | 'other';
+
+export function boneGroup(name: string): BoneGroup {
+  const n = name.toLowerCase();
+  if (
+    n.includes('parietal bone') || n.includes('temporal bone') ||
+    n.includes('frontal bone') || n.includes('occipital bone') ||
+    n.includes('maxilla') || n.includes('zygomatic') || n.includes('nasal bone') ||
+    n.includes('mandible') || n.includes('skull')
+  ) return 'skull';
+  if (/vertebra [ctl]\d/.test(n) || n.includes('atlas') || n.includes('axis') ||
+      n.includes('sacrum') || n.includes('coccyx')) return 'spine';
+  if (n.includes('rib') || n.includes('sternum') || n.includes('manubrium')) return 'ribs';
+  if (n.includes('hip bone') || n.includes('ilium') || n.includes('ischium') ||
+      n.includes('pubis') || n.includes('pelv')) return 'pelvis';
+  if (n.includes('clavic') || n.includes('scapula') ||
+      n.includes('humer') || n.includes('radius') || n.includes('ulna')) return 'arm-bones';
+  if (n.includes('scaphoid') || n.includes('lunate') || n.includes('triquetral') ||
+      n.includes('pisiform') || n.includes('trapezium') || n.includes('trapezoid') ||
+      n.includes('capitate') || n.includes('hamate') ||
+      /\bmetacarpal\b/.test(n) || n.includes('phalanx of hand')) return 'hand';
+  if (n.includes('femur') || n.includes('patella') ||
+      n.includes('tibia') || n.includes('fibula')) return 'leg-bones';
+  if (n.includes('calcaneus') || n.includes('talus') ||
+      n.includes('navicular') || n.includes('cuboid') || n.includes('cuneiform') ||
+      n.includes('metatars') || n.includes('phalanx of foot')) return 'foot';
+  return 'other';
+}
+
+export const BONE_GROUP_LABELS: Record<BoneGroup, string> = {
+  skull: 'Skull',
+  spine: 'Spine',
+  ribs: 'Ribs / sternum',
+  pelvis: 'Pelvis',
+  'arm-bones': 'Arm bones',
+  hand: 'Hand',
+  'leg-bones': 'Leg bones',
+  foot: 'Foot',
+  other: 'Other',
+};
 
 function muscleSlug(id: string): string {
   // muscle_xxx_l → xxx
@@ -913,6 +1000,7 @@ export const BODY_PARTS: BodyPart[] = manifest.meshes.map((entry: ManifestMeshEn
     kind: 'bone' as const,
     side: entry.side,
     region: inferRegionForBone(entry.name),
+    boneGroup: boneGroup(entry.name),
   };
 });
 

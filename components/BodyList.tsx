@@ -88,7 +88,7 @@ export default function BodyList({
               </ul>
             )}
             {bucket.bones.length > 0 && (
-              <details className="text-[10px] text-ink-400">
+              <details className="text-[10px] text-ink-400" open={bucket.muscles.length === 0}>
                 <summary className="cursor-pointer hover:text-ink-200">Bones ({bucket.bones.length})</summary>
                 <ul className="mt-1 space-y-0.5">
                   {bucket.bones.map((r) => {

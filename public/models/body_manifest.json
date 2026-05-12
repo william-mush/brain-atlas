@@ -5,1022 +5,1022 @@
       "kind": "muscle",
       "name": "Rectus abdominis muscle",
       "side": "l",
-      "verts": 278
+      "verts": 251
     },
     {
       "id": "muscle_rectus_abdominis_muscle_r",
       "kind": "muscle",
       "name": "Rectus abdominis muscle",
       "side": "r",
-      "verts": 282
+      "verts": 256
     },
     {
       "id": "muscle_external_abdominal_oblique_muscle_l",
       "kind": "muscle",
       "name": "External abdominal oblique muscle",
       "side": "l",
-      "verts": 804
+      "verts": 752
     },
     {
       "id": "muscle_external_abdominal_oblique_muscle_r",
       "kind": "muscle",
       "name": "External abdominal oblique muscle",
       "side": "r",
-      "verts": 814
+      "verts": 751
     },
     {
       "id": "muscle_internal_abdominal_oblique_muscle_l",
       "kind": "muscle",
       "name": "Internal abdominal oblique muscle",
       "side": "l",
-      "verts": 701
+      "verts": 672
     },
     {
       "id": "muscle_internal_abdominal_oblique_muscle_r",
       "kind": "muscle",
       "name": "Internal abdominal oblique muscle",
       "side": "r",
-      "verts": 701
+      "verts": 673
     },
     {
       "id": "muscle_transversus_abdominis_muscle_l",
       "kind": "muscle",
       "name": "Transversus abdominis muscle",
       "side": "l",
-      "verts": 835
+      "verts": 792
     },
     {
       "id": "muscle_transversus_abdominis_muscle_r",
       "kind": "muscle",
       "name": "Transversus abdominis muscle",
       "side": "r",
-      "verts": 846
+      "verts": 794
     },
     {
       "id": "muscle_quadratus_lumborum_muscle_l",
       "kind": "muscle",
       "name": "Quadratus lumborum muscle",
       "side": "l",
-      "verts": 224
+      "verts": 206
     },
     {
       "id": "muscle_quadratus_lumborum_muscle_r",
       "kind": "muscle",
       "name": "Quadratus lumborum muscle",
       "side": "r",
-      "verts": 217
+      "verts": 209
     },
     {
       "id": "muscle_multifidus_thoracis_muscle_l",
       "kind": "muscle",
       "name": "Multifidus thoracis muscle",
       "side": "l",
-      "verts": 166
+      "verts": 151
     },
     {
       "id": "muscle_multifidus_thoracis_muscle_r",
       "kind": "muscle",
       "name": "Multifidus thoracis muscle",
       "side": "r",
-      "verts": 167
+      "verts": 158
     },
     {
       "id": "muscle_multifidus_lumborum_muscle_l",
       "kind": "muscle",
       "name": "Multifidus lumborum muscle",
       "side": "l",
-      "verts": 127
+      "verts": 111
     },
     {
       "id": "muscle_multifidus_lumborum_muscle_r",
       "kind": "muscle",
       "name": "Multifidus lumborum muscle",
       "side": "r",
-      "verts": 135
+      "verts": 107
     },
     {
       "id": "muscle_diaphragm_l",
       "kind": "muscle",
       "name": "Diaphragm",
       "side": "l",
-      "verts": 1054
+      "verts": 948
     },
     {
       "id": "muscle_psoas_major_l",
       "kind": "muscle",
       "name": "Psoas major",
       "side": "l",
-      "verts": 452
+      "verts": 409
     },
     {
       "id": "muscle_psoas_major_r",
       "kind": "muscle",
       "name": "Psoas major",
       "side": "r",
-      "verts": 450
+      "verts": 407
     },
     {
       "id": "muscle_iliacus_muscle_l",
       "kind": "muscle",
       "name": "Iliacus muscle",
       "side": "l",
-      "verts": 335
+      "verts": 313
     },
     {
       "id": "muscle_iliacus_muscle_r",
       "kind": "muscle",
       "name": "Iliacus muscle",
       "side": "r",
-      "verts": 342
+      "verts": 323
     },
     {
       "id": "muscle_longissimus_thoracis_muscle_l",
       "kind": "muscle",
       "name": "Longissimus thoracis muscle",
       "side": "l",
-      "verts": 505
+      "verts": 461
     },
     {
       "id": "muscle_longissimus_thoracis_muscle_r",
       "kind": "muscle",
       "name": "Longissimus thoracis muscle",
       "side": "r",
-      "verts": 512
+      "verts": 450
     },
     {
       "id": "muscle_spinalis_thoracis_muscle_l",
       "kind": "muscle",
       "name": "Spinalis thoracis muscle",
       "side": "l",
-      "verts": 151
+      "verts": 129
     },
     {
       "id": "muscle_spinalis_thoracis_muscle_r",
       "kind": "muscle",
       "name": "Spinalis thoracis muscle",
       "side": "r",
-      "verts": 155
+      "verts": 135
     },
     {
       "id": "muscle_iliocostalis_lumborum_muscle_l",
       "kind": "muscle",
       "name": "Iliocostalis lumborum muscle",
       "side": "l",
-      "verts": 359
+      "verts": 330
     },
     {
       "id": "muscle_iliocostalis_lumborum_muscle_r",
       "kind": "muscle",
       "name": "Iliocostalis lumborum muscle",
       "side": "r",
-      "verts": 359
+      "verts": 335
     },
     {
       "id": "muscle_iliocostalis_thoracis_muscle_l",
       "kind": "muscle",
       "name": "Iliocostalis thoracis muscle",
       "side": "l",
-      "verts": 244
+      "verts": 207
     },
     {
       "id": "muscle_iliocostalis_thoracis_muscle_r",
       "kind": "muscle",
       "name": "Iliocostalis thoracis muscle",
       "side": "r",
-      "verts": 244
+      "verts": 218
     },
     {
       "id": "muscle_ascending_part_of_trapezius_muscle_l",
       "kind": "muscle",
       "name": "Ascending part of trapezius muscle",
       "side": "l",
-      "verts": 325
+      "verts": 299
     },
     {
       "id": "muscle_ascending_part_of_trapezius_muscle_r",
       "kind": "muscle",
       "name": "Ascending part of trapezius muscle",
       "side": "r",
-      "verts": 340
+      "verts": 303
     },
     {
       "id": "muscle_descending_part_of_trapezius_muscle_l",
       "kind": "muscle",
       "name": "Descending part of trapezius muscle",
       "side": "l",
-      "verts": 510
+      "verts": 453
     },
     {
       "id": "muscle_descending_part_of_trapezius_muscle_r",
       "kind": "muscle",
       "name": "Descending part of trapezius muscle",
       "side": "r",
-      "verts": 482
+      "verts": 446
     },
     {
       "id": "muscle_transverse_part_of_trapezius_muscle_l",
       "kind": "muscle",
       "name": "Transverse part of trapezius muscle",
       "side": "l",
-      "verts": 199
+      "verts": 181
     },
     {
       "id": "muscle_transverse_part_of_trapezius_muscle_r",
       "kind": "muscle",
       "name": "Transverse part of trapezius muscle",
       "side": "r",
-      "verts": 198
+      "verts": 182
     },
     {
       "id": "muscle_latissimus_dorsi_muscle_l",
       "kind": "muscle",
       "name": "Latissimus dorsi muscle",
       "side": "l",
-      "verts": 438
+      "verts": 381
     },
     {
       "id": "muscle_latissimus_dorsi_muscle_r",
       "kind": "muscle",
       "name": "Latissimus dorsi muscle",
       "side": "r",
-      "verts": 429
+      "verts": 381
     },
     {
       "id": "muscle_rhomboid_major_muscle_l",
       "kind": "muscle",
       "name": "Rhomboid major muscle",
       "side": "l",
-      "verts": 177
+      "verts": 164
     },
     {
       "id": "muscle_rhomboid_major_muscle_r",
       "kind": "muscle",
       "name": "Rhomboid major muscle",
       "side": "r",
-      "verts": 181
+      "verts": 159
     },
     {
       "id": "muscle_rhomboid_minor_muscle_l",
       "kind": "muscle",
       "name": "Rhomboid minor muscle",
       "side": "l",
-      "verts": 74
+      "verts": 65
     },
     {
       "id": "muscle_rhomboid_minor_muscle_r",
       "kind": "muscle",
       "name": "Rhomboid minor muscle",
       "side": "r",
-      "verts": 72
+      "verts": 59
     },
     {
       "id": "muscle_levator_scapulae_l",
       "kind": "muscle",
       "name": "Levator scapulae",
       "side": "l",
-      "verts": 121
+      "verts": 120
     },
     {
       "id": "muscle_levator_scapulae_r",
       "kind": "muscle",
       "name": "Levator scapulae",
       "side": "r",
-      "verts": 128
+      "verts": 112
     },
     {
       "id": "muscle_clavicular_head_of_pectoralis_major_muscle_l",
       "kind": "muscle",
       "name": "Clavicular head of pectoralis major muscle",
       "side": "l",
-      "verts": 183
+      "verts": 162
     },
     {
       "id": "muscle_clavicular_head_of_pectoralis_major_muscle_r",
       "kind": "muscle",
       "name": "Clavicular head of pectoralis major muscle",
       "side": "r",
-      "verts": 183
+      "verts": 175
     },
     {
       "id": "muscle_sternocostal_head_of_pectoralis_major_muscle_l",
       "kind": "muscle",
       "name": "Sternocostal head of pectoralis major muscle",
       "side": "l",
-      "verts": 395
+      "verts": 381
     },
     {
       "id": "muscle_sternocostal_head_of_pectoralis_major_muscle_r",
       "kind": "muscle",
       "name": "Sternocostal head of pectoralis major muscle",
       "side": "r",
-      "verts": 396
+      "verts": 383
     },
     {
       "id": "muscle_abdominal_part_of_pectoralis_major_muscle_l",
       "kind": "muscle",
       "name": "Abdominal part of pectoralis major muscle",
       "side": "l",
-      "verts": 188
+      "verts": 168
     },
     {
       "id": "muscle_abdominal_part_of_pectoralis_major_muscle_r",
       "kind": "muscle",
       "name": "Abdominal part of pectoralis major muscle",
       "side": "r",
-      "verts": 179
+      "verts": 156
     },
     {
       "id": "muscle_pectoralis_minor_muscle_l",
       "kind": "muscle",
       "name": "Pectoralis minor muscle",
       "side": "l",
-      "verts": 192
+      "verts": 158
     },
     {
       "id": "muscle_pectoralis_minor_muscle_r",
       "kind": "muscle",
       "name": "Pectoralis minor muscle",
       "side": "r",
-      "verts": 196
+      "verts": 167
     },
     {
       "id": "muscle_serratus_anterior_muscle_l",
       "kind": "muscle",
       "name": "Serratus anterior muscle",
       "side": "l",
-      "verts": 695
+      "verts": 621
     },
     {
       "id": "muscle_serratus_anterior_muscle_r",
       "kind": "muscle",
       "name": "Serratus anterior muscle",
       "side": "r",
-      "verts": 687
+      "verts": 632
     },
     {
       "id": "muscle_acromial_part_of_deltoid_muscle_l",
       "kind": "muscle",
       "name": "Acromial part of deltoid muscle",
       "side": "l",
-      "verts": 255
+      "verts": 230
     },
     {
       "id": "muscle_acromial_part_of_deltoid_muscle_r",
       "kind": "muscle",
       "name": "Acromial part of deltoid muscle",
       "side": "r",
-      "verts": 243
+      "verts": 233
     },
     {
       "id": "muscle_clavicular_part_of_deltoid_muscle_l",
       "kind": "muscle",
       "name": "Clavicular part of deltoid muscle",
       "side": "l",
-      "verts": 248
+      "verts": 212
     },
     {
       "id": "muscle_clavicular_part_of_deltoid_muscle_r",
       "kind": "muscle",
       "name": "Clavicular part of deltoid muscle",
       "side": "r",
-      "verts": 244
+      "verts": 214
     },
     {
       "id": "muscle_scapular_spinal_part_of_deltoid_muscle_l",
       "kind": "muscle",
       "name": "Scapular spinal part of deltoid muscle",
       "side": "l",
-      "verts": 371
+      "verts": 338
     },
     {
       "id": "muscle_scapular_spinal_part_of_deltoid_muscle_r",
       "kind": "muscle",
       "name": "Scapular spinal part of deltoid muscle",
       "side": "r",
-      "verts": 372
+      "verts": 336
     },
     {
       "id": "muscle_supraspinatus_muscle_l",
       "kind": "muscle",
       "name": "Supraspinatus muscle",
       "side": "l",
-      "verts": 156
+      "verts": 136
     },
     {
       "id": "muscle_supraspinatus_muscle_r",
       "kind": "muscle",
       "name": "Supraspinatus muscle",
       "side": "r",
-      "verts": 155
+      "verts": 129
     },
     {
       "id": "muscle_infraspinatus_muscle_l",
       "kind": "muscle",
       "name": "Infraspinatus muscle",
       "side": "l",
-      "verts": 256
+      "verts": 225
     },
     {
       "id": "muscle_infraspinatus_muscle_r",
       "kind": "muscle",
       "name": "Infraspinatus muscle",
       "side": "r",
-      "verts": 244
+      "verts": 221
     },
     {
       "id": "muscle_teres_minor_muscle_l",
       "kind": "muscle",
       "name": "Teres minor muscle",
       "side": "l",
-      "verts": 170
+      "verts": 147
     },
     {
       "id": "muscle_teres_minor_muscle_r",
       "kind": "muscle",
       "name": "Teres minor muscle",
       "side": "r",
-      "verts": 163
+      "verts": 155
     },
     {
       "id": "muscle_teres_major_muscle_l",
       "kind": "muscle",
       "name": "Teres major muscle",
       "side": "l",
-      "verts": 121
+      "verts": 106
     },
     {
       "id": "muscle_teres_major_muscle_r",
       "kind": "muscle",
       "name": "Teres major muscle",
       "side": "r",
-      "verts": 117
+      "verts": 98
     },
     {
       "id": "muscle_subscapularis_muscle_l",
       "kind": "muscle",
       "name": "Subscapularis muscle",
       "side": "l",
-      "verts": 181
+      "verts": 176
     },
     {
       "id": "muscle_subscapularis_muscle_r",
       "kind": "muscle",
       "name": "Subscapularis muscle",
       "side": "r",
-      "verts": 177
+      "verts": 167
     },
     {
       "id": "muscle_long_head_of_biceps_brachii_l",
       "kind": "muscle",
       "name": "Long head of biceps brachii",
       "side": "l",
-      "verts": 263
+      "verts": 246
     },
     {
       "id": "muscle_long_head_of_biceps_brachii_r",
       "kind": "muscle",
       "name": "Long head of biceps brachii",
       "side": "r",
-      "verts": 255
+      "verts": 242
     },
     {
       "id": "muscle_short_head_of_biceps_brachii_l",
       "kind": "muscle",
       "name": "Short head of biceps brachii",
       "side": "l",
-      "verts": 217
+      "verts": 203
     },
     {
       "id": "muscle_short_head_of_biceps_brachii_r",
       "kind": "muscle",
       "name": "Short head of biceps brachii",
       "side": "r",
-      "verts": 231
+      "verts": 206
     },
     {
       "id": "muscle_brachialis_muscle_l",
       "kind": "muscle",
       "name": "Brachialis muscle",
       "side": "l",
-      "verts": 289
+      "verts": 260
     },
     {
       "id": "muscle_brachialis_muscle_r",
       "kind": "muscle",
       "name": "Brachialis muscle",
       "side": "r",
-      "verts": 272
+      "verts": 251
     },
     {
       "id": "muscle_brachioradialis_muscle_l",
       "kind": "muscle",
       "name": "Brachioradialis muscle",
       "side": "l",
-      "verts": 124
+      "verts": 108
     },
     {
       "id": "muscle_brachioradialis_muscle_r",
       "kind": "muscle",
       "name": "Brachioradialis muscle",
       "side": "r",
-      "verts": 123
+      "verts": 101
     },
     {
       "id": "muscle_long_head_of_triceps_brachii_l",
       "kind": "muscle",
       "name": "Long head of triceps brachii",
       "side": "l",
-      "verts": 325
+      "verts": 286
     },
     {
       "id": "muscle_long_head_of_triceps_brachii_r",
       "kind": "muscle",
       "name": "Long head of triceps brachii",
       "side": "r",
-      "verts": 318
+      "verts": 290
     },
     {
       "id": "muscle_lateral_head_of_triceps_brachii_l",
       "kind": "muscle",
       "name": "Lateral head of triceps brachii",
       "side": "l",
-      "verts": 307
+      "verts": 289
     },
     {
       "id": "muscle_lateral_head_of_triceps_brachii_r",
       "kind": "muscle",
       "name": "Lateral head of triceps brachii",
       "side": "r",
-      "verts": 307
+      "verts": 294
     },
     {
       "id": "muscle_medial_head_of_triceps_brachii_l",
       "kind": "muscle",
       "name": "Medial head of triceps brachii",
       "side": "l",
-      "verts": 226
+      "verts": 202
     },
     {
       "id": "muscle_medial_head_of_triceps_brachii_r",
       "kind": "muscle",
       "name": "Medial head of triceps brachii",
       "side": "r",
-      "verts": 222
+      "verts": 214
     },
     {
       "id": "muscle_anconeus_muscle_l",
       "kind": "muscle",
       "name": "Anconeus muscle",
       "side": "l",
-      "verts": 70
+      "verts": 68
     },
     {
       "id": "muscle_anconeus_muscle_r",
       "kind": "muscle",
       "name": "Anconeus muscle",
       "side": "r",
-      "verts": 77
+      "verts": 68
     },
     {
       "id": "muscle_gluteus_maximus_muscle_l",
       "kind": "muscle",
       "name": "Gluteus maximus muscle",
       "side": "l",
-      "verts": 391
+      "verts": 375
     },
     {
       "id": "muscle_gluteus_maximus_muscle_r",
       "kind": "muscle",
       "name": "Gluteus maximus muscle",
       "side": "r",
-      "verts": 389
+      "verts": 382
     },
     {
       "id": "muscle_gluteus_medius_muscle_l",
       "kind": "muscle",
       "name": "Gluteus medius muscle",
       "side": "l",
-      "verts": 417
+      "verts": 392
     },
     {
       "id": "muscle_gluteus_medius_muscle_r",
       "kind": "muscle",
       "name": "Gluteus medius muscle",
       "side": "r",
-      "verts": 417
+      "verts": 379
     },
     {
       "id": "muscle_gluteus_minimus_muscle_l",
       "kind": "muscle",
       "name": "Gluteus minimus muscle",
       "side": "l",
-      "verts": 275
+      "verts": 245
     },
     {
       "id": "muscle_gluteus_minimus_muscle_r",
       "kind": "muscle",
       "name": "Gluteus minimus muscle",
       "side": "r",
-      "verts": 282
+      "verts": 242
     },
     {
       "id": "muscle_piriformis_muscle_l",
       "kind": "muscle",
       "name": "Piriformis muscle",
       "side": "l",
-      "verts": 162
+      "verts": 139
     },
     {
       "id": "muscle_piriformis_muscle_r",
       "kind": "muscle",
       "name": "Piriformis muscle",
       "side": "r",
-      "verts": 163
+      "verts": 139
     },
     {
       "id": "muscle_sartorius_muscle_l",
       "kind": "muscle",
       "name": "Sartorius muscle",
       "side": "l",
-      "verts": 374
+      "verts": 334
     },
     {
       "id": "muscle_sartorius_muscle_r",
       "kind": "muscle",
       "name": "Sartorius muscle",
       "side": "r",
-      "verts": 368
+      "verts": 332
     },
     {
       "id": "muscle_rectus_femoris_muscle_l",
       "kind": "muscle",
       "name": "Rectus femoris muscle",
       "side": "l",
-      "verts": 587
+      "verts": 540
     },
     {
       "id": "muscle_rectus_femoris_muscle_r",
       "kind": "muscle",
       "name": "Rectus femoris muscle",
       "side": "r",
-      "verts": 574
+      "verts": 543
     },
     {
       "id": "muscle_vastus_lateralis_muscle_l",
       "kind": "muscle",
       "name": "Vastus lateralis muscle",
       "side": "l",
-      "verts": 685
+      "verts": 636
     },
     {
       "id": "muscle_vastus_lateralis_muscle_r",
       "kind": "muscle",
       "name": "Vastus lateralis muscle",
       "side": "r",
-      "verts": 681
+      "verts": 629
     },
     {
       "id": "muscle_vastus_medialis_muscle_l",
       "kind": "muscle",
       "name": "Vastus medialis muscle",
       "side": "l",
-      "verts": 551
+      "verts": 504
     },
     {
       "id": "muscle_vastus_medialis_muscle_r",
       "kind": "muscle",
       "name": "Vastus medialis muscle",
       "side": "r",
-      "verts": 554
+      "verts": 497
     },
     {
       "id": "muscle_vastus_intermedius_muscle_l",
       "kind": "muscle",
       "name": "Vastus intermedius muscle",
       "side": "l",
-      "verts": 488
+      "verts": 431
     },
     {
       "id": "muscle_vastus_intermedius_muscle_r",
       "kind": "muscle",
       "name": "Vastus intermedius muscle",
       "side": "r",
-      "verts": 487
+      "verts": 442
     },
     {
       "id": "muscle_long_head_of_biceps_femoris_l",
       "kind": "muscle",
       "name": "Long head of biceps femoris",
       "side": "l",
-      "verts": 577
+      "verts": 539
     },
     {
       "id": "muscle_long_head_of_biceps_femoris_r",
       "kind": "muscle",
       "name": "Long head of biceps femoris",
       "side": "r",
-      "verts": 558
+      "verts": 534
     },
     {
       "id": "muscle_short_head_of_biceps_femoris_l",
       "kind": "muscle",
       "name": "Short head of biceps femoris",
       "side": "l",
-      "verts": 208
+      "verts": 197
     },
     {
       "id": "muscle_short_head_of_biceps_femoris_r",
       "kind": "muscle",
       "name": "Short head of biceps femoris",
       "side": "r",
-      "verts": 222
+      "verts": 200
     },
     {
       "id": "muscle_semitendinosus_muscle_l",
       "kind": "muscle",
       "name": "Semitendinosus muscle",
       "side": "l",
-      "verts": 324
+      "verts": 299
     },
     {
       "id": "muscle_semitendinosus_muscle_r",
       "kind": "muscle",
       "name": "Semitendinosus muscle",
       "side": "r",
-      "verts": 306
+      "verts": 308
     },
     {
       "id": "muscle_semimembranosus_muscle_l",
       "kind": "muscle",
       "name": "Semimembranosus muscle",
       "side": "l",
-      "verts": 271
+      "verts": 247
     },
     {
       "id": "muscle_semimembranosus_muscle_r",
       "kind": "muscle",
       "name": "Semimembranosus muscle",
       "side": "r",
-      "verts": 264
+      "verts": 259
     },
     {
       "id": "muscle_adductor_longus_l",
       "kind": "muscle",
       "name": "Adductor longus",
       "side": "l",
-      "verts": 302
+      "verts": 290
     },
     {
       "id": "muscle_adductor_longus_r",
       "kind": "muscle",
       "name": "Adductor longus",
       "side": "r",
-      "verts": 296
+      "verts": 288
     },
     {
       "id": "muscle_adductor_brevis_l",
       "kind": "muscle",
       "name": "Adductor brevis",
       "side": "l",
-      "verts": 157
+      "verts": 147
     },
     {
       "id": "muscle_adductor_brevis_r",
       "kind": "muscle",
       "name": "Adductor brevis",
       "side": "r",
-      "verts": 160
+      "verts": 145
     },
     {
       "id": "muscle_adductor_magnus_l",
       "kind": "muscle",
       "name": "Adductor magnus",
       "side": "l",
-      "verts": 558
+      "verts": 529
     },
     {
       "id": "muscle_adductor_magnus_r",
       "kind": "muscle",
       "name": "Adductor magnus",
       "side": "r",
-      "verts": 568
+      "verts": 531
     },
     {
       "id": "muscle_gracilis_muscle_l",
       "kind": "muscle",
       "name": "Gracilis muscle",
       "side": "l",
-      "verts": 388
+      "verts": 348
     },
     {
       "id": "muscle_gracilis_muscle_r",
       "kind": "muscle",
       "name": "Gracilis muscle",
       "side": "r",
-      "verts": 401
+      "verts": 364
     },
     {
       "id": "muscle_pectineus_muscle_l",
       "kind": "muscle",
       "name": "Pectineus muscle",
       "side": "l",
-      "verts": 209
+      "verts": 193
     },
     {
       "id": "muscle_pectineus_muscle_r",
       "kind": "muscle",
       "name": "Pectineus muscle",
       "side": "r",
-      "verts": 210
+      "verts": 190
     },
     {
       "id": "muscle_lateral_head_of_gastrocnemius_l",
       "kind": "muscle",
       "name": "Lateral head of gastrocnemius",
       "side": "l",
-      "verts": 414
+      "verts": 379
     },
     {
       "id": "muscle_lateral_head_of_gastrocnemius_r",
       "kind": "muscle",
       "name": "Lateral head of gastrocnemius",
       "side": "r",
-      "verts": 407
+      "verts": 375
     },
     {
       "id": "muscle_medial_head_of_gastrocnemius_l",
       "kind": "muscle",
       "name": "Medial head of gastrocnemius",
       "side": "l",
-      "verts": 510
+      "verts": 461
     },
     {
       "id": "muscle_medial_head_of_gastrocnemius_r",
       "kind": "muscle",
       "name": "Medial head of gastrocnemius",
       "side": "r",
-      "verts": 518
+      "verts": 461
     },
     {
       "id": "muscle_soleus_muscle_l",
       "kind": "muscle",
       "name": "Soleus muscle",
       "side": "l",
-      "verts": 549
+      "verts": 505
     },
     {
       "id": "muscle_soleus_muscle_r",
       "kind": "muscle",
       "name": "Soleus muscle",
       "side": "r",
-      "verts": 560
+      "verts": 504
     },
     {
       "id": "muscle_tibialis_anterior_muscle_l",
       "kind": "muscle",
       "name": "Tibialis anterior muscle",
       "side": "l",
-      "verts": 256
+      "verts": 246
     },
     {
       "id": "muscle_tibialis_anterior_muscle_r",
       "kind": "muscle",
       "name": "Tibialis anterior muscle",
       "side": "r",
-      "verts": 268
+      "verts": 242
     },
     {
       "id": "muscle_tibialis_posterior_muscle_l",
       "kind": "muscle",
       "name": "Tibialis posterior muscle",
       "side": "l",
-      "verts": 255
+      "verts": 224
     },
     {
       "id": "muscle_tibialis_posterior_muscle_r",
       "kind": "muscle",
       "name": "Tibialis posterior muscle",
       "side": "r",
-      "verts": 268
+      "verts": 228
     },
     {
       "id": "muscle_fibularis_longus_muscle_l",
       "kind": "muscle",
       "name": "Fibularis longus muscle",
       "side": "l",
-      "verts": 286
+      "verts": 267
     },
     {
       "id": "muscle_fibularis_longus_muscle_r",
       "kind": "muscle",
       "name": "Fibularis longus muscle",
       "side": "r",
-      "verts": 288
+      "verts": 268
     },
     {
       "id": "muscle_fibularis_brevis_muscle_l",
       "kind": "muscle",
       "name": "Fibularis brevis muscle",
       "side": "l",
-      "verts": 158
+      "verts": 151
     },
     {
       "id": "muscle_fibularis_brevis_muscle_r",
       "kind": "muscle",
       "name": "Fibularis brevis muscle",
       "side": "r",
-      "verts": 161
+      "verts": 146
     },
     {
       "id": "muscle_sternocleidomastoid_muscle_l",
       "kind": "muscle",
       "name": "Sternocleidomastoid muscle",
       "side": "l",
-      "verts": 217
+      "verts": 187
     },
     {
       "id": "muscle_sternocleidomastoid_muscle_r",
       "kind": "muscle",
       "name": "Sternocleidomastoid muscle",
       "side": "r",
-      "verts": 210
+      "verts": 191
     },
     {
       "id": "muscle_scalenus_anterior_muscle_l",
       "kind": "muscle",
       "name": "Scalenus anterior muscle",
       "side": "l",
-      "verts": 48
+      "verts": 39
     },
     {
       "id": "muscle_scalenus_anterior_muscle_r",
       "kind": "muscle",
       "name": "Scalenus anterior muscle",
       "side": "r",
-      "verts": 53
+      "verts": 41
     },
     {
       "id": "muscle_scalenus_medius_muscle_l",
       "kind": "muscle",
       "name": "Scalenus medius muscle",
       "side": "l",
-      "verts": 63
+      "verts": 60
     },
     {
       "id": "muscle_scalenus_medius_muscle_r",
       "kind": "muscle",
       "name": "Scalenus medius muscle",
       "side": "r",
-      "verts": 65
+      "verts": 56
     },
     {
       "id": "muscle_scalenus_posterior_muscle_l",
       "kind": "muscle",
       "name": "Scalenus posterior muscle",
       "side": "l",
-      "verts": 41
+      "verts": 36
     },
     {
       "id": "muscle_scalenus_posterior_muscle_r",
       "kind": "muscle",
       "name": "Scalenus posterior muscle",
       "side": "r",
-      "verts": 45
+      "verts": 38
     },
     {
       "id": "bone_mandible",
       "kind": "bone",
       "name": "Mandible",
       "side": null,
-      "verts": 217
+      "verts": 195
     },
     {
       "id": "bone_sacrum",
       "kind": "bone",
       "name": "Sacrum",
       "side": null,
-      "verts": 497
+      "verts": 462
     },
     {
       "id": "bone_coccyx",
       "kind": "bone",
       "name": "Coccyx",
       "side": null,
-      "verts": 40
+      "verts": 37
     },
     {
       "id": "bone_body_of_sternum",
       "kind": "bone",
       "name": "Body of sternum",
       "side": null,
-      "verts": 199
+      "verts": 177
     },
     {
       "id": "bone_manubrium_of_sternum",
       "kind": "bone",
       "name": "Manubrium of sternum",
       "side": null,
-      "verts": 127
+      "verts": 115
     },
     {
       "id": "bone_eighth_rib_l",
@@ -1034,154 +1034,154 @@
       "kind": "bone",
       "name": "Eighth rib.r",
       "side": null,
-      "verts": 63
+      "verts": 61
     },
     {
       "id": "bone_eleventh_rib_l",
       "kind": "bone",
       "name": "Eleventh rib.l",
       "side": null,
-      "verts": 131
+      "verts": 107
     },
     {
       "id": "bone_eleventh_rib_r",
       "kind": "bone",
       "name": "Eleventh rib.r",
       "side": null,
-      "verts": 132
+      "verts": 105
     },
     {
       "id": "bone_fifth_rib_l",
       "kind": "bone",
       "name": "Fifth rib.l",
       "side": null,
-      "verts": 77
+      "verts": 66
     },
     {
       "id": "bone_fifth_rib_r",
       "kind": "bone",
       "name": "Fifth rib.r",
       "side": null,
-      "verts": 77
+      "verts": 72
     },
     {
       "id": "bone_first_rib_l",
       "kind": "bone",
       "name": "First rib.l",
       "side": null,
-      "verts": 77
+      "verts": 63
     },
     {
       "id": "bone_first_rib_r",
       "kind": "bone",
       "name": "First rib.r",
       "side": null,
-      "verts": 79
+      "verts": 62
     },
     {
       "id": "bone_fourth_rib_l",
       "kind": "bone",
       "name": "Fourth rib.l",
       "side": null,
-      "verts": 78
+      "verts": 57
     },
     {
       "id": "bone_fourth_rib_r",
       "kind": "bone",
       "name": "Fourth rib.r",
       "side": null,
-      "verts": 73
+      "verts": 62
     },
     {
       "id": "bone_ninth_rib_l",
       "kind": "bone",
       "name": "Ninth rib.l",
       "side": null,
-      "verts": 62
+      "verts": 53
     },
     {
       "id": "bone_ninth_rib_r",
       "kind": "bone",
       "name": "Ninth rib.r",
       "side": null,
-      "verts": 70
+      "verts": 53
     },
     {
       "id": "bone_second_rib_r",
       "kind": "bone",
       "name": "Second rib.r",
       "side": null,
-      "verts": 134
+      "verts": 125
     },
     {
       "id": "bone_second_rib_l",
       "kind": "bone",
       "name": "Second rib.l",
       "side": null,
-      "verts": 142
+      "verts": 116
     },
     {
       "id": "bone_seventh_rib_l",
       "kind": "bone",
       "name": "Seventh rib.l",
       "side": null,
-      "verts": 88
+      "verts": 74
     },
     {
       "id": "bone_seventh_rib_r",
       "kind": "bone",
       "name": "Seventh rib.r",
       "side": null,
-      "verts": 83
+      "verts": 75
     },
     {
       "id": "bone_sixth_rib_l",
       "kind": "bone",
       "name": "Sixth rib.l",
       "side": null,
-      "verts": 86
+      "verts": 78
     },
     {
       "id": "bone_sixth_rib_r",
       "kind": "bone",
       "name": "Sixth rib.r",
       "side": null,
-      "verts": 77
+      "verts": 75
     },
     {
       "id": "bone_tenth_rib_l",
       "kind": "bone",
       "name": "Tenth rib.l",
       "side": null,
-      "verts": 58
+      "verts": 52
     },
     {
       "id": "bone_tenth_rib_r",
       "kind": "bone",
       "name": "Tenth rib.r",
       "side": null,
-      "verts": 63
+      "verts": 53
     },
     {
       "id": "bone_clavicle_l",
       "kind": "bone",
       "name": "Clavicle.l",
       "side": null,
-      "verts": 171
+      "verts": 157
     },
     {
       "id": "bone_clavicle_r",
       "kind": "bone",
       "name": "Clavicle.r",
       "side": null,
-      "verts": 175
+      "verts": 155
     },
     {
       "id": "bone_levator_scapulae_l",
       "kind": "bone",
       "name": "Levator scapulae.l",
       "side": null,
-      "verts": 121
+      "verts": 120
     },
     {
       "id": "bone_levator_scapulae_o3l",
@@ -1195,70 +1195,70 @@
       "kind": "bone",
       "name": "Levator scapulae.o3r",
       "side": null,
-      "verts": 8
+      "verts": 2
     },
     {
       "id": "bone_levator_scapulae_r",
       "kind": "bone",
       "name": "Levator scapulae.r",
       "side": null,
-      "verts": 128
+      "verts": 112
     },
     {
       "id": "bone_scapula_l",
       "kind": "bone",
       "name": "Scapula.l",
       "side": null,
-      "verts": 162
+      "verts": 139
     },
     {
       "id": "bone_scapula_r",
       "kind": "bone",
       "name": "Scapula.r",
       "side": null,
-      "verts": 165
+      "verts": 142
     },
     {
       "id": "bone_humerus_l",
       "kind": "bone",
       "name": "Humerus.l",
       "side": null,
-      "verts": 346
+      "verts": 307
     },
     {
       "id": "bone_humerus_r",
       "kind": "bone",
       "name": "Humerus.r",
       "side": null,
-      "verts": 345
+      "verts": 312
     },
     {
       "id": "bone_radius_l",
       "kind": "bone",
       "name": "Radius.l",
       "side": null,
-      "verts": 128
+      "verts": 123
     },
     {
       "id": "bone_radius_r",
       "kind": "bone",
       "name": "Radius.r",
       "side": null,
-      "verts": 123
+      "verts": 119
     },
     {
       "id": "bone_articular_disc_of_distal_radio_ulnar_joint_l",
       "kind": "bone",
       "name": "Articular disc of distal radio-ulnar joint.l",
       "side": null,
-      "verts": 7
+      "verts": 4
     },
     {
       "id": "bone_articular_disc_of_distal_radio_ulnar_joint_r",
       "kind": "bone",
       "name": "Articular disc of distal radio-ulnar joint.r",
       "side": null,
-      "verts": 7
+      "verts": 3
     },
     {
       "id": "bone_humeral_head_of_extensor_carpi_ulnaris_l",
@@ -1272,63 +1272,63 @@
       "kind": "bone",
       "name": "Humeral head of extensor carpi ulnaris.r",
       "side": null,
-      "verts": 117
+      "verts": 101
     },
     {
       "id": "bone_humeral_head_of_flexor_carpi_ulnaris_l",
       "kind": "bone",
       "name": "Humeral head of flexor carpi ulnaris.l",
       "side": null,
-      "verts": 191
+      "verts": 181
     },
     {
       "id": "bone_humeral_head_of_flexor_carpi_ulnaris_r",
       "kind": "bone",
       "name": "Humeral head of flexor carpi ulnaris.r",
       "side": null,
-      "verts": 192
+      "verts": 164
     },
     {
       "id": "bone_humero_ulnar_head_of_flexor_digitorum_superficialis_l",
       "kind": "bone",
       "name": "Humero-ulnar head of flexor digitorum superficialis.l",
       "side": null,
-      "verts": 144
+      "verts": 116
     },
     {
       "id": "bone_humero_ulnar_head_of_flexor_digitorum_superficialis_r",
       "kind": "bone",
       "name": "Humero-ulnar head of flexor digitorum superficialis.r",
       "side": null,
-      "verts": 151
+      "verts": 114
     },
     {
       "id": "bone_ulna_l",
       "kind": "bone",
       "name": "Ulna.l",
       "side": null,
-      "verts": 146
+      "verts": 124
     },
     {
       "id": "bone_ulna_r",
       "kind": "bone",
       "name": "Ulna.r",
       "side": null,
-      "verts": 138
+      "verts": 126
     },
     {
       "id": "bone_ulnar",
       "kind": "bone",
       "name": "Ulnar",
       "side": null,
-      "verts": 12
+      "verts": 10
     },
     {
       "id": "bone_ulnar_head_of_extensor_carpi_ulnaris_l",
       "kind": "bone",
       "name": "Ulnar head of extensor carpi ulnaris.l",
       "side": null,
-      "verts": 74
+      "verts": 76
     },
     {
       "id": "bone_ulnar_head_of_extensor_carpi_ulnaris_r",
@@ -1342,98 +1342,98 @@
       "kind": "bone",
       "name": "Ulnar head of flexor carpi ulnaris.l",
       "side": null,
-      "verts": 160
+      "verts": 143
     },
     {
       "id": "bone_ulnar_head_of_flexor_carpi_ulnaris_r",
       "kind": "bone",
       "name": "Ulnar head of flexor carpi ulnaris.r",
       "side": null,
-      "verts": 156
+      "verts": 147
     },
     {
       "id": "bone_hip_bone_l",
       "kind": "bone",
       "name": "Hip bone.l",
       "side": null,
-      "verts": 415
+      "verts": 383
     },
     {
       "id": "bone_hip_bone_r",
       "kind": "bone",
       "name": "Hip bone.r",
       "side": null,
-      "verts": 419
+      "verts": 389
     },
     {
       "id": "bone_femur_l",
       "kind": "bone",
       "name": "Femur.l",
       "side": null,
-      "verts": 458
+      "verts": 428
     },
     {
       "id": "bone_femur_r",
       "kind": "bone",
       "name": "Femur.r",
       "side": null,
-      "verts": 452
+      "verts": 423
     },
     {
       "id": "bone_infrapatellar_fat_pad_l",
       "kind": "bone",
       "name": "Infrapatellar fat pad.l",
       "side": null,
-      "verts": 14
+      "verts": 16
     },
     {
       "id": "bone_infrapatellar_fat_pad_r",
       "kind": "bone",
       "name": "Infrapatellar fat pad.r",
       "side": null,
-      "verts": 17
+      "verts": 15
     },
     {
       "id": "bone_lateral_patellar_retinaculum_l",
       "kind": "bone",
       "name": "Lateral patellar retinaculum.l",
       "side": null,
-      "verts": 14
+      "verts": 19
     },
     {
       "id": "bone_lateral_patellar_retinaculum_r",
       "kind": "bone",
       "name": "Lateral patellar retinaculum.r",
       "side": null,
-      "verts": 15
+      "verts": 19
     },
     {
       "id": "bone_medial_patellar_retinaculum_l",
       "kind": "bone",
       "name": "Medial patellar retinaculum.l",
       "side": null,
-      "verts": 18
+      "verts": 19
     },
     {
       "id": "bone_medial_patellar_retinaculum_r",
       "kind": "bone",
       "name": "Medial patellar retinaculum.r",
       "side": null,
-      "verts": 20
+      "verts": 17
     },
     {
       "id": "bone_patella_l",
       "kind": "bone",
       "name": "Patella.l",
       "side": null,
-      "verts": 58
+      "verts": 47
     },
     {
       "id": "bone_patella_r",
       "kind": "bone",
       "name": "Patella.r",
       "side": null,
-      "verts": 51
+      "verts": 48
     },
     {
       "id": "bone_anterior_tibial_node_l",
@@ -1454,35 +1454,35 @@
       "kind": "bone",
       "name": "(Posterior tibial node).l",
       "side": null,
-      "verts": 1
+      "verts": 3
     },
     {
       "id": "bone_posterior_tibial_node_r",
       "kind": "bone",
       "name": "(Posterior tibial node).r",
       "side": null,
-      "verts": 1
+      "verts": 2
     },
     {
       "id": "bone_iliotibial_tract_l",
       "kind": "bone",
       "name": "Iliotibial tract.l",
       "side": null,
-      "verts": 572
+      "verts": 518
     },
     {
       "id": "bone_iliotibial_tract_r",
       "kind": "bone",
       "name": "Iliotibial tract.r",
       "side": null,
-      "verts": 564
+      "verts": 506
     },
     {
       "id": "bone_tibia_l",
       "kind": "bone",
       "name": "Tibia.l",
       "side": null,
-      "verts": 383
+      "verts": 357
     },
     {
       "id": "bone_tibia_r",
@@ -1496,112 +1496,112 @@
       "kind": "bone",
       "name": "Tibial",
       "side": null,
-      "verts": 14
+      "verts": 13
     },
     {
       "id": "bone_fibular_node_l",
       "kind": "bone",
       "name": "(Fibular node).l",
       "side": null,
-      "verts": 2
+      "verts": 8
     },
     {
       "id": "bone_fibular_node_r",
       "kind": "bone",
       "name": "(Fibular node).r",
       "side": null,
-      "verts": 1
+      "verts": 4
     },
     {
       "id": "bone_fibula_l",
       "kind": "bone",
       "name": "Fibula.l",
       "side": null,
-      "verts": 231
+      "verts": 199
     },
     {
       "id": "bone_fibula_r",
       "kind": "bone",
       "name": "Fibula.r",
       "side": null,
-      "verts": 238
+      "verts": 198
     },
     {
       "id": "bone_fibular",
       "kind": "bone",
       "name": "Fibular",
       "side": null,
-      "verts": 10
+      "verts": 12
     },
     {
       "id": "bone_inferior_fibular_retinaculum_l",
       "kind": "bone",
       "name": "Inferior fibular retinaculum.l",
       "side": null,
-      "verts": 20
+      "verts": 19
     },
     {
       "id": "bone_inferior_fibular_retinaculum_r",
       "kind": "bone",
       "name": "Inferior fibular retinaculum.r",
       "side": null,
-      "verts": 17
+      "verts": 18
     },
     {
       "id": "bone_superior_fibular_retinaculum_l",
       "kind": "bone",
       "name": "Superior fibular retinaculum.l",
       "side": null,
-      "verts": 83
+      "verts": 73
     },
     {
       "id": "bone_superior_fibular_retinaculum_r",
       "kind": "bone",
       "name": "Superior fibular retinaculum.r",
       "side": null,
-      "verts": 85
+      "verts": 69
     },
     {
       "id": "bone_calcaneus_l",
       "kind": "bone",
       "name": "Calcaneus.l",
       "side": null,
-      "verts": 166
+      "verts": 142
     },
     {
       "id": "bone_calcaneus_r",
       "kind": "bone",
       "name": "Calcaneus.r",
       "side": null,
-      "verts": 166
+      "verts": 138
     },
     {
       "id": "bone_talus_l",
       "kind": "bone",
       "name": "Talus.l",
       "side": null,
-      "verts": 125
+      "verts": 105
     },
     {
       "id": "bone_talus_r",
       "kind": "bone",
       "name": "Talus.r",
       "side": null,
-      "verts": 122
+      "verts": 108
     },
     {
       "id": "bone_cuboid_bone_l",
       "kind": "bone",
       "name": "Cuboid bone.l",
       "side": null,
-      "verts": 62
+      "verts": 52
     },
     {
       "id": "bone_cuboid_bone_r",
       "kind": "bone",
       "name": "Cuboid bone.r",
       "side": null,
-      "verts": 60
+      "verts": 57
     },
     {
       "id": "bone_intermediate_cuneiform_bone_l",
@@ -1615,1167 +1615,1643 @@
       "kind": "bone",
       "name": "Intermediate cuneiform bone.r",
       "side": null,
-      "verts": 28
+      "verts": 21
     },
     {
       "id": "bone_lateral_cuneiform_bone_l",
       "kind": "bone",
       "name": "Lateral cuneiform bone.l",
       "side": null,
-      "verts": 36
+      "verts": 30
     },
     {
       "id": "bone_lateral_cuneiform_bone_r",
       "kind": "bone",
       "name": "Lateral cuneiform bone.r",
       "side": null,
-      "verts": 37
+      "verts": 31
     },
     {
       "id": "bone_medial_cuneiform_bone_l",
       "kind": "bone",
       "name": "Medial cuneiform bone.l",
       "side": null,
-      "verts": 51
+      "verts": 44
     },
     {
       "id": "bone_medial_cuneiform_bone_r",
       "kind": "bone",
       "name": "Medial cuneiform bone.r",
       "side": null,
-      "verts": 49
+      "verts": 43
     },
     {
       "id": "bone_navicular_bone_l",
       "kind": "bone",
       "name": "Navicular bone.l",
       "side": null,
-      "verts": 49
+      "verts": 44
     },
     {
       "id": "bone_navicular_bone_r",
       "kind": "bone",
       "name": "Navicular bone.r",
       "side": null,
+      "verts": 46
+    },
+    {
+      "id": "bone_parietal_bone_l",
+      "kind": "bone",
+      "name": "Parietal bone.l",
+      "side": null,
+      "verts": 112
+    },
+    {
+      "id": "bone_parietal_bone_r",
+      "kind": "bone",
+      "name": "Parietal bone.r",
+      "side": null,
+      "verts": 124
+    },
+    {
+      "id": "bone_temporal_bone_l",
+      "kind": "bone",
+      "name": "Temporal bone.l",
+      "side": null,
+      "verts": 64
+    },
+    {
+      "id": "bone_temporal_bone_r",
+      "kind": "bone",
+      "name": "Temporal bone.r",
+      "side": null,
+      "verts": 59
+    },
+    {
+      "id": "bone_frontal_bone",
+      "kind": "bone",
+      "name": "Frontal bone",
+      "side": null,
+      "verts": 141
+    },
+    {
+      "id": "bone_occipital_bone",
+      "kind": "bone",
+      "name": "Occipital bone",
+      "side": null,
+      "verts": 128
+    },
+    {
+      "id": "bone_maxilla_l",
+      "kind": "bone",
+      "name": "Maxilla.l",
+      "side": null,
+      "verts": 111
+    },
+    {
+      "id": "bone_maxilla_r",
+      "kind": "bone",
+      "name": "Maxilla.r",
+      "side": null,
+      "verts": 109
+    },
+    {
+      "id": "bone_zygomatic_bone_l",
+      "kind": "bone",
+      "name": "Zygomatic bone.l",
+      "side": null,
       "verts": 47
+    },
+    {
+      "id": "bone_zygomatic_bone_r",
+      "kind": "bone",
+      "name": "Zygomatic bone.r",
+      "side": null,
+      "verts": 48
+    },
+    {
+      "id": "bone_nasal_bone_l",
+      "kind": "bone",
+      "name": "Nasal bone.l",
+      "side": null,
+      "verts": 14
+    },
+    {
+      "id": "bone_nasal_bone_r",
+      "kind": "bone",
+      "name": "Nasal bone.r",
+      "side": null,
+      "verts": 15
+    },
+    {
+      "id": "bone_vertebra_c3",
+      "kind": "bone",
+      "name": "Vertebra C3",
+      "side": null,
+      "verts": 27
+    },
+    {
+      "id": "bone_vertebra_c4",
+      "kind": "bone",
+      "name": "Vertebra C4",
+      "side": null,
+      "verts": 76
+    },
+    {
+      "id": "bone_vertebra_c5",
+      "kind": "bone",
+      "name": "Vertebra C5",
+      "side": null,
+      "verts": 26
+    },
+    {
+      "id": "bone_vertebra_c6",
+      "kind": "bone",
+      "name": "Vertebra C6",
+      "side": null,
+      "verts": 25
+    },
+    {
+      "id": "bone_vertebra_c7",
+      "kind": "bone",
+      "name": "Vertebra C7",
+      "side": null,
+      "verts": 30
+    },
+    {
+      "id": "bone_vertebra_t1",
+      "kind": "bone",
+      "name": "Vertebra T1",
+      "side": null,
+      "verts": 100
+    },
+    {
+      "id": "bone_vertebra_t2",
+      "kind": "bone",
+      "name": "Vertebra T2",
+      "side": null,
+      "verts": 41
+    },
+    {
+      "id": "bone_vertebra_t3",
+      "kind": "bone",
+      "name": "Vertebra T3",
+      "side": null,
+      "verts": 39
+    },
+    {
+      "id": "bone_vertebra_t4",
+      "kind": "bone",
+      "name": "Vertebra T4",
+      "side": null,
+      "verts": 40
+    },
+    {
+      "id": "bone_vertebra_t5",
+      "kind": "bone",
+      "name": "Vertebra T5",
+      "side": null,
+      "verts": 45
+    },
+    {
+      "id": "bone_vertebra_t6",
+      "kind": "bone",
+      "name": "Vertebra T6",
+      "side": null,
+      "verts": 136
+    },
+    {
+      "id": "bone_vertebra_t7",
+      "kind": "bone",
+      "name": "Vertebra T7",
+      "side": null,
+      "verts": 42
+    },
+    {
+      "id": "bone_vertebra_t8",
+      "kind": "bone",
+      "name": "Vertebra T8",
+      "side": null,
+      "verts": 130
+    },
+    {
+      "id": "bone_vertebra_t9",
+      "kind": "bone",
+      "name": "Vertebra T9",
+      "side": null,
+      "verts": 50
+    },
+    {
+      "id": "bone_vertebra_t10",
+      "kind": "bone",
+      "name": "Vertebra T10",
+      "side": null,
+      "verts": 150
+    },
+    {
+      "id": "bone_vertebra_t11",
+      "kind": "bone",
+      "name": "Vertebra T11",
+      "side": null,
+      "verts": 135
+    },
+    {
+      "id": "bone_vertebra_t12",
+      "kind": "bone",
+      "name": "Vertebra T12",
+      "side": null,
+      "verts": 60
+    },
+    {
+      "id": "bone_vertebra_l1",
+      "kind": "bone",
+      "name": "Vertebra L1",
+      "side": null,
+      "verts": 150
+    },
+    {
+      "id": "bone_vertebra_l2",
+      "kind": "bone",
+      "name": "Vertebra L2",
+      "side": null,
+      "verts": 71
+    },
+    {
+      "id": "bone_vertebra_l3",
+      "kind": "bone",
+      "name": "Vertebra L3",
+      "side": null,
+      "verts": 162
+    },
+    {
+      "id": "bone_vertebra_l4",
+      "kind": "bone",
+      "name": "Vertebra L4",
+      "side": null,
+      "verts": 186
+    },
+    {
+      "id": "bone_vertebra_l5",
+      "kind": "bone",
+      "name": "Vertebra L5",
+      "side": null,
+      "verts": 204
+    },
+    {
+      "id": "bone_scaphoid_bone_r",
+      "kind": "bone",
+      "name": "Scaphoid bone.r",
+      "side": null,
+      "verts": 20
+    },
+    {
+      "id": "bone_scaphoid_bone_l",
+      "kind": "bone",
+      "name": "Scaphoid bone.l",
+      "side": null,
+      "verts": 17
+    },
+    {
+      "id": "bone_lunate_bone_l",
+      "kind": "bone",
+      "name": "Lunate bone.l",
+      "side": null,
+      "verts": 3
+    },
+    {
+      "id": "bone_lunate_bone_r",
+      "kind": "bone",
+      "name": "Lunate bone.r",
+      "side": null,
+      "verts": 3
+    },
+    {
+      "id": "bone_pisiform_bone_l",
+      "kind": "bone",
+      "name": "Pisiform bone.l",
+      "side": null,
+      "verts": 10
+    },
+    {
+      "id": "bone_pisiform_bone_r",
+      "kind": "bone",
+      "name": "Pisiform bone.r",
+      "side": null,
+      "verts": 11
+    },
+    {
+      "id": "bone_trapezium_bone_l",
+      "kind": "bone",
+      "name": "Trapezium bone.l",
+      "side": null,
+      "verts": 16
+    },
+    {
+      "id": "bone_trapezium_bone_r",
+      "kind": "bone",
+      "name": "Trapezium bone.r",
+      "side": null,
+      "verts": 19
+    },
+    {
+      "id": "bone_trapezoid_bone_l",
+      "kind": "bone",
+      "name": "Trapezoid bone.l",
+      "side": null,
+      "verts": 14
+    },
+    {
+      "id": "bone_trapezoid_bone_r",
+      "kind": "bone",
+      "name": "Trapezoid bone.r",
+      "side": null,
+      "verts": 13
+    },
+    {
+      "id": "bone_capitate_bone_l",
+      "kind": "bone",
+      "name": "Capitate bone.l",
+      "side": null,
+      "verts": 23
+    },
+    {
+      "id": "bone_capitate_bone_r",
+      "kind": "bone",
+      "name": "Capitate bone.r",
+      "side": null,
+      "verts": 29
+    },
+    {
+      "id": "bone_hamate_bone_l",
+      "kind": "bone",
+      "name": "Hamate bone.l",
+      "side": null,
+      "verts": 20
+    },
+    {
+      "id": "bone_hamate_bone_r",
+      "kind": "bone",
+      "name": "Hamate bone.r",
+      "side": null,
+      "verts": 19
+    },
+    {
+      "id": "bone_first_metacarpal_bone_l",
+      "kind": "bone",
+      "name": "First metacarpal bone.l",
+      "side": null,
+      "verts": 32
+    },
+    {
+      "id": "bone_first_metacarpal_bone_r",
+      "kind": "bone",
+      "name": "First metacarpal bone.r",
+      "side": null,
+      "verts": 35
+    },
+    {
+      "id": "bone_second_metacarpal_bone_l",
+      "kind": "bone",
+      "name": "Second metacarpal bone.l",
+      "side": null,
+      "verts": 50
+    },
+    {
+      "id": "bone_second_metacarpal_bone_r",
+      "kind": "bone",
+      "name": "Second metacarpal bone.r",
+      "side": null,
+      "verts": 45
+    },
+    {
+      "id": "bone_third_metacarpal_bone_l",
+      "kind": "bone",
+      "name": "Third metacarpal bone.l",
+      "side": null,
+      "verts": 43
+    },
+    {
+      "id": "bone_third_metacarpal_bone_r",
+      "kind": "bone",
+      "name": "Third metacarpal bone.r",
+      "side": null,
+      "verts": 48
+    },
+    {
+      "id": "bone_fourth_metacarpal_bone_l",
+      "kind": "bone",
+      "name": "Fourth metacarpal bone.l",
+      "side": null,
+      "verts": 38
+    },
+    {
+      "id": "bone_fourth_metacarpal_bone_r",
+      "kind": "bone",
+      "name": "Fourth metacarpal bone.r",
+      "side": null,
+      "verts": 36
+    },
+    {
+      "id": "bone_fifth_metacarpal_bone_l",
+      "kind": "bone",
+      "name": "Fifth metacarpal bone.l",
+      "side": null,
+      "verts": 30
+    },
+    {
+      "id": "bone_fifth_metacarpal_bone_r",
+      "kind": "bone",
+      "name": "Fifth metacarpal bone.r",
+      "side": null,
+      "verts": 38
+    },
+    {
+      "id": "bone_first_metatarsal_bone_l",
+      "kind": "bone",
+      "name": "First metatarsal bone.l",
+      "side": null,
+      "verts": 71
+    },
+    {
+      "id": "bone_first_metatarsal_bone_r",
+      "kind": "bone",
+      "name": "First metatarsal bone.r",
+      "side": null,
+      "verts": 73
+    },
+    {
+      "id": "bone_second_metatarsal_bone_r",
+      "kind": "bone",
+      "name": "Second metatarsal bone.r",
+      "side": null,
+      "verts": 47
+    },
+    {
+      "id": "bone_second_metatarsal_bone_l",
+      "kind": "bone",
+      "name": "Second metatarsal bone.l",
+      "side": null,
+      "verts": 48
+    },
+    {
+      "id": "bone_third_metatarsal_bone_l",
+      "kind": "bone",
+      "name": "Third metatarsal bone.l",
+      "side": null,
+      "verts": 48
+    },
+    {
+      "id": "bone_third_metatarsal_bone_r",
+      "kind": "bone",
+      "name": "Third metatarsal bone.r",
+      "side": null,
+      "verts": 43
+    },
+    {
+      "id": "bone_fourth_metatarsal_bone_l",
+      "kind": "bone",
+      "name": "Fourth metatarsal bone.l",
+      "side": null,
+      "verts": 41
+    },
+    {
+      "id": "bone_fourth_metatarsal_bone_r",
+      "kind": "bone",
+      "name": "Fourth metatarsal bone.r",
+      "side": null,
+      "verts": 42
+    },
+    {
+      "id": "bone_fifth_metatarsal_bone_l",
+      "kind": "bone",
+      "name": "Fifth metatarsal bone.l",
+      "side": null,
+      "verts": 54
+    },
+    {
+      "id": "bone_fifth_metatarsal_bone_r",
+      "kind": "bone",
+      "name": "Fifth metatarsal bone.r",
+      "side": null,
+      "verts": 55
     }
   ],
   "attachments": {
     "muscle_rectus_abdominis_muscle_l": {
       "origin": [
-        -0.08433286642324561,
-        -0.24917145754610479,
-        -0.6144680545636246
+        -0.07737454820816388,
+        -0.21937828237872445,
+        -0.537243600252936
       ],
       "insertion": [
-        -0.01409787180050006,
-        -0.20660707547295654,
-        -0.2385541204961744
+        -0.012447178778042,
+        -0.18003047044718956,
+        -0.189737303680606
       ]
     },
     "muscle_rectus_abdominis_muscle_r": {
       "origin": [
-        0.07849563080775111,
-        -0.24917145754610479,
-        -0.6144680545636246
+        0.07314907680603609,
+        -0.21937828237872445,
+        -0.537243600252936
       ],
       "insertion": [
-        0.008260636185005566,
-        -0.20660708824794116,
-        -0.23855389232900723
+        0.008221707375914206,
+        -0.18003048225677468,
+        -0.18973709275592335
       ]
     },
     "muscle_external_abdominal_oblique_muscle_l": {
       "origin": [
-        -0.23685432589901761,
-        -0.1296591088156891,
-        -0.6748043558119668
+        -0.21837003341601485,
+        -0.10889742509154654,
+        -0.5930203158665736
       ]
     },
     "muscle_external_abdominal_oblique_muscle_r": {
       "origin": [
-        0.2310171125472837,
-        -0.1296591087429317,
-        -0.6748043558119668
+        0.2141445825951858,
+        -0.1088974250242874,
+        -0.5930203158665736
       ]
     },
     "muscle_internal_abdominal_oblique_muscle_l": {
       "origin": [
-        -0.15847807711734865,
-        0.038072188725943854,
-        -0.27836576240564553
+        -0.145916640537893,
+        0.04615849794190471,
+        -0.2265403987154969
       ]
     },
     "muscle_internal_abdominal_oblique_muscle_r": {
       "origin": [
-        0.15264087002275006,
-        0.038072188725943854,
-        -0.27836576240564553
+        0.1416911955013505,
+        0.04615849794190471,
+        -0.2265403987154969
       ]
     },
     "muscle_transversus_abdominis_muscle_l": {
       "origin": [
-        -0.19694815515499237,
-        -0.061650856967887906,
-        -0.11576390340884876
+        -0.1814795530457102,
+        -0.046028524542233065,
+        -0.07622628499175736
       ]
     },
     "muscle_transversus_abdominis_muscle_r": {
       "origin": [
-        0.19111091953949788,
-        -0.061650856967887906,
-        -0.11576390340884876
+        0.17725408164358236,
+        -0.046028524542233065,
+        -0.07622628499175736
       ]
     },
     "muscle_diaphragm_l": {
       "origin": [
-        -0.12143880338803555,
-        -0.20055524917024647,
-        -0.4462912733646815
+        -0.11167640713624181,
+        -0.17443597778447162,
+        -0.3817758585506201
       ]
     },
     "muscle_iliacus_muscle_l": {
       "origin": [
-        -0.19754956330949067,
-        -0.07149208401126365,
-        -0.0699997279097073
+        -0.1820355130715511,
+        -0.05512605473103776,
+        -0.03392048650401289
       ]
     },
     "muscle_iliacus_muscle_r": {
       "origin": [
-        0.19171232769399618,
-        -0.07149208401126365,
-        -0.0699997279097073
+        0.1778100416694233,
+        -0.05512605473103776,
+        -0.03392048650401289
       ]
     },
     "muscle_longissimus_thoracis_muscle_l": {
       "insertion": [
-        -0.005353090913242697,
-        0.0781025150901012,
-        -0.21752122052817788
+        -0.004363236829984186,
+        0.08316375155108326,
+        -0.17029384997573943
       ]
     },
     "muscle_longissimus_thoracis_muscle_r": {
       "insertion": [
-        -0.00048414334001446063,
-        0.0781025150901012,
-        -0.21752122052817788
+        0.00013776668715009658,
+        0.08316375155108326,
+        -0.17029384997573943
       ]
     },
     "muscle_ascending_part_of_trapezius_muscle_l": {
       "origin": [
-        -0.20087726576008424,
-        0.005002736325696736,
-        -0.9623170142480428
+        -0.18511174262810953,
+        0.015588088356547741,
+        -0.8588057792297347
       ],
       "insertion": [
-        -0.0394479775913606,
-        0.10418308416274441,
-        -1.253985604755488
+        -0.03588158911175969,
+        0.10727342440323906,
+        -1.1284331128510718
       ]
     },
     "muscle_ascending_part_of_trapezius_muscle_r": {
       "origin": [
-        0.19504005866548565,
-        0.005002736325696736,
-        -0.9623170142480428
+        0.18088629759156705,
+        0.015588088356547741,
+        -0.8588057792297347
       ],
       "insertion": [
-        0.03361074197586611,
-        0.10418308416274441,
-        -1.253985604755488
+        0.031656117709631885,
+        0.10727342440323906,
+        -1.1284331128510718
       ]
     },
     "muscle_descending_part_of_trapezius_muscle_l": {
       "origin": [
-        -0.20852226529324216,
-        0.12338921132200256,
-        -0.9014136221808029
+        -0.1921790131767671,
+        0.12502815365308242,
+        -0.802504827581101
       ]
     },
     "muscle_descending_part_of_trapezius_muscle_r": {
       "origin": [
-        0.20268500115685179,
-        0.12338921132200256,
-        -0.9014136221808029
+        0.18795351540905395,
+        0.12502815365308242,
+        -0.802504827581101
       ]
     },
     "muscle_transverse_part_of_trapezius_muscle_l": {
       "origin": [
-        -0.3122231069775041,
-        0.057476654432192034,
-        -0.9469629321350711
+        -0.2880432314971907,
+        0.06409657738892292,
+        -0.8446119978111697
       ]
     },
     "muscle_transverse_part_of_trapezius_muscle_r": {
       "origin": [
-        0.30638584284111364,
-        0.057476654432192034,
-        -0.9469629321350711
+        0.28381773372947755,
+        0.06409657738892292,
+        -0.8446119978111697
       ]
     },
     "muscle_latissimus_dorsi_muscle_l": {
       "origin": [
-        -0.10745094034496931,
-        0.08625603571621053,
-        -0.11628466386711157
+        -0.09874560026121727,
+        0.09070111449516866,
+        -0.07670769182947183
       ],
       "insertion": [
-        -0.17902229966847635,
-        0.16058479983932425,
-        -0.6628654492813508
+        -0.16490834594623557,
+        0.15941288920843827,
+        -0.5819836268332983
       ]
     },
     "muscle_latissimus_dorsi_muscle_r": {
       "origin": [
-        0.10161370472947481,
-        0.08625603571621053,
-        -0.11628466386711157
+        0.09452012885908949,
+        0.09070111449516866,
+        -0.07670769182947183
       ],
       "insertion": [
-        0.17318503553208597,
-        0.16058479983932425,
-        -0.6628654492813508
+        0.16068284817852244,
+        0.15941288920843827,
+        -0.5819836268332983
       ]
     },
     "muscle_rhomboid_major_muscle_l": {
       "insertion": [
-        -0.13815894898228626,
-        0.16287820341198483,
-        -0.745119985572197
+        -0.1271330192674795,
+        0.1615329813621333,
+        -0.6580222268751299
       ]
     },
     "muscle_rhomboid_major_muscle_r": {
       "insertion": [
-        0.13232171336679177,
-        0.16287820341198483,
-        -0.7451202140724549
+        0.12290754786535169,
+        0.1615329813621333,
+        -0.6580224381077318
       ]
     },
     "muscle_rhomboid_minor_muscle_l": {
       "insertion": [
-        -0.12265608475537466,
-        0.14494963748722411,
-        -0.8744409704891635
+        -0.11280169912867599,
+        0.14495926865094505,
+        -0.777570486369862
       ]
     },
     "muscle_rhomboid_minor_muscle_r": {
       "insertion": [
-        0.11681884913988018,
-        0.14494963748722411,
-        -0.8744411975487232
+        0.10857622772654818,
+        0.14495926865094505,
+        -0.7775706962706386
       ]
     },
     "muscle_levator_scapulae_l": {
       "origin": [
-        -0.08015237582985678,
-        -0.01733194553362653,
-        -1.1877723955981905
+        -0.07350997530381564,
+        -0.005058772200267891,
+        -1.0672236044685148
       ],
       "insertion": [
-        -0.14909692486394596,
-        0.11473048271637144,
-        -0.929002382901273
+        -0.13724441750564914,
+        0.1170237610565902,
+        -0.8280087187544208
       ]
     },
     "muscle_levator_scapulae_r": {
       "origin": [
-        0.07431519725615407,
-        -0.01733194553362653,
-        -1.1877723955981905
+        0.06928455663285853,
+        -0.005058772200267891,
+        -1.0672236044685148
       ],
       "insertion": [
-        0.14325966072755558,
-        0.11473048271637144,
-        -0.929002382901273
+        0.133018919737936,
+        0.1170237610565902,
+        -0.8280087187544208
       ]
     },
     "muscle_sternocostal_head_of_pectoralis_major_muscle_l": {
       "insertion": [
-        -0.13375412504676437,
-        -0.24111674415210382,
-        -0.5978751206885194
+        -0.12306106578513874,
+        -0.21193225985113548,
+        -0.5219045865116345
       ]
     },
     "muscle_sternocostal_head_of_pectoralis_major_muscle_r": {
       "insertion": [
-        0.12791688943126986,
-        -0.24111674415210382,
-        -0.5978751206885194
+        0.11883559438301093,
+        -0.21193225985113548,
+        -0.5219045865116345
       ]
     },
     "muscle_abdominal_part_of_pectoralis_major_muscle_l": {
       "origin": [
-        -0.13234632756245335,
-        -0.24699288421297727,
-        -0.5144882508389486
+        -0.12175965488822589,
+        -0.217364342797888,
+        -0.44481922282042363
       ]
     },
     "muscle_abdominal_part_of_pectoralis_major_muscle_r": {
       "origin": [
-        0.12650909194695886,
-        -0.24699288421297727,
-        -0.5144882508389486
+        0.11753418348609808,
+        -0.217364342797888,
+        -0.44481922282042363
       ]
     },
     "muscle_pectoralis_minor_muscle_l": {
       "origin": [
-        -0.2509768778071274,
-        -0.035866603843059314,
-        -0.9120517085538681
+        -0.23142535078250848,
+        -0.022192775182420868,
+        -0.8123389988184384
       ],
       "insertion": [
-        -0.17493840958798587,
-        -0.12446583464845017,
-        -0.8039417753025804
+        -0.1611330734998966,
+        -0.10409660418710479,
+        -0.7123988818870564
       ]
     },
     "muscle_pectoralis_minor_muscle_r": {
       "origin": [
-        0.2451396421916329,
-        -0.03586660376029778,
-        -0.9120519367210352
+        0.22719987938038066,
+        -0.02219277510591359,
+        -0.812339209743121
       ],
       "insertion": [
-        0.16910117622414106,
-        -0.12446585603912208,
-        -0.8039419944631487
+        0.15690760417926236,
+        -0.1040966239612938,
+        -0.7123990844857647
       ]
     },
     "muscle_serratus_anterior_muscle_l": {
       "origin": [
-        -0.1443561871934593,
-        0.1455081475716016,
-        -0.7876550182827344
+        -0.13286193512978658,
+        0.1454755723934541,
+        -0.6973429073614499
       ],
       "insertion": [
-        -0.1344071940069692,
-        -0.04982178266807646,
-        -0.9470927983576612
+        -0.12366478263413005,
+        -0.035093367770234224,
+        -0.8447320501049854
       ]
     },
     "muscle_serratus_anterior_muscle_r": {
       "origin": [
-        0.13851895157796482,
-        0.14550814763126876,
-        -0.7876552474045759
+        0.12863646372765877,
+        0.14547557244861223,
+        -0.6973431191686627
       ],
       "insertion": [
-        0.12856998691237062,
-        -0.04982178270953125,
-        -0.9470927983576612
+        0.11943933759758757,
+        -0.0350933678085563,
+        -0.8447320501049854
       ]
     },
     "muscle_acromial_part_of_deltoid_muscle_l": {
       "origin": [
-        -0.3278195509760494,
-        0.02946360741081962,
-        -0.947270963242495
+        -0.30246105962872183,
+        0.03820046302898815,
+        -0.8448967511540738
       ]
     },
     "muscle_acromial_part_of_deltoid_muscle_r": {
       "origin": [
-        0.32198228683965896,
-        0.02946360741081962,
-        -0.947270963242495
+        0.2982355618610087,
+        0.03820046302898815,
+        -0.8448967511540738
       ]
     },
     "muscle_clavicular_part_of_deltoid_muscle_l": {
       "origin": [
-        -0.22728648820742098,
-        -0.014912793221070236,
-        -0.9536005505796251
+        -0.20952523267549397,
+        -0.0028224340792394097,
+        -0.8507480145817352
       ]
     },
     "muscle_clavicular_part_of_deltoid_muscle_r": {
       "origin": [
-        0.2214492833311143,
-        -0.014912793221070236,
-        -0.9536005505796251
+        0.20529978968960813,
+        -0.0028224340792394097,
+        -0.8507480145817352
       ]
     },
     "muscle_scapular_spinal_part_of_deltoid_muscle_l": {
       "origin": [
-        -0.2684575459002162,
-        0.10762907060589415,
-        -0.9099076920546946
+        -0.24758501308848035,
+        0.11045899928720321,
+        -0.8103570046280233
       ]
     },
     "muscle_scapular_spinal_part_of_deltoid_muscle_r": {
       "origin": [
-        0.26262031028472166,
-        0.10762907102044204,
-        -0.9099079202218617
+        0.24335954168635254,
+        0.11045899967042391,
+        -0.810357215552706
       ]
     },
     "muscle_supraspinatus_muscle_l": {
       "origin": [
-        -0.196896639709847,
-        0.10530190670334806,
-        -0.8935994949251826
+        -0.1814319305982924,
+        0.10830769805572107,
+        -0.7952812102116574
       ],
       "insertion": [
-        -0.3636676517362618,
-        -0.008531533511166948,
-        -0.9179407773827678
+        -0.3356001364369199,
+        0.0030765968645213,
+        -0.8177830335123566
       ]
     },
     "muscle_supraspinatus_muscle_r": {
       "origin": [
-        0.1910593754109444,
-        0.10530190670334806,
-        -0.8935994949251826
+        0.177206432680348,
+        0.10830769805572107,
+        -0.7952812102116574
       ],
       "insertion": [
-        0.3578303590789755,
-        -0.008531533511166948,
-        -0.9179407773827678
+        0.3313746123036214,
+        0.0030765968645213,
+        -0.8177830335123566
       ]
     },
     "muscle_infraspinatus_muscle_l": {
       "origin": [
-        -0.18902198804630355,
-        0.12433873802622553,
-        -0.8418633845247133
+        -0.17415236262169242,
+        0.12590592507514906,
+        -0.7474547731073111
       ],
       "insertion": [
-        -0.36710430566919366,
-        0.023499661562697265,
-        -0.9042010388316711
+        -0.3387770840640318,
+        0.03268720973663466,
+        -0.8050816004792651
       ]
     },
     "muscle_infraspinatus_muscle_r": {
       "origin": [
-        0.18318472381240583,
-        0.12433873802622553,
-        -0.8418633845247133
+        0.16992686476384053,
+        0.12590592507514906,
+        -0.7474547731073111
       ],
       "insertion": [
-        0.36126701301190733,
-        0.023499661562697265,
-        -0.9042010388316711
+        0.33455155993073327,
+        0.03268720973663466,
+        -0.8050816004792651
       ]
     },
     "muscle_teres_minor_muscle_l": {
       "origin": [
-        -0.235085041564575,
-        0.09893598982121621,
-        -0.7798048930326698
+        -0.21673445305858316,
+        0.10242285048952263,
+        -0.6900860123489084
       ],
       "insertion": [
-        -0.3706159104574623,
-        0.015655613134328627,
-        -0.8859453181384556
+        -0.34202331854593293,
+        0.025435932323259258,
+        -0.7882054559301251
       ]
     },
     "muscle_teres_minor_muscle_r": {
       "origin": [
-        0.22924777708865013,
-        0.09893598982121621,
-        -0.7798048930326698
+        0.21250895497699399,
+        0.10242285048952263,
+        -0.6900860123489084
       ],
       "insertion": [
-        0.36477861780017595,
-        0.015655613134328627,
-        -0.8859453181384556
+        0.33779779441263447,
+        0.025435932323259258,
+        -0.7882054559301251
       ]
     },
     "muscle_teres_major_muscle_l": {
       "origin": [
-        -0.20740096378694042,
-        0.13520827773639982,
-        -0.6744268510195133
+        -0.19114244789284768,
+        0.13595405883081557,
+        -0.592671338932028
       ]
     },
     "muscle_teres_major_muscle_r": {
       "origin": [
-        0.20156369965055004,
-        0.13520827773639982,
-        -0.6744268510195133
+        0.18691695012513454,
+        0.13595405883081557,
+        -0.592671338932028
       ]
     },
     "muscle_subscapularis_muscle_l": {
       "origin": [
-        -0.19599420659016875,
-        0.1080282999518962,
-        -0.8148372405897357
+        -0.18059769392094874,
+        0.11082805906110153,
+        -0.7224709820361622
       ],
       "insertion": [
-        -0.3203509948735088,
-        -0.034227829152295004,
-        -0.8938830175792384
+        -0.29555689876441377,
+        -0.02067784191686709,
+        -0.7955433071933766
       ]
     },
     "muscle_subscapularis_muscle_r": {
       "origin": [
-        0.19015694257019017,
-        0.1080282999518962,
-        -0.8148372405897357
+        0.1763721962608502,
+        0.11082805906110153,
+        -0.7224709820361622
       ],
       "insertion": [
-        0.3145137022162225,
-        -0.034227829152295004,
-        -0.8938830175792384
+        0.2913313746311153,
+        -0.02067784191686709,
+        -0.7955433071933766
       ]
     },
     "muscle_long_head_of_biceps_brachii_l": {
       "origin": [
-        -0.2794905107755597,
-        0.02581325044569468,
-        -0.9150735902560152
+        -0.25778422204718654,
+        0.03482596180634934,
+        -0.8151325183552918
       ]
     },
     "muscle_long_head_of_biceps_brachii_r": {
       "origin": [
-        0.27365324663916923,
-        0.02581325044569468,
-        -0.9150735902560152
+        0.2535587242794734,
+        0.03482596180634934,
+        -0.8151325183552918
       ]
     },
     "muscle_short_head_of_biceps_brachii_l": {
       "origin": [
-        0.2666998558790875,
-        -0.03506894708570873,
-        -0.9136879404648381
+        0.24713079795732032,
+        -0.02145539696745675,
+        -0.8138515814608595
       ]
     },
     "muscle_brachialis_muscle_l": {
       "origin": [
-        -0.4021523525664901,
-        0.019292651724268074,
-        -0.5535117071966705
+        -0.3711765666998297,
+        0.02879812163400113,
+        -0.48089369511144187
       ],
       "insertion": [
-        -0.42950380501248475,
-        0.015909184625506893,
-        -0.2804364975811282
+        -0.3964610828722905,
+        0.025670341537257352,
+        -0.2284546494170549
       ]
     },
     "muscle_brachialis_muscle_r": {
       "origin": [
-        0.3963150599092038,
-        0.019292651724268074,
-        -0.5535117071966705
+        0.3669510425665312,
+        0.02879812163400113,
+        -0.48089369511144187
       ],
       "insertion": [
-        0.4236665123551984,
-        0.015909184625506893,
-        -0.2804364975811282
+        0.39223555873899196,
+        0.025670341537257352,
+        -0.2284546494170549
       ]
     },
     "muscle_brachioradialis_muscle_l": {
       "origin": [
-        -0.42314283062397956,
-        0.04240803029037463,
-        -0.5202478638932676
+        -0.3905808042978222,
+        0.050166682018181495,
+        -0.4501435846511742
       ],
       "insertion": [
-        -0.551132057635127,
-        -0.07852381340433023,
-        0.09726337851209764
+        -0.5088979461992942,
+        -0.06162639967288,
+        0.12070262639021566
       ]
     },
     "muscle_brachioradialis_muscle_r": {
       "origin": [
-        0.41730553796669323,
-        0.04240803029037463,
-        -0.5202478638932676
+        0.38635528016452375,
+        0.050166682018181495,
+        -0.4501435846511742
       ],
       "insertion": [
-        0.5452948220196325,
-        -0.07852381340433023,
-        0.09726337851209764
+        0.5046724747971665,
+        -0.06162639967288,
+        0.12070262639021566
       ]
     },
     "muscle_long_head_of_triceps_brachii_l": {
       "origin": [
-        -0.29339229840482106,
-        0.03853132690373093,
-        -0.8466125725030988
+        -0.2706354581865546,
+        0.04658293926561772,
+        -0.7518450672053172
       ]
     },
     "muscle_long_head_of_triceps_brachii_r": {
       "origin": [
-        0.28755503426843065,
-        0.03853132690373093,
-        -0.8466125725030988
+        0.26640996041884146,
+        0.04658293926561772,
+        -0.7518450672053172
       ]
     },
     "muscle_lateral_head_of_triceps_brachii_l": {
       "origin": [
-        -0.37892205303643833,
-        0.031312652932905825,
-        -0.7348646633776934
+        -0.34970176987437934,
+        0.039909777058987725,
+        -0.6485418945091354
       ]
     },
     "muscle_lateral_head_of_triceps_brachii_r": {
       "origin": [
-        0.373084760379152,
-        0.031312652932905825,
-        -0.7348646633776934
+        0.3454762457410808,
+        0.039909777058987725,
+        -0.6485418945091354
       ]
     },
     "muscle_medial_head_of_triceps_brachii_l": {
       "origin": [
-        -0.39507055746802944,
-        0.041200993036493105,
-        -0.5588298400308107
+        -0.3646299394941763,
+        0.04905085999641536,
+        -0.48580993917261617
       ]
     },
     "muscle_medial_head_of_triceps_brachii_r": {
       "origin": [
-        0.3892332648107431,
-        0.041200993036493105,
-        -0.5588298400308107
+        0.36040441536087786,
+        0.04905085999641536,
+        -0.48580993917261617
       ]
     },
     "muscle_anconeus_muscle_l": {
       "origin": [
-        -0.45191708588452,
-        0.05279037577778648,
-        -0.3692414107223625
+        -0.4171806027517501,
+        0.05976443858715604,
+        -0.3105486174411306
       ],
       "insertion": [
-        -0.4300647216908369,
-        0.050945211656182945,
-        -0.2641856895294555
+        -0.3969796113436103,
+        0.05805871264204773,
+        -0.21343190721316707
       ]
     },
     "muscle_anconeus_muscle_r": {
       "origin": [
-        0.4460797932272337,
-        0.05279037577778648,
-        -0.3692414107223625
+        0.4129550786184516,
+        0.05976443858715604,
+        -0.3105486174411306
       ],
       "insertion": [
-        0.4242274290335506,
-        0.050945211656182945,
-        -0.2641856895294555
+        0.3927540872103118,
+        0.05805871264204773,
+        -0.21343190721316707
       ]
     },
     "muscle_gluteus_maximus_muscle_l": {
       "origin": [
-        -0.10089751955492818,
-        0.0944010419091352,
-        -0.06010716912545577
+        -0.09268741836839423,
+        0.09823060643774208,
+        -0.02477550368961557
       ],
       "insertion": [
-        -0.22349341081030802,
-        -0.0008001103407681282,
-        0.30419856642986126
+        -0.2060187963361418,
+        0.01022376005719167,
+        0.3119998204200017
       ]
     },
     "muscle_gluteus_maximus_muscle_r": {
       "origin": [
-        0.09506028393943369,
-        0.0944010419091352,
-        -0.06010716912545577
+        0.08846194696626644,
+        0.09823060643774208,
+        -0.02477550368961557
       ],
       "insertion": [
-        0.2176561751948135,
-        -0.0008001103407681282,
-        0.30419856642986126
+        0.201793324934014,
+        0.01022376005719167,
+        0.3119998204200017
       ]
     },
     "muscle_gluteus_medius_muscle_l": {
       "origin": [
-        -0.19778798447757107,
-        -0.010017587517347586,
-        -0.10246422357279111
+        -0.18225591686517373,
+        0.001702843253936469,
+        -0.06393165564557088
       ],
       "insertion": [
-        -0.2637378751292511,
-        0.012518507923602968,
-        0.14089834920086988
+        -0.24322200559654614,
+        0.022535896663656855,
+        0.16104012306405976
       ]
     },
     "muscle_gluteus_medius_muscle_r": {
       "origin": [
-        0.19195074886207655,
-        -0.010017587517347586,
-        -0.10246422357279111
+        0.1780304454630459,
+        0.001702843253936469,
+        -0.06393165564557088
       ],
       "insertion": [
-        0.2579006395137566,
-        0.012518507923602968,
-        0.14089834920086988
+        0.23899653419441833,
+        0.022535896663656855,
+        0.16104012306405976
       ]
     },
     "muscle_gluteus_minimus_muscle_l": {
       "origin": [
-        -0.18313447498565455,
-        -0.018044134364256264,
-        -0.011617328430015662
+        -0.16870976612735697,
+        -0.005717141259149093,
+        0.02004998276982267
       ]
     },
     "muscle_gluteus_minimus_muscle_r": {
       "origin": [
-        0.17729723937016006,
-        -0.018044134364256264,
-        -0.011617328430015662
+        0.16448429472522916,
+        -0.005717141259149093,
+        0.02004998276982267
       ]
     },
     "muscle_piriformis_muscle_l": {
       "origin": [
-        0.062174208428219246,
-        0.07053323351088085,
-        0.018020842795433232
+        0.05806105656551429,
+        0.07616647698653878,
+        0.047448411469420464
       ],
       "insertion": [
-        0.23649148008175483,
-        -0.002033207533239402,
-        0.11362536015169247
+        0.21920525477457492,
+        0.009083847434020477,
+        0.135828140846777
       ]
     },
     "muscle_piriformis_muscle_r": {
       "origin": [
-        -0.06801167194181582,
-        0.07053323095476283,
-        0.018020851405514928
+        -0.062286738643592805,
+        0.07616647462358539,
+        0.04744841942884238
       ]
     },
     "muscle_sartorius_muscle_l": {
       "origin": [
-        -0.22988344380562956,
-        -0.1381314080210636,
-        -0.03542361078750537
+        -0.2119259375723077,
+        -0.11672947666903376,
+        -0.001957270134300993
       ],
       "insertion": [
-        -0.13002301496898025,
-        -0.023373086500515776,
-        1.0331874893422408
+        -0.11961191392421887,
+        -0.010643387012919085,
+        0.9858993965875564
       ]
     },
     "muscle_sartorius_muscle_r": {
       "origin": [
-        0.22404620819013507,
-        -0.13813138663039168,
-        -0.03542326853675465
+        0.2077004661701799,
+        -0.11672945689484476,
+        -0.001956953747276989
       ],
       "insertion": [
-        0.1241857936139337,
-        -0.02337308863958297,
-        1.0331874380046282
+        0.11538645570488372,
+        -0.010643388990337987,
+        0.9858993491295027
       ]
     },
     "muscle_rectus_femoris_muscle_l": {
       "origin": [
-        -0.19878624160129657,
-        -0.06030766106149543,
-        0.031165745945271182
+        -0.1831787361720807,
+        -0.044786833312671435,
+        0.05959996053006932
       ]
     },
     "muscle_rectus_femoris_muscle_r": {
       "origin": [
-        0.19294900598580209,
-        -0.0603076555949904,
-        0.0311660881960219
+        0.17895326476995288,
+        -0.04478682825926759,
+        0.059600276917093326
       ]
     },
     "muscle_vastus_lateralis_muscle_l": {
       "origin": [
-        -0.231169685716786,
-        -0.020470157935886274,
-        0.3576872132656315
+        -0.21311497879300875,
+        -0.007959831381465898,
+        0.3614463556134234
       ]
     },
     "muscle_vastus_lateralis_muscle_r": {
       "origin": [
-        0.2253324501012915,
-        -0.020470157935886274,
-        0.3576872132656315
+        0.20888950739088094,
+        -0.007959831381465898,
+        0.3614463556134234
       ]
     },
     "muscle_vastus_medialis_muscle_l": {
       "origin": [
-        -0.15246676167918233,
-        -0.03824725730330123,
-        0.567473936642926
+        -0.14035959735292172,
+        -0.02439352379112323,
+        0.5553795959221123
       ]
     },
     "muscle_vastus_medialis_muscle_r": {
       "origin": [
-        0.14662952606368782,
-        -0.03824725730330123,
-        0.567473936642926
+        0.1361341259507939,
+        -0.02439352379112323,
+        0.5553795959221123
       ]
     },
     "muscle_vastus_intermedius_muscle_l": {
       "origin": [
-        -0.20803945398399445,
-        -0.04797037317309778,
-        0.47126096244260257
+        -0.19173268768889679,
+        -0.03338186841165114,
+        0.4664373904954724
       ]
     },
     "muscle_vastus_intermedius_muscle_r": {
       "origin": [
-        0.20220221836849997,
-        -0.04797037317309778,
-        0.47126096244260257
+        0.18750721628676897,
+        -0.03338186841165114,
+        0.4664373904954724
       ]
     },
     "muscle_long_head_of_biceps_femoris_l": {
       "origin": [
-        -0.1194587852244965,
-        0.05518737665302645,
-        0.19836743424341985
+        -0.10984601800511178,
+        0.0619802992444676,
+        0.21416629663908196
       ]
     },
     "muscle_long_head_of_biceps_femoris_r": {
       "origin": [
-        0.11362154960900202,
-        0.05518737665302645,
-        0.19836743424341985
+        0.10562054660298399,
+        0.0619802992444676,
+        0.21416629663908196
       ]
     },
     "muscle_short_head_of_biceps_femoris_l": {
       "insertion": [
-        0.1816366344700047,
-        -0.0015891444669809505,
-        0.6541978746176518
+        0.16849576379793596,
+        0.009494352865224681,
+        0.6355498470848636
       ]
     },
     "muscle_semitendinosus_muscle_l": {
       "origin": [
-        -0.10150087936750492,
-        0.04699316377430704,
-        0.21340182744338562
+        -0.09324518256643935,
+        0.05440531914197919,
+        0.22806454788399297
       ],
       "insertion": [
-        -0.10860936200812667,
-        0.01903701808710042,
-        1.0282740809619186
+        -0.0998164805493652,
+        0.028561806109406857,
+        0.981357292145408
       ]
     },
     "muscle_semitendinosus_muscle_r": {
       "origin": [
-        0.09566364375201043,
-        0.04699315732315201,
-        0.21340217512668783
+        0.08901971116431157,
+        0.05440531317833489,
+        0.2280648692930331
       ],
       "insertion": [
-        0.10277214065308012,
-        0.019037011231115824,
-        1.0282740217262116
+        0.09559102233003008,
+        0.028561799771525766,
+        0.9813572373861154
       ]
     },
     "muscle_semimembranosus_muscle_l": {
       "origin": [
-        -0.0891429305257115,
-        0.024076349106087247,
-        0.2250156663513411
+        -0.08182111805046056,
+        0.033220317276210165,
+        0.23880073450049408
       ],
       "insertion": [
-        -0.09311446204155407,
-        0.04976235290917625,
-        0.9717731102040313
+        -0.0854925228155287,
+        0.05696524196887304,
+        0.9291260729182647
       ]
     },
     "muscle_semimembranosus_muscle_r": {
       "origin": [
-        0.08330569491021701,
-        0.024076348245542965,
-        0.2250160086020918
+        0.07759564664833278,
+        0.0332203164806968,
+        0.23880105088751807
       ],
       "insertion": [
-        0.08727724068650752,
-        0.049762335875863414,
-        0.9717730531622396
+        0.08126706459619358,
+        0.05696522622275957,
+        0.929126020187094
       ]
     },
     "muscle_adductor_longus_l": {
       "origin": [
-        -0.036475417628847075,
-        -0.13200037883528865,
-        0.1518463211175748
+        -0.033133664094096175,
+        -0.11106176644751468,
+        0.1711607619416528
       ],
       "insertion": [
-        -0.17757970144685142,
-        -0.03425746766511803,
-        0.3951612768967636
+        -0.16357476418720251,
+        -0.020705240661349895,
+        0.3960885220504726
       ]
     },
     "muscle_adductor_longus_r": {
       "origin": [
-        0.030638182013352586,
-        -0.13200037883528865,
-        0.1518463211175748
+        0.028908192691968374,
+        -0.11106176644751468,
+        0.1711607619416528
       ],
       "insertion": [
-        0.17174246583135694,
-        -0.03425746766511803,
-        0.3951612768967636
+        0.1593492927850747,
+        -0.020705240661349895,
+        0.3960885220504726
       ]
     },
     "muscle_adductor_magnus_l": {
       "origin": [
-        -0.05909834194238272,
-        -0.033423501681747445,
-        0.20868230949515335
+        -0.05404698475973099,
+        -0.019934297091334707,
+        0.22370168166605023
       ],
       "insertion": [
-        -0.1501030603411283,
-        -0.003116769835352482,
-        0.5800645353021829
+        -0.13817451980258325,
+        0.008082169420549602,
+        0.5670187290193224
       ]
     },
     "muscle_adductor_magnus_r": {
       "origin": [
-        0.05326110632688823,
-        -0.033423501681747445,
-        0.20868230949515335
+        0.049821513357603195,
+        -0.019934297091334707,
+        0.22370168166605023
       ],
       "insertion": [
-        0.14426582472563382,
-        -0.003116769835352482,
-        0.5800645353021829
+        0.13394904840045543,
+        0.008082169420549602,
+        0.5670187290193224
       ]
     },
     "muscle_gracilis_muscle_l": {
       "origin": [
-        -0.03472633333694946,
-        -0.07942170129905432,
-        0.18875499934292328
+        -0.03151675727158632,
+        -0.06245643460576096,
+        0.2052802688795608
       ],
       "insertion": [
-        -0.12048569987290439,
-        -0.00493185264249465,
-        1.051700906735678
+        -0.1107953292011689,
+        0.006404251559252907,
+        1.0030137638196492
       ]
     },
     "muscle_gracilis_muscle_r": {
       "origin": [
-        0.028889097721454968,
-        -0.07942170129905432,
-        0.18875499934292328
+        0.027291285869458528,
+        -0.06245643460576096,
+        0.2052802688795608
       ],
       "insertion": [
-        0.1146484642574099,
-        -0.00493185264249465,
-        1.051700906735678
+        0.1065698577990411,
+        0.006404251559252907,
+        1.0030137638196492
       ]
     },
     "muscle_pectineus_muscle_l": {
       "origin": [
-        -0.0665327282065627,
-        -0.12402066128248881,
-        0.12378006857295284
+        -0.0609195579841378,
+        -0.10368507236101902,
+        0.1452154627745959
       ],
       "insertion": [
-        0.18104297336477942,
-        -0.04032267861989578,
-        0.3006099571356619
+        0.1679469653805332,
+        -0.026312106504334475,
+        0.3086824006261174
       ]
     },
     "muscle_pectineus_muscle_r": {
       "origin": [
-        0.06069549259106821,
-        -0.12402064732545467,
-        0.12378041082370357
+        0.05669408658201001,
+        -0.1036850594587113,
+        0.1452157791616199
       ]
     },
     "muscle_lateral_head_of_gastrocnemius_l": {
       "origin": [
-        -0.20647094058685803,
-        0.02218699253535752,
-        0.8376311544901766
+        -0.19028270610437495,
+        0.0314737384843714,
+        0.8051211611005318
       ]
     },
     "muscle_lateral_head_of_gastrocnemius_r": {
       "origin": [
-        0.20063370497136354,
-        0.02218699253535752,
-        0.8376311544901766
+        0.18605723470224714,
+        0.0314737384843714,
+        0.8051211611005318
       ]
     },
     "muscle_medial_head_of_gastrocnemius_l": {
       "origin": [
-        -0.11129428177029775,
-        0.006734753758983062,
-        0.8132115634264183
+        -0.1022985022000405,
+        0.017189218054847372,
+        0.7825469469378433
       ]
     },
     "muscle_medial_head_of_gastrocnemius_r": {
       "origin": [
-        0.10545704615480325,
-        0.006734753758983062,
-        0.8132115634264183
+        0.0980730307979127,
+        0.017189218054847372,
+        0.7825469469378433
       ]
     },
     "muscle_soleus_muscle_l": {
       "origin": [
-        -0.20330835716603096,
-        0.05171349306796871,
-        1.011546045984373
+        -0.18735911761091018,
+        0.05876893539236252,
+        0.9658933868278249
       ]
     },
     "muscle_soleus_muscle_r": {
       "origin": [
-        0.19747109302964058,
-        0.05171349306796871,
-        1.011546045984373
+        0.18313361984319704,
+        0.05876893539236252,
+        0.9658933868278249
       ]
     },
     "muscle_tibialis_anterior_muscle_l": {
       "origin": [
-        -0.18060483406526,
-        0.0029825052392276922,
-        1.2286928762120588
+        -0.16637128897011916,
+        0.013720525173978445,
+        1.1666305342071603
       ],
       "insertion": [
-        -0.1220106004460938,
-        -0.0846349193873189,
-        1.6574845564256424
+        -0.1122049937621399,
+        -0.06727569227858679,
+        1.5630186307583054
       ]
     },
     "muscle_tibialis_anterior_muscle_r": {
       "origin": [
-        0.17476759844976553,
-        0.0029825052392276922,
-        1.2286928762120588
+        0.16214581756799135,
+        0.013720525173978445,
+        1.1666305342071603
       ],
       "insertion": [
-        0.1161733648305993,
-        -0.0846349193873189,
-        1.6574845564256424
+        0.10797952236001208,
+        -0.06727569227858679,
+        1.5630186307583054
       ]
     },
     "muscle_tibialis_posterior_muscle_l": {
       "origin": [
-        -0.19339681048748336,
-        0.021537123707888822,
-        1.1847812842702046
+        -0.17819658180837236,
+        0.030872979935604946,
+        1.1260373204169765
       ]
     },
     "muscle_tibialis_posterior_muscle_r": {
       "origin": [
-        0.18755957487198888,
-        0.021537123707888822,
-        1.1847812842702046
+        0.17397111040624455,
+        0.030872979935604946,
+        1.1260373204169765
       ]
     },
     "muscle_fibularis_longus_muscle_l": {
       "origin": [
-        -0.22112190429948586,
-        0.04642648917179294,
-        1.086047812543982
+        -0.20382650344623499,
+        0.053881467870092216,
+        1.0347650902656138
       ]
     },
     "muscle_fibularis_longus_muscle_r": {
       "origin": [
-        0.21528464016309548,
-        0.04642648917179294,
-        1.086047812543982
+        0.19960100567852185,
+        0.053881467870092216,
+        1.0347650902656138
       ]
     },
     "muscle_fibularis_brevis_muscle_l": {
       "origin": [
-        -0.20487656436627066,
-        0.05925857990603651,
-        1.3940122014495722
+        -0.18880881613768938,
+        0.0657438436008545,
+        1.3194567565381916
       ],
       "insertion": [
-        -0.2186071792068437,
-        -0.019070729676164806,
-        1.7017873619716264
+        -0.2015018149347291,
+        -0.006666157250814465,
+        1.6039734943263224
       ]
     },
     "muscle_fibularis_brevis_muscle_r": {
       "origin": [
-        0.19903930022988028,
-        0.05925857990603651,
-        1.3940122014495722
+        0.18458331836997624,
+        0.0657438436008545,
+        1.3194567565381916
       ],
       "insertion": [
-        0.2127699721122451,
-        -0.019070729676164806,
-        1.7017873619716264
+        0.19727636989818662,
+        -0.006666157250814465,
+        1.6039734943263224
       ]
     },
     "muscle_sternocleidomastoid_muscle_l": {
       "origin": [
-        -0.024810409232492964,
-        -0.14998793661561213,
-        -0.9102688289229609
+        -0.022350174843136925,
+        -0.127690013027753,
+        -0.8106908505546403
       ],
       "insertion": [
-        -0.11061625034853344,
-        0.014650172157601473,
-        -1.2463011422355934
+        -0.10167170929085637,
+        0.024506472043710727,
+        -1.1213293615148463
       ]
     },
     "muscle_sternocleidomastoid_muscle_r": {
       "origin": [
-        0.018973173616998473,
-        -0.14998793661561213,
-        -0.9102688289229609
+        0.01812470344100913,
+        -0.127690013027753,
+        -0.8106908505546403
       ],
       "insertion": [
-        0.10477901473303894,
-        0.014650172157601473,
-        -1.2463011422355934
+        0.09744623788872858,
+        0.024506472043710727,
+        -1.1213293615148463
       ]
     },
     "muscle_scalenus_anterior_muscle_l": {
       "origin": [
-        -0.10040623554512383,
-        -0.04985623543757139,
-        -0.9545321552704409
+        -0.09223326045792507,
+        -0.035125216960298286,
+        -0.8516092183484376
       ],
       "insertion": [
-        0.0402668817114092,
-        -0.028155387297290984,
-        -1.099393461316981
+        0.037809256126021304,
+        -0.01506429160935276,
+        -0.9855234242842873
       ]
     },
     "muscle_scalenus_anterior_muscle_r": {
       "origin": [
-        0.0945690141900773,
-        -0.04985626039335529,
-        -0.9545323966010986
+        0.08800780223858995,
+        -0.03512524003018545,
+        -0.851609441441852
       ],
       "insertion": [
-        -0.0461040602851119,
-        -0.028155387297290984,
-        -1.099393461316981
+        -0.042034674796978436,
+        -0.01506429160935276,
+        -0.9855234242842873
       ]
     },
     "muscle_scalenus_medius_muscle_l": {
       "origin": [
-        -0.10053979186047493,
-        -0.0292858959307543,
-        -0.9715612010491401
+        -0.09235672398594418,
+        -0.016109368242206146,
+        -0.867351387223866
       ],
       "insertion": [
-        0.05225018568890461,
-        -0.010063226689429848,
-        -1.0437211295159896
+        0.04888698751219734,
+        0.001660653012416748,
+        -0.9340582241615458
       ]
     },
     "muscle_scalenus_medius_muscle_r": {
       "origin": [
-        0.0947025705054284,
-        -0.029285920886538204,
-        -0.9715614226972453
+        0.08813126576660905,
+        -0.016109391312093314,
+        -0.8673515921221291
       ],
       "insertion": [
-        -0.058087364151197564,
-        -0.010063226578020099,
-        -1.0437211295159896
+        -0.053112406080163904,
+        0.0016606531154073156,
+        -0.9340582241615458
       ]
     },
     "muscle_scalenus_posterior_muscle_l": {
       "insertion": [
-        0.052369263103092714,
-        -0.01579039025645763,
-        -1.0671428457346845
+        0.04899706630273904,
+        -0.0036337115233886583,
+        -0.9557099724073725
       ]
     },
     "muscle_scalenus_posterior_muscle_r": {
       "insertion": [
-        -0.05820643454657144,
-        -0.01579039025645763,
-        -1.0671428457346845
+        -0.05322247838229984,
+        -0.0036337115233886583,
+        -0.9557099724073725
       ]
     }
   }

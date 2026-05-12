@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import BodyPanel from './BodyPanel';
 import BodyList from './BodyList';
 import PoseSelector from './PoseSelector';
-import { BODY_PARTS, getBodyPart, type BodyRegion } from '@/lib/body';
+import { BODY_PARTS, getBodyPart, type BodyRegion, type BoneGroup, BONE_GROUP_LABELS } from '@/lib/body';
 import { POSES, getPose, STATE_COLORS, STATE_LABELS, type MuscleState } from '@/lib/poses';
 
 const BodyCanvas = dynamic(() => import('./BodyCanvas'), { ssr: false });
@@ -48,6 +48,24 @@ const RANGE_PRESETS: { id: string; label: string; regions: BodyRegion[] }[] = [
 
 const INITIAL_REGIONS = new Set<BodyRegion>(ALL_REGIONS);
 const INITIAL_VISIBLE = new Set(BODY_PARTS.map((p) => p.id));
+
+const BONE_GROUP_ORDER: BoneGroup[] = [
+  'skull', 'spine', 'ribs', 'pelvis', 'arm-bones', 'hand', 'leg-bones', 'foot',
+];
+
+function partsInBoneGroup(group: BoneGroup): string[] {
+  return BODY_PARTS.filter((p) => p.kind === 'bone' && p.boneGroup === group).map((p) => p.id);
+}
+
+function partsInAllBoneGroups(): Map<BoneGroup, string[]> {
+  const m = new Map<BoneGroup, string[]>();
+  for (const g of BONE_GROUP_ORDER) {
+    const ids = partsInBoneGroup(g);
+    if (ids.length > 0) m.set(g, ids);
+  }
+  return m;
+}
+const BONE_GROUPS = partsInAllBoneGroups();
 
 export default function BodyExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -103,6 +121,56 @@ export default function BodyExplorer() {
 
   const showAllParts = () => setVisibleIds(new Set(BODY_PARTS.map((p) => p.id)));
   const hideAllParts = () => setVisibleIds(new Set());
+
+  // Toggle every bone in a bone group (show if any are hidden, else hide all).
+  const toggleBoneGroup = (group: BoneGroup) => {
+    const ids = BONE_GROUPS.get(group) || [];
+    if (ids.length === 0) return;
+    setVisibleIds((prev) => {
+      const anyVisible = ids.some((id) => prev.has(id));
+      const next = new Set(prev);
+      if (anyVisible) {
+        for (const id of ids) next.delete(id);
+      } else {
+        for (const id of ids) next.add(id);
+      }
+      return next;
+    });
+  };
+
+  // Quick presets — show ONLY a particular bone group (hide everything else)
+  const showOnlyBoneGroup = (group: BoneGroup) => {
+    const ids = BONE_GROUPS.get(group) || [];
+    setVisibleIds(new Set(ids));
+    // Make sure all regions are on so we don't accidentally hide stuff
+    setEnabledRegions(new Set(ALL_REGIONS));
+  };
+
+  const showAllBones = () => {
+    const ids = BODY_PARTS.filter((p) => p.kind === 'bone').map((p) => p.id);
+    setVisibleIds(new Set(ids));
+  };
+
+  const hideAllBones = () => {
+    setVisibleIds((prev) => {
+      const next = new Set(prev);
+      for (const p of BODY_PARTS) {
+        if (p.kind === 'bone') next.delete(p.id);
+      }
+      return next;
+    });
+  };
+
+  const groupVisibility = useMemo(() => {
+    const m: Partial<Record<BoneGroup, 'all' | 'some' | 'none'>> = {};
+    for (const [g, ids] of BONE_GROUPS.entries()) {
+      const onCount = ids.filter((id) => visibleIds.has(id)).length;
+      if (onCount === 0) m[g] = 'none';
+      else if (onCount === ids.length) m[g] = 'all';
+      else m[g] = 'some';
+    }
+    return m;
+  }, [visibleIds]);
 
   // The set the canvas actually renders: visible AND in an enabled region.
   const effectiveVisible = useMemo(() => {
@@ -183,6 +251,44 @@ export default function BodyExplorer() {
           <div className="flex gap-1.5">
             <button onClick={showAllParts} className="flex-1 text-[11px] px-2 py-1.5 rounded border border-ink-600 text-ink-100 hover:bg-ink-700 transition">All parts</button>
             <button onClick={hideAllParts} className="flex-1 text-[11px] px-2 py-1.5 rounded border border-ink-600 text-ink-100 hover:bg-ink-700 transition">None</button>
+          </div>
+
+          {/* Bone groups */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-ink-300">Bones</p>
+              <div className="flex gap-2">
+                <button onClick={showAllBones} className="text-[10px] text-ink-400 hover:text-ink-100">all</button>
+                <button onClick={hideAllBones} className="text-[10px] text-ink-400 hover:text-ink-100">none</button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              {Array.from(BONE_GROUPS.keys()).map((g) => {
+                const vis = groupVisibility[g] || 'none';
+                const allOn = vis === 'all';
+                const partial = vis === 'some';
+                return (
+                  <button
+                    key={g}
+                    onClick={() => toggleBoneGroup(g)}
+                    onDoubleClick={() => showOnlyBoneGroup(g)}
+                    title="Click to toggle; double-click to show only this group"
+                    className={`text-[11px] px-2 py-1 rounded border transition flex items-center gap-1.5 ${
+                      allOn
+                        ? 'bg-ink-700 text-ink-50 border-ink-600'
+                        : partial
+                          ? 'bg-ink-800 text-ink-100 border-ink-600'
+                          : 'text-ink-400 border-ink-700 hover:text-ink-200 hover:border-ink-500'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-sm flex-shrink-0 ${
+                      allOn ? 'bg-[#e8dec5]' : partial ? 'bg-[#e8dec5]/40' : 'border border-ink-500'
+                    }`} />
+                    <span className="truncate">{BONE_GROUP_LABELS[g]}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Pose selector */}
