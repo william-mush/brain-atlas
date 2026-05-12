@@ -1,5 +1,6 @@
 import EssayLayout from '@/components/EssayLayout';
 import EvidenceTag from '@/components/EvidenceTag';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Prāṇāyāma · The Eight Limbs · The Brain Atlas',
@@ -13,9 +14,11 @@ export default function PranayamaPage() {
       title="Prāṇāyāma — Where Breath Becomes Nervous System"
       subtitle="The cleanest meeting between yogic phenomenology and Western physiology."
       related={[
+        { href: '/awareness/asana', label: 'Āsana' },
+        { href: '/awareness/pratyahara', label: 'Pratyāhāra' },
         { href: '/systems/vagus-nerve', label: 'The Vagus Nerve' },
-        { href: '/systems/autonomic', label: 'Sympathetic & Parasympathetic' },
         { href: '/regions/insula', label: 'The Insula' },
+        { href: '/compendium', label: 'The Compendium' },
         { href: '/awareness', label: 'Back to the Eight Limbs' },
       ]}
     >
@@ -77,14 +80,7 @@ export default function PranayamaPage() {
           High HRV is one of the most reliable markers of parasympathetic
           dominance and is associated with better emotional regulation,
           recovery, and long-term cardiovascular outcomes.{' '}
-          <a
-            href="https://www.frontiersin.org/articles/10.3389/fnhum.2018.00353/full"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Zaccaro et al., 2018
-          </a>
-          .
+          <Link href="/compendium/zaccaro-2018">Zaccaro et al., 2018</Link>.
           <EvidenceTag level="evidenced" />
         </li>
         <li>
@@ -92,13 +88,7 @@ export default function PranayamaPage() {
           synchronizes blood-pressure oscillations with breath, increasing
           baroreflex sensitivity — the speed and depth of the body&apos;s
           automatic response to blood-pressure change.{' '}
-          <a
-            href="https://pubmed.ncbi.nlm.nih.gov/15947398/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Bernardi et al.
-          </a>{' '}
+          <Link href="/compendium/bernardi-2001">Bernardi et al.</Link>{' '}
           showed this with practitioners of the rosary and yoga mantras,
           both of which entrain the breath near six per minute.
           <EvidenceTag level="evidenced" />
@@ -123,7 +113,7 @@ export default function PranayamaPage() {
 
       <p>
         We have a whole essay on the{' '}
-        <a href="/systems/vagus-nerve">vagus nerve</a> elsewhere in this
+        <Link href="/systems/vagus-nerve">vagus nerve</Link> elsewhere in this
         atlas — read it if you have not. The compressed version: the vagus
         is the tenth cranial nerve, and roughly eighty percent of its
         fibers carry information <em>up</em>, from the body to the brain.
@@ -132,8 +122,8 @@ export default function PranayamaPage() {
         the signal climbs through the{' '}
         <strong>parabrachial nucleus</strong> and the thalamus to two
         cortical destinations that matter for everything that follows:
-        the <a href="/regions/insula">insula</a> and the{' '}
-        <a href="/regions/anterior-cingulate">anterior cingulate cortex</a>.
+        the <Link href="/regions/insula">insula</Link> and the{' '}
+        <Link href="/regions/anterior-cingulate">anterior cingulate cortex</Link>.
         <EvidenceTag level="evidenced" />
       </p>
 
@@ -157,13 +147,7 @@ export default function PranayamaPage() {
         <strong>useful and partly contested</strong>. Several of its
         evolutionary claims have been challenged in the comparative
         anatomy literature.{' '}
-        <a
-          href="https://www.frontiersin.org/articles/10.3389/fpsyg.2022.871227/full"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Grossman, 2023
-        </a>{' '}
+        <Link href="/compendium/grossman-2023">Grossman, 2023</Link>{' '}
         offers a thorough critique; Porges has responded.
         <EvidenceTag level="suggestive" />
       </p>
@@ -184,14 +168,8 @@ export default function PranayamaPage() {
         interoception. Sara Lazar&apos;s group at Harvard found increased
         cortical thickness in the right anterior insula in experienced
         meditators.{' '}
-        <a
-          href="https://pubmed.ncbi.nlm.nih.gov/16272874/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Lazar et al., 2005
-        </a>
-        . Other groups have replicated and extended this with various
+        <Link href="/compendium/lazar-2005">Lazar et al., 2005</Link>.
+        Other groups have replicated and extended this with various
         meditation styles and various levels of training.
         <EvidenceTag level="evidenced" />
       </p>
@@ -201,13 +179,7 @@ export default function PranayamaPage() {
         practitioners show better interoceptive accuracy — they can
         detect their own heartbeats, their own breath, their own visceral
         states with more precision than controls.{' '}
-        <a
-          href="https://pubmed.ncbi.nlm.nih.gov/23071617/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Farb et al.
-        </a>{' '}
+        <Link href="/compendium/farb-interoception">Farb et al.</Link>{' '}
         and others have mapped this onto insular activation.
         <EvidenceTag level="evidenced" />
       </p>
@@ -215,7 +187,7 @@ export default function PranayamaPage() {
       <p>
         This matters because the insula is not only the destination for
         body signals. It is also part of the{' '}
-        <a href="/systems/consciousness">salience network</a> — the
+        <Link href="/systems/consciousness">salience network</Link> — the
         switching network that decides, moment to moment, whether
         attention should be on the outside world or the inside. A more
         finely tuned insula means a more finely tuned attentional

@@ -8,31 +8,30 @@ const limbs: Array<{
   number: string;
   sanskrit: string;
   gloss: string;
-  href?: string;
-  status: 'live' | 'planned';
+  href: string;
   blurb: string;
 }> = [
   {
     number: 'I',
     sanskrit: 'Yamas',
     gloss: 'ethical restraints',
-    status: 'planned',
+    href: '/awareness/yamas',
     blurb:
-      'The five things to refrain from. Read as the signal-to-noise floor of the practice.',
+      'The five things to refrain from — not as a moral code, as a list of cognitive loads that block contemplative training.',
   },
   {
     number: 'II',
     sanskrit: 'Niyamas',
     gloss: 'observances',
-    status: 'planned',
+    href: '/awareness/niyamas',
     blurb:
-      'The five things to cultivate. Read as the orientation of attention before training begins.',
+      'The five orientations to cultivate. If the yamas remove load, the niyamas point attention.',
   },
   {
     number: 'III',
     sanskrit: 'Āsana',
     gloss: 'posture',
-    status: 'planned',
+    href: '/awareness/asana',
     blurb:
       'The body as known. Somatosensory cortex, cerebellum, the proprioceptive substrate.',
   },
@@ -41,7 +40,6 @@ const limbs: Array<{
     sanskrit: 'Prāṇāyāma',
     gloss: 'breath restraint',
     href: '/awareness/pranayama',
-    status: 'live',
     blurb:
       'The subtle body, taken seriously. Vagus, insula, the interoceptive pipeline.',
   },
@@ -49,21 +47,21 @@ const limbs: Array<{
     number: 'V',
     sanskrit: 'Pratyāhāra',
     gloss: 'sensory withdrawal',
-    status: 'planned',
+    href: '/awareness/pratyahara',
     blurb: 'Thalamic gating. The most-skipped limb in modern yoga.',
   },
   {
     number: 'VI',
     sanskrit: 'Dhāraṇā',
     gloss: 'concentration',
-    status: 'planned',
+    href: '/awareness/dharana',
     blurb: 'One-pointedness. The executive control network.',
   },
   {
     number: 'VII',
     sanskrit: 'Dhyāna',
     gloss: 'meditation',
-    status: 'planned',
+    href: '/awareness/dhyana',
     blurb:
       'When holding attention becomes resting in it. The default mode quiets.',
   },
@@ -71,7 +69,7 @@ const limbs: Array<{
     number: 'VIII',
     sanskrit: 'Samādhi',
     gloss: 'absorption',
-    status: 'planned',
+    href: '/awareness/samadhi',
     blurb:
       'Not a region. Network dissolution rather than network activation.',
   },
@@ -127,13 +125,20 @@ export default function AwarenessHub() {
           <Link href="/awareness/synthesis">synthesis paper</Link>. The
           per-limb pages are entry points. They can be read in order, or
           in any order at all — they describe a stack, not a sequence.
+          Every claim in the prose is cross-referenced into the{' '}
+          <Link href="/compendium">compendium</Link>, where the specific
+          experiments and thinkers are catalogued with their own evidence
+          tags.
         </p>
       </article>
 
       <ol className="space-y-3 list-none pl-0">
-        {limbs.map((l) => {
-          const body = (
-            <>
+        {limbs.map((l) => (
+          <li key={l.sanskrit}>
+            <Link
+              href={l.href}
+              className="block rounded-lg border border-ink-700 bg-ink-800/40 hover:bg-ink-800 hover:border-ink-600 transition p-5"
+            >
               <div className="flex items-baseline gap-3 mb-1.5">
                 <span className="font-serif text-ink-400 text-sm w-6 shrink-0">
                   {l.number}
@@ -144,48 +149,46 @@ export default function AwarenessHub() {
                 <span className="text-ink-300 text-sm italic">
                   — {l.gloss}
                 </span>
-                {l.status === 'planned' && (
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-ink-400 ml-auto">
-                    coming
-                  </span>
-                )}
               </div>
               <p className="text-ink-200 text-[15px] pl-9 leading-relaxed">
                 {l.blurb}
               </p>
-            </>
-          );
-          if (l.href) {
-            return (
-              <li key={l.sanskrit}>
-                <Link
-                  href={l.href}
-                  className="block rounded-lg border border-ink-700 bg-ink-800/40 hover:bg-ink-800 hover:border-ink-600 transition p-5"
-                >
-                  {body}
-                </Link>
-              </li>
-            );
-          }
-          return (
-            <li
-              key={l.sanskrit}
-              className="block rounded-lg border border-ink-700/60 bg-ink-800/20 p-5 opacity-60"
-            >
-              {body}
-            </li>
-          );
-        })}
+            </Link>
+          </li>
+        ))}
       </ol>
 
-      <aside className="mt-14 pt-8 border-t border-ink-700 text-sm text-ink-300 max-w-2xl">
-        <p className="mb-2">
-          A ninth section, on{' '}
-          <em>Advaita Vedānta</em> and <em>Kashmir Shaivism</em>, frames
-          the metaphysics. The two non-dual traditions make different
-          structural predictions about what cultivated awareness looks
-          like, and the difference matters for the neuroscience.
-        </p>
+      <aside className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <Link
+          href="/awareness/synthesis"
+          className="block rounded-lg border border-neural-violet/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-violet">
+            The Long Form
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            The Synthesis Paper
+          </p>
+          <p className="text-ink-300 text-sm">
+            The full ~8,000-word argument tying the eight limbs to the
+            neuroscience.
+          </p>
+        </Link>
+        <Link
+          href="/awareness/advaita-shaivism"
+          className="block rounded-lg border border-neural-plum/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-plum">
+            The Metaphysical Frame
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            Advaita Vedānta &amp; Kashmir Shaivism
+          </p>
+          <p className="text-ink-300 text-sm">
+            Two non-dual traditions, different structural predictions, one
+            cleaner fit with the imaging.
+          </p>
+        </Link>
       </aside>
     </main>
   );
