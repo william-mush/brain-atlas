@@ -72,6 +72,18 @@ export default function BodyList({
     setOpenRegions(new Set(REGION_ORDER.filter((r) => enabledRegions.has(r))));
   const collapseAll = () => setOpenRegions(new Set());
 
+  // Show or hide every part within a region (muscles + bones).
+  const toggleAllInRegion = (region: BodyRegion, mode: 'all' | 'none') => {
+    const bucket = grouped[region];
+    if (!bucket) return;
+    const ids = [...bucket.muscles, ...bucket.bones].map((p) => p.id);
+    for (const id of ids) {
+      const current = visibleIds.has(id);
+      if (mode === 'all' && !current) onToggleVisible(id);
+      if (mode === 'none' && current) onToggleVisible(id);
+    }
+  };
+
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-end gap-2 text-[10px] text-ink-400 px-1 pb-1">
@@ -106,6 +118,21 @@ export default function BodyList({
 
             {open && (
               <div className="pl-2 pb-2">
+                <div className="flex justify-end gap-2 px-2 pb-1 text-[10px] text-ink-400">
+                  <button
+                    onClick={() => toggleAllInRegion(region, 'all')}
+                    className="hover:text-ink-100"
+                  >
+                    all
+                  </button>
+                  <span className="text-ink-600">·</span>
+                  <button
+                    onClick={() => toggleAllInRegion(region, 'none')}
+                    className="hover:text-ink-100"
+                  >
+                    none
+                  </button>
+                </div>
                 {bucket.muscles.length > 0 && (
                   <ul className="space-y-0.5 mb-1.5">
                     {bucket.muscles.map((r) => {
