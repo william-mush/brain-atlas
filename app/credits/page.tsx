@@ -17,6 +17,31 @@ export default function CreditsPage() {
         provenance.
       </p>
 
+      <h2>Z-Anatomy — body atlas muscles and bones</h2>
+      <p>
+        The body atlas at <code>/body</code> uses meshes from{' '}
+        <a href="https://z-anatomy.com" target="_blank" rel="noreferrer">
+          Z-Anatomy
+        </a>
+        , a libre 3D atlas of human anatomy by Gauthier Kervyn and Lluís
+        Vinent, itself built on top of BodyParts3D. Z-Anatomy is the source
+        of every muscle and bone you can click in the body explorer, including
+        the muscle origin and insertion attachment points marked by colored
+        dots when you select a muscle.
+      </p>
+      <blockquote>
+        Z-Anatomy, © Gauthier Kervyn et al., licensed under Creative
+        Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+      </blockquote>
+      <p>
+        Source:{' '}
+        <a href="https://github.com/Z-Anatomy/Models-of-human-anatomy" target="_blank" rel="noreferrer">
+          github.com/Z-Anatomy/Models-of-human-anatomy
+        </a>
+        . The derivative meshes shipped in <code>/models/body.glb</code> are
+        available under the same CC BY-SA 4.0 terms.
+      </p>
+
       <h2>BodyParts3D — subcortical and brainstem structures</h2>
       <p>
         Most subcortical and brainstem meshes (cerebellum, hippocampus,
