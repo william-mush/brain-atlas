@@ -130,6 +130,15 @@ export default function AwarenessHub() {
           experiments and thinkers are catalogued with their own evidence
           tags.
         </p>
+
+        <p>
+          For the visual version, open the{' '}
+          <Link href="/explore">3D atlas</Link> and toggle{' '}
+          <strong>Awareness Mode</strong> in the top-left. The eight
+          limbs become an overlay on the nervous system. Pick a limb
+          and the regions it engages light up in the limb&apos;s color.
+          Pick samādhi and the map dissolves.
+        </p>
       </article>
 
       <ol className="space-y-3 list-none pl-0">

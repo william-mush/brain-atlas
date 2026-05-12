@@ -21,6 +21,12 @@ interface Props {
   visibleIds: Set<string>;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
+  /** Optional per-region color override. Used by awareness mode to tint
+   *  regions by limb (e.g. all prāṇāyāma regions in moss green). */
+  tintMap?: Map<string, string>;
+  /** Optional per-region opacity override [0..1]. Used for the samādhi
+   *  dissolution animation — regions fade together rather than disappearing. */
+  fadeMap?: Map<string, number>;
 }
 
 // Default camera position. The brain extends roughly x ±1.5, y -1.4 to 1.4,
@@ -62,6 +68,8 @@ export default function BrainCanvas(props: Props) {
             onHover={props.onHover}
             shellOpacity={shellOpacity}
             resetTick={resetTick}
+            tintMap={props.tintMap}
+            fadeMap={props.fadeMap}
           />
         </Suspense>
 
@@ -132,6 +140,8 @@ interface SceneProps extends Props {
   resetTick: number;
 }
 
+
+
 function Scene({
   selectedId,
   hoveredId,
@@ -140,6 +150,8 @@ function Scene({
   onHover,
   shellOpacity,
   resetTick,
+  tintMap,
+  fadeMap,
 }: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
@@ -213,6 +225,8 @@ function Scene({
           shellOpacity={shellOpacity}
           onSelect={onSelect}
           onHover={onHover}
+          tintColor={tintMap?.get(region.id)}
+          fade={fadeMap?.get(region.id)}
         />
       ))}
 
@@ -240,6 +254,10 @@ interface RealMeshProps {
   shellOpacity: number;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
+  /** Optional override of region.color, used by awareness mode. */
+  tintColor?: string;
+  /** Optional opacity multiplier [0..1] from fadeMap. */
+  fade?: number;
 }
 
 function RealMesh({
@@ -251,14 +269,19 @@ function RealMesh({
   shellOpacity,
   onSelect,
   onHover,
+  tintColor,
+  fade,
 }: RealMeshProps) {
   const isSelected = selectedId === region.id;
   const isHovered = hoveredId === region.id;
   const anyFocus = Boolean(selectedId || hoveredId);
   const dimmed = anyFocus && !isSelected && !isHovered;
 
+  // Effective color: tintColor overrides region.color when set.
+  const effectiveColor = tintColor ?? region.color;
+
   const material = useMemo(() => {
-    const baseColor = new THREE.Color(region.color);
+    const baseColor = new THREE.Color(effectiveColor);
     return new THREE.MeshStandardMaterial({
       color: baseColor,
       emissive: baseColor.clone().multiplyScalar(0.08),
@@ -270,30 +293,37 @@ function RealMesh({
       side: THREE.FrontSide,
       depthWrite: !isShell,
     });
-  }, [region.color, isShell]);
+  }, [effectiveColor, isShell]);
 
   useEffect(() => {
-    const baseColor = new THREE.Color(region.color);
+    const baseColor = new THREE.Color(effectiveColor);
+    material.color = baseColor;
+    const fadeMultiplier = fade ?? 1;
     if (isSelected) {
       material.emissive = baseColor.clone().multiplyScalar(0.55);
-      material.emissiveIntensity = 1.1;
-      material.opacity = isShell ? Math.max(shellOpacity, 0.55) : 1.0;
+      material.emissiveIntensity = 1.1 * fadeMultiplier;
+      material.opacity = (isShell ? Math.max(shellOpacity, 0.55) : 1.0) * fadeMultiplier;
     } else if (isHovered) {
       material.emissive = baseColor.clone().multiplyScalar(0.3);
-      material.emissiveIntensity = 0.85;
-      material.opacity = isShell ? Math.max(shellOpacity, 0.45) : 1.0;
+      material.emissiveIntensity = 0.85 * fadeMultiplier;
+      material.opacity = (isShell ? Math.max(shellOpacity, 0.45) : 1.0) * fadeMultiplier;
     } else if (dimmed) {
       material.emissive = baseColor.clone().multiplyScalar(0.04);
-      material.emissiveIntensity = 0.25;
-      material.opacity = isShell ? shellOpacity * 0.6 : 0.22;
+      material.emissiveIntensity = 0.25 * fadeMultiplier;
+      material.opacity = (isShell ? shellOpacity * 0.6 : 0.22) * fadeMultiplier;
+    } else if (tintColor) {
+      // Awareness mode: tinted regions get a stronger glow even when neutral
+      material.emissive = baseColor.clone().multiplyScalar(0.45);
+      material.emissiveIntensity = 0.95 * fadeMultiplier;
+      material.opacity = (isShell ? Math.max(shellOpacity, 0.5) : 0.92) * fadeMultiplier;
     } else {
       material.emissive = baseColor.clone().multiplyScalar(0.08);
-      material.emissiveIntensity = 0.4;
-      material.opacity = isShell ? shellOpacity : 0.95;
+      material.emissiveIntensity = 0.4 * fadeMultiplier;
+      material.opacity = (isShell ? shellOpacity : 0.95) * fadeMultiplier;
     }
     material.depthWrite = !isShell && material.opacity > 0.5;
     material.needsUpdate = true;
-  }, [isSelected, isHovered, dimmed, material, region.color, isShell, shellOpacity]);
+  }, [isSelected, isHovered, dimmed, material, effectiveColor, isShell, shellOpacity, tintColor, fade]);
 
   const meshRef = useRef<THREE.Mesh>(null);
   const pulseRef = useRef(0);

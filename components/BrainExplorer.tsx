@@ -1,10 +1,13 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import RegionPanel from './RegionPanel';
 import RegionList from './RegionList';
 import { REGIONS, SOURCE_LABELS, getRegion, type RegionSource } from '@/lib/regions';
+import { LIMB_MAPPINGS, allLimbRegions, type LimbMapping } from '@/lib/limb-mappings';
+import type { EightLimb } from '@/lib/compendium';
 
 const BrainCanvas = dynamic(() => import('./BrainCanvas'), { ssr: false });
 
@@ -58,6 +61,46 @@ export default function BrainExplorer() {
   const [visibleIds, setVisibleIds] = useState<Set<string>>(INITIAL_VISIBLE);
   const [enabledSources, setEnabledSources] = useState<Set<RegionSource>>(DEFAULT_SOURCES);
   const [fullscreen, setFullscreen] = useState(false);
+
+  // Awareness mode state.
+  const [awarenessMode, setAwarenessMode] = useState(false);
+  // null = neutral (mode on but no limb chosen), 'all' = show all 8 in their tints, or a specific limb id.
+  const [selectedLimb, setSelectedLimb] = useState<EightLimb | 'all' | null>(null);
+  // [0..1] opacity for the samadhi dissolution animation. 1 = solid, 0 = invisible.
+  const [samadhiFade, setSamadhiFade] = useState(1);
+  const fadeAnimRef = useRef<number | null>(null);
+
+  // Run the samādhi dissolution: fade from 1 to ~0.1 over ~2.5s when samādhi is picked.
+  useEffect(() => {
+    if (fadeAnimRef.current) {
+      cancelAnimationFrame(fadeAnimRef.current);
+      fadeAnimRef.current = null;
+    }
+    if (selectedLimb === 'samadhi') {
+      const start = performance.now();
+      const duration = 2500;
+      const startOpacity = 1;
+      const endOpacity = 0.08;
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        // Ease-in-out for the dissolution.
+        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        setSamadhiFade(startOpacity + (endOpacity - startOpacity) * eased);
+        if (t < 1) {
+          fadeAnimRef.current = requestAnimationFrame(step);
+        }
+      };
+      fadeAnimRef.current = requestAnimationFrame(step);
+    } else {
+      setSamadhiFade(1);
+    }
+    return () => {
+      if (fadeAnimRef.current) {
+        cancelAnimationFrame(fadeAnimRef.current);
+        fadeAnimRef.current = null;
+      }
+    };
+  }, [selectedLimb]);
 
   // Escape exits fullscreen
   useEffect(() => {
@@ -145,6 +188,86 @@ export default function BrainExplorer() {
 
   const activeId = hoveredId || selectedId;
   const activeRegion = activeId ? getRegion(activeId) : null;
+
+  // Awareness mode: derive tintMap (region id → color) and fadeMap (region id → opacity).
+  const { tintMap, fadeMap, awarenessRegionIds } = useMemo(() => {
+    if (!awarenessMode || !selectedLimb) {
+      return {
+        tintMap: undefined,
+        fadeMap: undefined,
+        awarenessRegionIds: [] as string[],
+      };
+    }
+    const tint = new Map<string, string>();
+    const fade = new Map<string, number>();
+    const regionIds: string[] = [];
+    if (selectedLimb === 'all') {
+      // Show every limb's regions in its own tint. If a region appears in
+      // multiple limbs, the latest one in the list wins (samādhi tint, which
+      // is fine since samādhi includes everything).
+      for (const m of LIMB_MAPPINGS) {
+        for (const r of m.regions) {
+          tint.set(r, m.tint);
+          regionIds.push(r);
+        }
+      }
+    } else {
+      const mapping = LIMB_MAPPINGS.find((m) => m.limb === selectedLimb);
+      if (mapping) {
+        for (const r of mapping.regions) {
+          tint.set(r, mapping.tint);
+          regionIds.push(r);
+          if (selectedLimb === 'samadhi') {
+            fade.set(r, samadhiFade);
+          }
+        }
+      }
+    }
+    return {
+      tintMap: tint,
+      fadeMap: fade.size > 0 ? fade : undefined,
+      awarenessRegionIds: regionIds,
+    };
+  }, [awarenessMode, selectedLimb, samadhiFade]);
+
+  // When awareness mode + a limb is selected, ensure the limb's regions are visible.
+  useEffect(() => {
+    if (!awarenessMode || !selectedLimb || awarenessRegionIds.length === 0) return;
+    setVisibleIds((prev) => {
+      const next = new Set(prev);
+      let changed = false;
+      for (const id of awarenessRegionIds) {
+        if (!next.has(id)) {
+          next.add(id);
+          changed = true;
+        }
+      }
+      // Also make sure their sources are enabled.
+      const neededSources = new Set<RegionSource>();
+      for (const id of awarenessRegionIds) {
+        const r = REGIONS.find((x) => x.id === id);
+        if (r) neededSources.add(r.source);
+      }
+      setEnabledSources((sp) => {
+        const ns = new Set(sp);
+        let sChanged = false;
+        for (const s of neededSources) {
+          if (!ns.has(s)) {
+            ns.add(s);
+            sChanged = true;
+          }
+        }
+        return sChanged ? ns : sp;
+      });
+      return changed ? next : prev;
+    });
+  }, [awarenessMode, selectedLimb, awarenessRegionIds]);
+
+  // Find the active limb mapping for the UI panel.
+  const activeLimbMapping: LimbMapping | null = useMemo(() => {
+    if (!awarenessMode || !selectedLimb || selectedLimb === 'all') return null;
+    return LIMB_MAPPINGS.find((m) => m.limb === selectedLimb) ?? null;
+  }, [awarenessMode, selectedLimb]);
 
   return (
     <div
@@ -245,29 +368,151 @@ export default function BrainExplorer() {
           visibleIds={visibleIds}
           onSelect={selectAndShow}
           onHover={setHoveredId}
+          tintMap={tintMap}
+          fadeMap={fadeMap}
         />
-        <button
-          onClick={() => setFullscreen((v) => !v)}
-          className="absolute top-3 left-3 z-20 flex items-center gap-1.5 text-[11px] text-ink-100 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 hover:bg-ink-800 hover:border-ink-500 backdrop-blur transition"
-          title={fullscreen ? 'Exit fullscreen (Esc)' : 'Enter fullscreen'}
-          aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-        >
-          {fullscreen ? (
-            <>
-              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 3v2H3M11 3v2h2M5 13v-2H3M11 13v-2h2" />
-              </svg>
-              Exit fullscreen
-            </>
-          ) : (
-            <>
-              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 6V3h3M13 6V3h-3M3 10v3h3M13 10v3h-3" />
-              </svg>
-              Fullscreen
-            </>
-          )}
-        </button>
+        <div className="absolute top-3 left-3 z-20 flex items-center gap-2">
+          <button
+            onClick={() => {
+              setAwarenessMode((v) => {
+                if (v) setSelectedLimb(null);
+                return !v;
+              });
+            }}
+            className={`flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-full border backdrop-blur transition ${
+              awarenessMode
+                ? 'bg-neural-violet/20 text-ink-50 border-neural-violet/60 hover:bg-neural-violet/30'
+                : 'bg-ink-900/80 text-ink-100 border-ink-700 hover:bg-ink-800 hover:border-ink-500'
+            }`}
+            title="Toggle awareness mode — overlay the eight limbs of Ashtanga Yoga on the brain"
+          >
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="8" cy="8" r="6" />
+              <circle cx="8" cy="8" r="2.5" />
+            </svg>
+            Awareness mode
+          </button>
+          <button
+            onClick={() => setFullscreen((v) => !v)}
+            className="flex items-center gap-1.5 text-[11px] text-ink-100 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 hover:bg-ink-800 hover:border-ink-500 backdrop-blur transition"
+            title={fullscreen ? 'Exit fullscreen (Esc)' : 'Enter fullscreen'}
+            aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
+            {fullscreen ? (
+              <>
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 3v2H3M11 3v2h2M5 13v-2H3M11 13v-2h2" />
+                </svg>
+                Exit fullscreen
+              </>
+            ) : (
+              <>
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 6V3h3M13 6V3h-3M3 10v3h3M13 10v3h-3" />
+                </svg>
+                Fullscreen
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Awareness mode panel */}
+        {awarenessMode && (
+          <div className="absolute top-16 left-3 z-20 w-[300px] max-h-[calc(100%-7rem)] overflow-y-auto bg-ink-900/95 border border-neural-violet/40 rounded-lg backdrop-blur shadow-xl">
+            <div className="p-3 border-b border-ink-700">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-neural-violet mb-1">
+                Awareness Mode
+              </p>
+              <p className="text-xs text-ink-200 leading-snug">
+                The eight limbs of Ashtanga Yoga, overlaid on the nervous system. Pick one — or pick all.
+              </p>
+            </div>
+            <div className="p-2 space-y-1">
+              <button
+                onClick={() => setSelectedLimb('all')}
+                className={`w-full text-left px-3 py-2 rounded text-xs transition ${
+                  selectedLimb === 'all'
+                    ? 'bg-ink-700 text-ink-50 border border-ink-500'
+                    : 'text-ink-200 hover:bg-ink-800 border border-transparent'
+                }`}
+              >
+                <span className="font-medium">Show all eight</span>
+                <span className="block text-[10px] text-ink-400 mt-0.5">
+                  Every limb in its own tint
+                </span>
+              </button>
+              {LIMB_MAPPINGS.map((m) => {
+                const isActive = selectedLimb === m.limb;
+                const hasRegions = m.regions.length > 0;
+                return (
+                  <button
+                    key={m.limb}
+                    onClick={() => setSelectedLimb(m.limb)}
+                    className={`w-full text-left px-3 py-2 rounded text-xs transition border ${
+                      isActive
+                        ? 'bg-ink-800 text-ink-50 border-ink-600'
+                        : 'text-ink-200 hover:bg-ink-800 border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: m.tint }}
+                      />
+                      <span className="font-serif text-ink-400 text-[10px] w-5 shrink-0">
+                        {m.numeral}
+                      </span>
+                      <span className="font-medium">{m.sanskrit}</span>
+                      <span className="text-ink-400 text-[10px] italic">
+                        {m.gloss}
+                      </span>
+                      {!hasRegions && (
+                        <span className="ml-auto text-[9px] uppercase tracking-wider text-ink-500">
+                          no anatomy
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            {activeLimbMapping && (
+              <div className="p-3 border-t border-ink-700 bg-ink-800/40">
+                <p className="text-[11px] text-ink-200 leading-relaxed mb-2">
+                  {activeLimbMapping.rationale}
+                </p>
+                <Link
+                  href={activeLimbMapping.href}
+                  className="inline-flex items-center gap-1 text-[11px] text-neural-violet hover:text-ink-50 transition"
+                >
+                  Read the essay
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
+            )}
+            {selectedLimb === 'all' && (
+              <div className="p-3 border-t border-ink-700 bg-ink-800/40">
+                <p className="text-[11px] text-ink-200 leading-relaxed mb-2">
+                  All eight limbs at once. Each region is colored by the limb that engages it; where limbs overlap, samādhi&apos;s purple takes precedence — as it should.
+                </p>
+                <Link
+                  href="/awareness/synthesis"
+                  className="inline-flex items-center gap-1 text-[11px] text-neural-violet hover:text-ink-50 transition"
+                >
+                  Read the synthesis paper
+                  <span aria-hidden>→</span>
+                </Link>
+              </div>
+            )}
+            {selectedLimb === null && (
+              <div className="p-3 border-t border-ink-700 bg-ink-800/40">
+                <p className="text-[11px] text-ink-300 leading-relaxed italic">
+                  Pick a limb to highlight the regions it engages. The brain stays neutral until you choose.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         {activeRegion && (
           <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 text-sm text-ink-50 bg-ink-900/90 px-4 py-2 rounded-full border border-ink-700 backdrop-blur shadow-lg pointer-events-none max-w-[60%]">
