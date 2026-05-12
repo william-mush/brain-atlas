@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import { POSE_ANGLES } from '@/lib/pose-angles';
 
 const MODEL_URL = '/models/skeleton.glb';
 
@@ -294,8 +295,23 @@ export default function SkeletonExplorer() {
     () => new Set(GROUPS.filter((g) => g.defaultOpen).map((g) => g.id)),
   );
 
+  const [activePoseId, setActivePoseId] = useState<string | null>(null);
+
   const resetAll = () => {
     setJointRotations(Object.fromEntries(ALL_JOINT_KEYS.map((k) => [k, 0])));
+    setActivePoseId(null);
+  };
+
+  const applyPose = (poseId: string) => {
+    const pose = POSE_ANGLES.find((p) => p.id === poseId);
+    if (!pose) return;
+    // Reset everything to zero, then apply the pose's angles
+    const next: Record<string, number> = Object.fromEntries(ALL_JOINT_KEYS.map((k) => [k, 0]));
+    for (const [key, deg] of Object.entries(pose.angles)) {
+      next[key] = deg;
+    }
+    setJointRotations(next);
+    setActivePoseId(poseId);
   };
 
   const toggleGroup = (id: string) => {
@@ -310,14 +326,44 @@ export default function SkeletonExplorer() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] h-[calc(100vh-64px)] bg-ink-900">
       <aside className="hidden lg:flex flex-col border-r border-ink-700 bg-ink-800/60 min-h-0 overflow-hidden">
-        <div className="p-4 border-b border-ink-700 flex-shrink-0">
-          <h2 className="font-serif text-lg text-ink-50 leading-tight">Skeleton — Rig POC</h2>
-          <p className="text-[11px] text-ink-300 mt-0.5">
-            Drag any slider. The skeleton bends in real time.
-          </p>
-          <button onClick={resetAll} className="mt-2 text-[10px] text-ink-400 hover:text-ink-100 underline">
-            reset all
-          </button>
+        <div className="p-4 border-b border-ink-700 flex-shrink-0 space-y-3">
+          <div>
+            <h2 className="font-serif text-lg text-ink-50 leading-tight">Skeleton — Rig POC</h2>
+            <p className="text-[11px] text-ink-300 mt-0.5">
+              Pick a pose, or drag sliders below.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-ink-300">Pose presets</p>
+              <button
+                onClick={resetAll}
+                className="text-[10px] text-ink-400 hover:text-ink-100"
+              >
+                reset
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              {POSE_ANGLES.map((p) => {
+                const active = p.id === activePoseId;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => applyPose(p.id)}
+                    title={p.sanskrit}
+                    className={`text-[11px] px-2 py-1.5 rounded border transition text-left leading-tight ${
+                      active
+                        ? 'bg-ink-700 text-ink-50 border-ink-600'
+                        : 'text-ink-200 border-ink-700 hover:bg-ink-800 hover:border-ink-500'
+                    }`}
+                  >
+                    {p.english}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto">
           {GROUPS.map((group) => {
