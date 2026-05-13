@@ -1,98 +1,80 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   /** The content shown in the margin (desktop) or footnote (mobile). */
   children: React.ReactNode;
-  /** Optional manual number. If omitted, the component auto-numbers. */
-  n?: number;
   /** Marginalia color tint. Defaults to muted ink. */
   tint?: string;
-}
-
-// Auto-incrementing counter, reset between essays via the SideNoteProvider
-// pattern below. The order is determined by render order, which is the same
-// as reading order in MDX.
-let counter = 0;
-let lastResetKey: string | null = null;
-
-function nextNumber(resetKey: string): number {
-  if (resetKey !== lastResetKey) {
-    counter = 0;
-    lastResetKey = resetKey;
-  }
-  counter += 1;
-  return counter;
 }
 
 /**
  * Tufte-style sidenote.
  *
- * Desktop (≥1280px / xl): inline superscript marker; aside content floats in
- *   the right margin via absolute positioning relative to the essay column.
- * Mobile/tablet: superscript marker links to a numbered footnote at the
- *   bottom of the page (collected automatically by the EssayMDX wrapper).
+ * Numbering is assigned at mount based on DOM order — each instance asks the
+ * EssayMDX wrapper (which owns the counter) for its number. This works
+ * correctly across SSR and client hydration because the number is rendered
+ * as a placeholder (?) on the server and resolved to a real digit on first
+ * client paint.
  *
- * Number is auto-assigned in render order across the essay. Pass `n` to
- *   override (rarely needed).
+ * Desktop (>=1280px / xl): the aside element is absolutely positioned by
+ * the EssayMDX wrapper at the same vertical offset as the inline marker.
+ * The wrapper uses ResizeObserver to keep positions current as the page
+ * reflows.
+ *
+ * Mobile/tablet: the aside is rendered inline as a block element below the
+ * paragraph that contains the marker. No magic positioning.
  */
-export default function SideNote({ children, n, tint }: Props) {
-  // Use a stable per-instance number. The first render sets it via the
-  // auto-counter; we keep it in state so re-renders don't reshuffle.
-  const id = useId();
-  const [num] = useState(() => n ?? nextNumber('default'));
-  const noteId = `sn-${num}`;
-  const refId = `snref-${num}`;
+export default function SideNote({ children, tint }: Props) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [num, setNum] = useState<number | null>(null);
 
-  // Register this note with the EssayMDX collector (for mobile footnote list).
   useEffect(() => {
-    const detail = { num, id: noteId, refId, html: null as HTMLElement | null };
-    const ev = new CustomEvent('sidenote:register', { detail });
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(ev);
-    }
-  }, [num, noteId, refId]);
+    // Walk all SideNote markers in document order and find our position.
+    // Querying at mount, after all sidenotes have rendered, gives stable
+    // numbering regardless of React strict-mode double invocation.
+    if (typeof document === 'undefined') return;
+    const all = Array.from(
+      document.querySelectorAll('[data-sidenote-marker]'),
+    );
+    const idx = all.indexOf(ref.current as Element);
+    if (idx >= 0) setNum(idx + 1);
+  }, []);
 
-  const accent = tint ?? '#a99e7e'; // ink-300
+  const accent = tint ?? '#a99e7e';
+  const display = num ?? '?';
 
   return (
-    <>
+    <span
+      ref={ref}
+      data-sidenote-marker
+      className="inline align-baseline"
+    >
       <sup
-        id={refId}
-        className="text-[0.7em] align-super select-none"
+        data-sidenote-anchor
+        className="text-[0.7em] align-super select-none mr-[1px]"
         style={{ color: accent }}
       >
-        <a
-          href={`#${noteId}`}
-          className="no-underline hover:underline"
-          style={{ color: accent }}
-        >
-          {num}
-        </a>
+        {display}
       </sup>
-      {/* Wide-screen sidenote: float into right margin. */}
-      <aside
-        id={noteId}
-        data-sidenote
-        data-num={num}
-        className="hidden xl:block float-right clear-right w-[18rem] -mr-[20rem] mt-1 mb-3 pl-3 border-l text-[0.82rem] leading-snug text-ink-200 italic font-sans"
+      {/* Inline aside.
+            Mobile (default): renders as a callout via display:inline-block,
+            which is legal phrasing content (so we don't break the host <p>).
+            A small left-border and italic styling make it readable.
+            Desktop (xl+): the EssayMDX wrapper repositions all
+            [data-sidenote-content] elements absolutely into the right margin
+            using getBoundingClientRect on the marker. */}
+      <span
+        data-sidenote-content
+        className="inline-block align-top w-full xl:w-80 mt-2 mb-3 xl:mt-0 xl:mb-0 pl-3 border-l text-[0.82rem] leading-snug text-ink-200 italic font-sans not-prose"
         style={{ borderColor: accent }}
       >
         <span className="not-italic font-medium mr-1" style={{ color: accent }}>
-          {num}.
+          {display}.
         </span>
         {children}
-      </aside>
-      {/* Mobile: keep a copy as a hidden footnote-source for the collector. */}
-      <span
-        data-footnote-source
-        data-num={num}
-        className="hidden"
-        aria-hidden
-      >
-        {children}
       </span>
-    </>
+    </span>
   );
 }

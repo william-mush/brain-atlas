@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
   tag: string;
@@ -13,17 +13,16 @@ interface Props {
 }
 
 /**
- * Layout wrapper for long-form MDX essays in the awareness wing.
+ * Layout wrapper for long-form MDX essays.
  *
- * Desktop (≥1280px): main column ~70ch, sidenotes float in a right margin
- *   (~18rem). Total max-width allows ~92rem of page width.
- * Mobile/tablet: single column. SideNote markers link to a numbered
- *   footnotes section appended at the end of the essay.
+ * Desktop (>=1280px): main column ~72ch wide, with a 22rem right margin
+ * holding absolutely-positioned sidenotes. Each [data-sidenote-content]
+ * element is placed at the same vertical offset as its parent
+ * [data-sidenote-marker], so a sidenote sits next to the sentence that
+ * spawned it. We re-run the positioning on resize and on font load.
  *
- * Note collection on mobile: SideNote components emit window events on mount
- * that this wrapper does not currently aggregate (mobile users follow the
- * # anchor link to the inline aside, which is still in the document just
- * hidden by CSS). Future improvement: render a footnote list at the bottom.
+ * Mobile/tablet: sidenotes render inline as block-level callouts below the
+ * paragraph that contains the marker. No positioning, no JS needed.
  */
 export default function EssayMDX({
   tag,
@@ -33,41 +32,111 @@ export default function EssayMDX({
   related,
   children,
 }: Props) {
-  // The mobile footnotes section is rendered on the client after first paint,
-  // collecting any [data-footnote-source] elements that were rendered by
-  // <SideNote> on small screens.
-  const [footnotes, setFootnotes] = useState<Array<{ num: number; html: string }>>(
-    [],
-  );
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Only build the footnote list on narrow screens.
+    // Position sidenotes absolutely in the right margin on wide screens.
+    // We do this in a useEffect rather than CSS because the vertical
+    // anchor depends on layout, which we can't know without measuring.
     if (typeof window === 'undefined') return;
-    if (window.innerWidth >= 1280) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
 
-    const sources = Array.from(
-      document.querySelectorAll('[data-footnote-source]'),
-    ) as HTMLElement[];
-    const items = sources
-      .map((el) => ({
-        num: Number(el.dataset.num ?? 0),
-        html: el.innerHTML,
-      }))
-      .filter((x) => x.num > 0)
-      .sort((a, b) => a.num - b.num);
-    // Deduplicate by num — sidenotes render a hidden source AND an aside,
-    // but only one is the [data-footnote-source].
-    const seen = new Set<number>();
-    const deduped = items.filter((x) => {
-      if (seen.has(x.num)) return false;
-      seen.add(x.num);
-      return true;
-    });
-    setFootnotes(deduped);
+    const place = () => {
+      const isDesktop = window.innerWidth >= 1280;
+      const markers = Array.from(
+        wrapper.querySelectorAll<HTMLElement>('[data-sidenote-marker]'),
+      );
+
+      if (!isDesktop) {
+        // Mobile: clear any inline positioning we set on a previous run, so
+        // the content flows inline (display:inline-block) again.
+        for (const marker of markers) {
+          const note = marker.querySelector<HTMLElement>(
+            '[data-sidenote-content]',
+          );
+          if (!note) continue;
+          note.style.position = '';
+          note.style.top = '';
+          note.style.left = '';
+          note.style.width = '';
+        }
+        return;
+      }
+
+      // Desktop: lift every note out of inline flow FIRST. Otherwise the
+      // content's inline-block height inflates the marker's bounding rect
+      // and we measure the wrong vertical position.
+      for (const marker of markers) {
+        const note = marker.querySelector<HTMLElement>(
+          '[data-sidenote-content]',
+        );
+        if (!note) continue;
+        note.style.position = 'absolute';
+        note.style.visibility = 'hidden';
+        // Temporarily place off-screen so we can measure article width
+        // without the notes pushing layout around.
+        note.style.left = '-9999px';
+        note.style.width = '20rem';
+        note.style.top = '0px';
+      }
+
+      // Measure the article's actual rendered right edge. The article is
+      // `prose-atlas` with `max-width: 70ch`, but in serif at 1.05rem `1ch`
+      // is wider than the rem-based estimate would suggest — so we read
+      // the real number rather than guessing.
+      const article = wrapper.querySelector<HTMLElement>('article.prose-atlas');
+      const wrapperBox = wrapper.getBoundingClientRect();
+      const articleBox = article?.getBoundingClientRect() ?? wrapperBox;
+      // Offset the sidenote column to start GAP px right of the article's
+      // right edge, expressed in wrapper-local coordinates.
+      const GAP = 40;
+      const sideLeft = articleBox.right - wrapperBox.left + GAP;
+
+      let lastBottom = -Infinity;
+
+      for (const marker of markers) {
+        const note = marker.querySelector<HTMLElement>(
+          '[data-sidenote-content]',
+        );
+        const anchor = marker.querySelector<HTMLElement>(
+          '[data-sidenote-anchor]',
+        );
+        if (!note || !anchor) continue;
+
+        const anchorBox = anchor.getBoundingClientRect();
+        const desiredTop = anchorBox.top - wrapperBox.top;
+        const top = Math.max(desiredTop, lastBottom + 8);
+
+        note.style.left = `${sideLeft}px`;
+        note.style.top = `${top}px`;
+        note.style.visibility = 'visible';
+
+        const noteRect = note.getBoundingClientRect();
+        lastBottom = top + noteRect.height;
+      }
+    };
+
+    place();
+
+    const ro = new ResizeObserver(place);
+    ro.observe(wrapper);
+    window.addEventListener('resize', place);
+    window.addEventListener('load', place);
+    // Re-run after fonts settle (changes paragraph heights).
+    if ('fonts' in document) {
+      (document as Document & { fonts: { ready: Promise<unknown> } }).fonts.ready.then(() => place());
+    }
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', place);
+      window.removeEventListener('load', place);
+    };
   }, []);
 
   return (
-    <main className="mx-auto px-6 pt-12 pb-24 max-w-3xl xl:max-w-[92rem]">
+    <main className="mx-auto px-6 pt-12 pb-24 max-w-3xl xl:max-w-[80rem]">
       <Link
         href="/awareness"
         className="text-xs text-ink-300 hover:text-ink-100 inline-flex items-center gap-1 mb-8"
@@ -75,73 +144,41 @@ export default function EssayMDX({
         <span aria-hidden>←</span> awareness wing
       </Link>
 
-      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-8">
-        <div className="max-w-3xl">
-          <p
-            className="text-[11px] uppercase tracking-[0.22em] mb-3"
-            style={{ color: tint }}
-          >
-            {tag}
-          </p>
-          <article className="prose-atlas">
-            <h1>{title}</h1>
-            {subtitle && (
-              <p className="text-ink-300 italic text-lg -mt-3 mb-8">
-                {subtitle}
-              </p>
-            )}
-            {children}
-          </article>
-
-          {/* Mobile footnotes — collected from SideNote sources on narrow screens. */}
-          {footnotes.length > 0 && (
-            <section className="xl:hidden mt-16 pt-8 border-t border-ink-700">
-              <h2 className="text-sm uppercase tracking-[0.22em] text-ink-300 mb-4">
-                Notes
-              </h2>
-              <ol className="space-y-3 text-sm text-ink-200 leading-relaxed list-none pl-0">
-                {footnotes.map((f) => (
-                  <li
-                    key={f.num}
-                    id={`sn-${f.num}`}
-                    className="flex gap-2"
-                  >
-                    <span className="text-ink-400 font-medium shrink-0">
-                      {f.num}.
-                    </span>
-                    <span
-                      // The source HTML may include nested elements/components rendered server-side.
-                      dangerouslySetInnerHTML={{ __html: f.html }}
-                    />
-                  </li>
-                ))}
-              </ol>
-            </section>
+      <div ref={wrapperRef} className="relative">
+        <p
+          className="text-[11px] uppercase tracking-[0.22em] mb-3"
+          style={{ color: tint }}
+        >
+          {tag}
+        </p>
+        <article className="prose-atlas">
+          <h1>{title}</h1>
+          {subtitle && (
+            <p className="text-ink-300 italic text-lg -mt-3 mb-8">
+              {subtitle}
+            </p>
           )}
+          {children}
+        </article>
 
-          {related && related.length > 0 && (
-            <aside className="mt-16 pt-8 border-t border-ink-700">
-              <p className="text-xs uppercase tracking-widest text-ink-300 mb-3">
-                Keep reading
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {related.map((r) => (
-                  <Link
-                    key={r.href}
-                    href={r.href}
-                    className="text-sm px-3 py-1.5 rounded-full border border-ink-600 text-ink-100 hover:bg-ink-800 transition"
-                  >
-                    {r.label}
-                  </Link>
-                ))}
-              </div>
-            </aside>
-          )}
-        </div>
-        {/* Empty right-column placeholder so sidenotes have visual space.
-            The actual sidenote DOM elements absolute-float into this column
-            via negative right margin set in <SideNote>. */}
-        <div className="hidden xl:block" aria-hidden />
+        {related && related.length > 0 && (
+          <aside className="mt-16 pt-8 border-t border-ink-700 max-w-prose">
+            <p className="text-xs uppercase tracking-widest text-ink-300 mb-3">
+              Keep reading
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {related.map((r) => (
+                <Link
+                  key={r.href}
+                  href={r.href}
+                  className="text-sm px-3 py-1.5 rounded-full border border-ink-600 text-ink-100 hover:bg-ink-800 transition"
+                >
+                  {r.label}
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
       </div>
     </main>
   );
