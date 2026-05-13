@@ -33,6 +33,8 @@ describe('route existence', () => {
       '/awareness',
       '/awareness/synthesis',
       '/awareness/advaita-shaivism',
+      '/awareness/theories',
+      '/awareness/east-west',
       '/awareness/bibliography',
       '/compendium',
       '/explore',

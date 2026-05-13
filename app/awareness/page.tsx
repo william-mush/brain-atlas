@@ -167,7 +167,7 @@ export default function AwarenessHub() {
         ))}
       </ol>
 
-      <aside className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <aside className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <Link
           href="/awareness/synthesis"
           className="block rounded-lg border border-neural-violet/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
@@ -199,10 +199,42 @@ export default function AwarenessHub() {
           </p>
         </Link>
         <Link
-          href="/awareness/bibliography"
+          href="/awareness/theories"
           className="block rounded-lg border border-neural-teal/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
         >
           <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-teal">
+            Survey
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            Theories of Consciousness
+          </p>
+          <p className="text-ink-300 text-sm">
+            Nine Western frameworks — Global Workspace, IIT, predictive
+            processing, the entropic brain, and more — placed next to the
+            limbs to see what each predicts.
+          </p>
+        </Link>
+        <Link
+          href="/awareness/east-west"
+          className="block rounded-lg border border-neural-coral/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-coral">
+            Survey
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            Other Contemplative Traditions
+          </p>
+          <p className="text-ink-300 text-sm">
+            Theravāda Abhidhamma, Madhyamaka, Yogācāra, Dzogchen, Daoist
+            zuòwàng, Sufi fanāʾ — and the structural convergence between
+            them.
+          </p>
+        </Link>
+        <Link
+          href="/awareness/bibliography"
+          className="block rounded-lg border border-neural-amber/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-amber">
             References
           </p>
           <p className="font-serif text-lg text-ink-50 mb-1">
