@@ -42,7 +42,8 @@ export default function SideNote({ children, tint }: Props) {
     if (idx >= 0) setNum(idx + 1);
   }, []);
 
-  const accent = tint ?? '#a99e7e';
+  // Slightly muted accent so the marker reads as marginalia, not as a UI chip.
+  const accent = tint ?? '#8a7f60';
   const display = num ?? '?';
 
   return (
@@ -59,18 +60,25 @@ export default function SideNote({ children, tint }: Props) {
         {display}
       </sup>
       {/* Inline aside.
-            Mobile (default): renders as a callout via display:inline-block,
-            which is legal phrasing content (so we don't break the host <p>).
-            A small left-border and italic styling make it readable.
-            Desktop (xl+): the EssayMDX wrapper repositions all
-            [data-sidenote-content] elements absolutely into the right margin
-            using getBoundingClientRect on the marker. */}
+            Mobile (default): renders as a callout via display:inline-block.
+            We keep a subtle left border on mobile only — it helps the eye
+            separate the aside from the surrounding prose where there's no
+            margin to provide that separation.
+            Desktop (xl+): the EssayMDX wrapper absolute-positions us into
+            the right margin. No border, no number prefix — the aside reads
+            as a whispered annotation, the way Tufte's marginalia do. */}
       <span
         data-sidenote-content
-        className="inline-block align-top w-full xl:w-80 mt-2 mb-3 xl:mt-0 xl:mb-0 pl-3 border-l text-[0.82rem] leading-snug text-ink-200 italic font-sans not-prose"
+        className="inline-block align-top w-full xl:w-80 mt-2 mb-3 xl:mt-0 xl:mb-0 pl-3 xl:pl-0 border-l xl:border-l-0 text-[0.82rem] xl:text-[0.78rem] leading-snug text-ink-300 italic font-sans not-prose"
         style={{ borderColor: accent }}
       >
-        <span className="not-italic font-medium mr-1" style={{ color: accent }}>
+        {/* Number prefix shown ONLY on mobile, where there's no spatial
+            relationship to the marker. On desktop the visual alignment
+            in the margin makes the number redundant. */}
+        <span
+          className="xl:hidden not-italic font-medium mr-1"
+          style={{ color: accent }}
+        >
           {display}.
         </span>
         {children}
