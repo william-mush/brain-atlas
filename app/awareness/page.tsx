@@ -167,7 +167,7 @@ export default function AwarenessHub() {
         ))}
       </ol>
 
-      <aside className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <aside className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Link
           href="/awareness/synthesis"
           className="block rounded-lg border border-neural-violet/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
@@ -179,8 +179,8 @@ export default function AwarenessHub() {
             The Synthesis Paper
           </p>
           <p className="text-ink-300 text-sm">
-            The full ~8,000-word argument tying the eight limbs to the
-            neuroscience.
+            The full argument tying the eight limbs to the neuroscience,
+            cited and footnoted.
           </p>
         </Link>
         <Link
@@ -196,6 +196,21 @@ export default function AwarenessHub() {
           <p className="text-ink-300 text-sm">
             Two non-dual traditions, different structural predictions, one
             cleaner fit with the imaging.
+          </p>
+        </Link>
+        <Link
+          href="/awareness/bibliography"
+          className="block rounded-lg border border-neural-teal/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-teal">
+            References
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            Bibliography
+          </p>
+          <p className="text-ink-300 text-sm">
+            Every paper and book cited, with editorial notes on why each
+            one matters.
           </p>
         </Link>
       </aside>

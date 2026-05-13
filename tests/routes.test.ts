@@ -8,15 +8,15 @@ import { REGIONS } from '@/lib/regions';
 const APP_DIR = path.resolve(__dirname, '..', 'app');
 
 function routeExists(route: string): boolean {
-  // route like '/awareness/pranayama' -> app/awareness/pranayama/page.tsx
+  // route like '/awareness/pranayama' -> app/awareness/pranayama/page.{tsx,mdx}
   // route like '/compendium/lazar-2005' is dynamic — that one resolves via
   // app/compendium/[id]/page.tsx which we check separately.
   const trimmed = route.replace(/^\//, '');
-  if (trimmed === '') {
-    return existsSync(path.join(APP_DIR, 'page.tsx'));
-  }
-  const direct = path.join(APP_DIR, trimmed, 'page.tsx');
-  return existsSync(direct);
+  const base = trimmed === '' ? APP_DIR : path.join(APP_DIR, trimmed);
+  return (
+    existsSync(path.join(base, 'page.tsx')) ||
+    existsSync(path.join(base, 'page.mdx'))
+  );
 }
 
 describe('route existence', () => {
@@ -33,6 +33,7 @@ describe('route existence', () => {
       '/awareness',
       '/awareness/synthesis',
       '/awareness/advaita-shaivism',
+      '/awareness/bibliography',
       '/compendium',
       '/explore',
     ];
