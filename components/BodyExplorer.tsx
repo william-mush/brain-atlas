@@ -6,7 +6,7 @@ import BodyPanel from './BodyPanel';
 import BodyList from './BodyList';
 import PoseSelector from './PoseSelector';
 import { BODY_PARTS, getBodyPart, type BodyRegion, type BoneGroup, BONE_GROUP_LABELS } from '@/lib/body';
-import { POSES, getPose, STATE_COLORS, STATE_LABELS, type MuscleState } from '@/lib/poses';
+import { POSES, getPose, SIMPLE_STATE_COLORS, SIMPLE_STATE_LABELS, type SimpleState } from '@/lib/poses';
 
 const BodyCanvas = dynamic(() => import('./BodyCanvas'), { ssr: false });
 
@@ -409,13 +409,13 @@ export default function BodyExplorer() {
 
         {/* Pose state legend — visible when a pose is active */}
         {activePose && (
-          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/85 px-3 py-2 rounded-md border border-ink-700 backdrop-blur text-[10px] text-ink-200 max-w-[200px]">
+          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/85 px-3 py-2 rounded-md border border-ink-700 backdrop-blur text-[11px] text-ink-200 max-w-[220px]">
             <div className="font-medium text-ink-50 mb-1.5 truncate">{activePose.english}</div>
-            <ul className="space-y-1">
-              {(['concentric', 'eccentric', 'isometric', 'passive', 'loaded-passive', 'antagonist'] as const).map((s: MuscleState) => (
-                <li key={s} className="flex items-center gap-1.5">
-                  <span className="inline-block w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: STATE_COLORS[s] }} />
-                  <span className="leading-tight">{STATE_LABELS[s].split(' — ')[0]}</span>
+            <ul className="space-y-1.5">
+              {(['working', 'stretching', 'at-risk', 'quiet'] as const).map((s: SimpleState) => (
+                <li key={s} className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-sm flex-shrink-0 border border-ink-700" style={{ backgroundColor: SIMPLE_STATE_COLORS[s] }} />
+                  <span className="leading-tight">{SIMPLE_STATE_LABELS[s]}</span>
                 </li>
               ))}
             </ul>

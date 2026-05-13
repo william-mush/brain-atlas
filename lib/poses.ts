@@ -22,6 +22,13 @@
 
 import type { BodyPart } from './body';
 
+// ============================================================
+// MUSCLE STATE — DETAILED (for the data, retained for accuracy)
+// ============================================================
+// Existing pose data uses these 7 categories. They're what physiotherapists
+// and serious teachers use. We keep the data this rich so we don't lose
+// information, but we DISPLAY a simpler taxonomy (see SimpleState below).
+
 export type MuscleState =
   | 'concentric'
   | 'eccentric'
@@ -41,31 +48,94 @@ export const STATE_LABELS: Record<MuscleState, string> = {
   unloaded: 'Unloaded',
 };
 
+// ============================================================
+// MUSCLE STATE — SIMPLE (for the display)
+// ============================================================
+// What a student or non-clinical yoga teacher actually needs:
+//
+//   working    — the muscle is firing (any active engagement)
+//   stretching — the muscle is being lengthened (with or without load)
+//   at-risk    — bears tension where injury commonly happens
+//   quiet      — along for the ride / deliberately released
+
+export type SimpleState = 'working' | 'stretching' | 'at-risk' | 'quiet';
+
+export const SIMPLE_STATE_LABELS: Record<SimpleState, string> = {
+  working: 'Working',
+  stretching: 'Stretching',
+  'at-risk': 'Tension / at risk',
+  quiet: 'Quiet',
+};
+
+export const SIMPLE_STATE_DESCRIPTIONS: Record<SimpleState, string> = {
+  working:
+    'The muscle is actively engaged — firing to create or hold the shape of the pose.',
+  stretching:
+    'The muscle is being lengthened. Where you feel the stretch.',
+  'at-risk':
+    "Where the load concentrates and injuries commonly happen in this pose. Move with awareness here — and back off if anything sharpens.",
+  quiet:
+    'Going along for the ride. No specific job.',
+};
+
+export const SIMPLE_STATE_COLORS: Record<SimpleState, string> = {
+  working: '#d65a3a',     // warm red — active engagement
+  stretching: '#5fa1c4',  // cool blue — being lengthened
+  'at-risk': '#e8b04a',   // amber-gold — pay attention here
+  quiet: '#3a3528',       // very muted ink — fades into the body
+};
+
+/**
+ * Map the detailed clinical state down to the four-state display category.
+ * Active states (concentric/eccentric/isometric) become 'working'.
+ * Stretch states (passive/loaded-passive) become 'stretching'.
+ * Antagonist and unloaded both become 'quiet'.
+ * Note: 'at-risk' is NOT derived from MuscleState — it's a separate
+ * per-muscle-per-pose flag (see PoseInjurySite below).
+ */
+export function simplify(s: MuscleState): SimpleState {
+  switch (s) {
+    case 'concentric':
+    case 'eccentric':
+    case 'isometric':
+      return 'working';
+    case 'passive':
+    case 'loaded-passive':
+      return 'stretching';
+    case 'antagonist':
+    case 'unloaded':
+    default:
+      return 'quiet';
+  }
+}
+
+// Legacy aliases retained so older UI code still compiles. New UI code
+// should use SIMPLE_STATE_COLORS + simplify().
 export const STATE_COLORS: Record<MuscleState, string> = {
-  concentric: '#d65a3a',      // red-orange — active work
-  eccentric: '#e89a4a',       // amber — controlled lengthening
-  isometric: '#c4b04a',       // mustard — holding
-  passive: '#5fa1c4',         // blue — a stretch
-  'loaded-passive': '#7a8acc', // deeper blue-violet
-  antagonist: '#5a5a6f',      // muted slate — quiet
-  unloaded: '#574d36',        // ink — neutral
+  concentric: SIMPLE_STATE_COLORS.working,
+  eccentric: SIMPLE_STATE_COLORS.working,
+  isometric: SIMPLE_STATE_COLORS.working,
+  passive: SIMPLE_STATE_COLORS.stretching,
+  'loaded-passive': SIMPLE_STATE_COLORS.stretching,
+  antagonist: SIMPLE_STATE_COLORS.quiet,
+  unloaded: SIMPLE_STATE_COLORS.quiet,
 };
 
 export const STATE_DESCRIPTIONS: Record<MuscleState, string> = {
   concentric:
-    "The muscle is shortening while generating force. This is what most people picture as 'working.' Lifting the leg, pressing the floor away.",
+    "The muscle is shortening while generating force — actively working.",
   eccentric:
-    "The muscle is engaged, generating force, AND lengthening at the same time. Controlling descent. The hamstrings on the way down into a forward fold, the triceps lowering you into Chaturanga.",
+    "The muscle is engaged AND lengthening at the same time. Controlled descent.",
   isometric:
-    "The muscle generates force without changing length. Holding the body in place. The legs of Warrior II once you've arrived.",
+    "The muscle generates force without changing length — holding position.",
   passive:
-    "The muscle is lengthened but not engaged. A pure stretch. The hamstrings in a deep, fully-released seated forward fold.",
+    "The muscle is lengthened but not engaged. A pure stretch.",
   'loaded-passive':
-    "Lengthened while bearing weight, with minimal active tone. Common in restorative poses where gravity pulls the body into the stretch.",
+    "Lengthened while bearing weight — common at the bottom of a deep fold.",
   antagonist:
-    "Not the muscle doing the work — but engaging would interfere, so it's deliberately quiet. The hamstrings during a deep quad activation.",
+    "Released so the working muscle on the other side can act.",
   unloaded:
-    "Going along for the ride. No specific job in this pose.",
+    'Going along for the ride. No specific job.',
 };
 
 /** A muscle key matches the manifest-derived slug — like 'long_head_of_biceps_femoris'
@@ -79,12 +149,32 @@ export interface MuscleStateEntry {
   note?: string;
 }
 
+/** A site in the body where this pose commonly produces injury or
+ *  concentrates tension. Rendered as a yellow "caution" highlight on
+ *  the relevant muscle, with the prose shown in the side panel.
+ *
+ *  `muscle` matches the muscle slug (same convention as MuscleStateEntry).
+ *  If the risk isn't a single muscle but a joint or region (e.g. "low back"),
+ *  use `region` instead — we won't highlight a specific mesh but we will
+ *  show the warning text.
+ */
+export interface PoseInjurySite {
+  muscle?: string;
+  side?: 'l' | 'r' | 'both';
+  region?: string;
+  /** Plain-English description of what tends to go wrong and what to feel for. */
+  note: string;
+}
+
 export interface Pose {
   id: string;
   sanskrit: string;
   english: string;
   /** Ashtanga sequence position, if applicable. */
   sequence?: string;
+  /** PLAIN-ENGLISH cue — what this pose does, written for a student, not a
+   *  clinician. Shown prominently at the top of the panel. 1-3 sentences. */
+  plainLanguage?: string;
   /** A one-paragraph plain-English description of the pose. */
   description: string;
   /** What the practice *intends* to do — the pose's purpose. */
@@ -93,6 +183,12 @@ export interface Pose {
   cues: string[];
   /** Common compensations / mistakes. */
   watchFor?: string[];
+  /** The 4-6 muscles that are the main story of this pose. Slugs only,
+   *  side-agnostic. Used by the rendering layer to make these muscles
+   *  visually dominant and dim everything else hard. */
+  primaryMuscles?: string[];
+  /** Where tension concentrates and injuries commonly happen. */
+  injurySites?: PoseInjurySite[];
   /** Muscle states. Order doesn't matter; rendering picks the right side. */
   states: MuscleStateEntry[];
 }
@@ -1147,8 +1243,64 @@ POSES.push(
   },
 );
 
+// Lazy import overlay map at access time to avoid circular import.
+import { POSE_OVERLAYS } from './pose-overlays';
+
+/** Merge overlay (plain-language, primary muscles, injury sites) onto a pose. */
+function withOverlay(p: Pose): Pose {
+  const o = POSE_OVERLAYS[p.id];
+  if (!o) return p;
+  return {
+    ...p,
+    plainLanguage: p.plainLanguage ?? o.plainLanguage,
+    primaryMuscles: p.primaryMuscles ?? o.primaryMuscles,
+    injurySites: p.injurySites ?? o.injurySites,
+  };
+}
+
 export function getPose(id: string): Pose | undefined {
-  return POSES.find((p) => p.id === id);
+  const p = POSES.find((q) => q.id === id);
+  return p ? withOverlay(p) : undefined;
+}
+
+/** Get all poses, with overlays merged. */
+export function getAllPoses(): Pose[] {
+  return POSES.map(withOverlay);
+}
+
+/** Test helper: is this muscle marked at-risk for this pose on the given side? */
+export function isAtRiskForPart(pose: Pose | null, part: BodyPart): boolean {
+  if (!pose || !pose.injurySites) return false;
+  if (part.kind !== 'muscle') return false;
+  const m = part.id.match(/^muscle_(.+?)_([lr])$/);
+  if (!m) return false;
+  const slug = m[1];
+  const side = m[2] as 'l' | 'r';
+  for (const site of pose.injurySites) {
+    if (!site.muscle) continue;
+    if (site.muscle !== slug) continue;
+    const s = site.side || 'both';
+    if (s === 'both' || s === side) return true;
+  }
+  return false;
+}
+
+/** Test helper: is this muscle in the pose's primary set? */
+export function isPrimaryForPart(pose: Pose | null, part: BodyPart): boolean {
+  if (!pose || !pose.primaryMuscles) return false;
+  if (part.kind !== 'muscle') return false;
+  const m = part.id.match(/^muscle_(.+?)_([lr])$/);
+  if (!m) return false;
+  return pose.primaryMuscles.includes(m[1]);
+}
+
+/** Get the SimpleState for a part in a pose, accounting for at-risk override. */
+export function getSimpleStateForPart(pose: Pose | null, part: BodyPart): SimpleState | null {
+  if (!pose) return null;
+  // At-risk wins over the muscle state
+  if (isAtRiskForPart(pose, part)) return 'at-risk';
+  const detailed = getStateForPart(pose, part);
+  return detailed ? simplify(detailed) : null;
 }
 
 /**

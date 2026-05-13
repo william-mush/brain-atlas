@@ -5,7 +5,13 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { BODY_PARTS, ATTACHMENTS, type BodyPart } from '@/lib/body';
-import { getStateForPart, STATE_COLORS, type Pose, type MuscleState } from '@/lib/poses';
+import {
+  getSimpleStateForPart,
+  isPrimaryForPart,
+  SIMPLE_STATE_COLORS,
+  type Pose,
+  type SimpleState,
+} from '@/lib/poses';
 
 const MODEL_URL = '/models/body.glb';
 useGLTF.preload(MODEL_URL);
@@ -174,7 +180,8 @@ function Scene({
   return (
     <group ref={groupRef}>
       {visibleMeshes.map(({ part, mesh }) => {
-        const state = getStateForPart(activePose, part);
+        const simpleState = getSimpleStateForPart(activePose, part);
+        const isPrimary = isPrimaryForPart(activePose, part);
         return (
           <BodyMesh
             key={part.id}
@@ -184,7 +191,8 @@ function Scene({
             hoveredId={hoveredId}
             skinOpacity={skinOpacity}
             poseActive={!!activePose}
-            poseState={state}
+            simpleState={simpleState}
+            isPrimary={isPrimary}
             onSelect={onSelect}
             onHover={onHover}
           />
@@ -244,7 +252,8 @@ interface BodyMeshProps {
   hoveredId: string | null;
   skinOpacity: number;
   poseActive: boolean;
-  poseState: MuscleState | null;
+  simpleState: SimpleState | null;
+  isPrimary: boolean;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -256,7 +265,8 @@ function BodyMesh({
   hoveredId,
   skinOpacity,
   poseActive,
-  poseState,
+  simpleState,
+  isPrimary,
   onSelect,
   onHover,
 }: BodyMeshProps) {
@@ -267,16 +277,15 @@ function BodyMesh({
 
   const isBone = part.kind === 'bone';
 
-  // Determine the BASE color for this part, given pose state if any.
+  // Base color: bones cream, muscles either state-colored or default red.
   const baseColorHex = useMemo(() => {
     if (isBone) return '#e8dec5';
     if (poseActive) {
-      if (poseState) return STATE_COLORS[poseState];
-      // No state for this muscle in this pose: very muted
-      return STATE_COLORS.unloaded;
+      if (simpleState && simpleState !== 'quiet') return SIMPLE_STATE_COLORS[simpleState];
+      return SIMPLE_STATE_COLORS.quiet;
     }
     return '#c45050';
-  }, [isBone, poseActive, poseState]);
+  }, [isBone, poseActive, simpleState]);
 
   const material = useMemo(() => {
     const baseColor = new THREE.Color(baseColorHex);
@@ -295,6 +304,15 @@ function BodyMesh({
   useEffect(() => {
     const baseColor = new THREE.Color(baseColorHex);
     material.color.copy(baseColor);
+
+    // When a pose is active, three tiers:
+    //   1. PRIMARY muscle for this pose → bright, emissive boost
+    //   2. Non-primary muscle that's still working/stretching/at-risk → mid
+    //   3. Everything else (quiet muscles, all bones) → heavily dimmed so
+    //      the primaries POP and the body reads at a glance
+    const poseContext = poseActive && !isBone;
+    const isInteresting = poseContext && simpleState && simpleState !== 'quiet';
+
     if (isSelected) {
       material.emissive = baseColor.clone().multiplyScalar(0.55);
       material.emissiveIntensity = 1.0;
@@ -307,21 +325,37 @@ function BodyMesh({
       material.emissive = baseColor.clone().multiplyScalar(0.04);
       material.emissiveIntensity = 0.2;
       material.opacity = isBone ? 0.15 : 0.25;
-    } else {
-      // When a pose is active, push muscles with no state to lower opacity
-      // so the colored ones pop. Bones stay at the user-controlled opacity.
-      const unloaded = poseActive && !poseState && !isBone;
-      material.emissive = baseColor.clone().multiplyScalar(unloaded ? 0.02 : 0.08);
-      material.emissiveIntensity = unloaded ? 0.15 : 0.45;
+    } else if (poseActive) {
       if (isBone) {
-        material.opacity = skinOpacity;
+        // Bones stay at user-controlled opacity but slightly dimmed in pose-mode
+        material.emissive = baseColor.clone().multiplyScalar(0.04);
+        material.emissiveIntensity = 0.2;
+        material.opacity = skinOpacity * 0.45;
+      } else if (isPrimary && isInteresting) {
+        // The 4-6 muscles that are the main story — bright, glowy
+        material.emissive = baseColor.clone().multiplyScalar(0.45);
+        material.emissiveIntensity = 0.9;
+        material.opacity = 1.0;
+      } else if (isInteresting) {
+        // Non-primary but still working/stretching/at-risk — moderate
+        material.emissive = baseColor.clone().multiplyScalar(0.12);
+        material.emissiveIntensity = 0.4;
+        material.opacity = 0.55;
       } else {
-        material.opacity = unloaded ? 0.35 : 0.95;
+        // Quiet muscle — fade into the background
+        material.emissive = baseColor.clone().multiplyScalar(0.01);
+        material.emissiveIntensity = 0.1;
+        material.opacity = 0.18;
       }
+    } else {
+      // No pose active — original default look
+      material.emissive = baseColor.clone().multiplyScalar(0.08);
+      material.emissiveIntensity = 0.45;
+      material.opacity = isBone ? skinOpacity : 0.95;
     }
     material.depthWrite = material.opacity > 0.6;
     material.needsUpdate = true;
-  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, poseState]);
+  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, simpleState, isPrimary]);
 
   return (
     <mesh

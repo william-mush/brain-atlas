@@ -1,7 +1,16 @@
 'use client';
 
 import { REGION_LABELS, getBodyPart } from '@/lib/body';
-import { getStateForPart, STATE_COLORS, STATE_LABELS, STATE_DESCRIPTIONS, type Pose } from '@/lib/poses';
+import {
+  getSimpleStateForPart,
+  isAtRiskForPart,
+  isPrimaryForPart,
+  SIMPLE_STATE_COLORS,
+  SIMPLE_STATE_LABELS,
+  SIMPLE_STATE_DESCRIPTIONS,
+  type Pose,
+  type SimpleState,
+} from '@/lib/poses';
 
 interface Props {
   partId: string | null;
@@ -10,6 +19,8 @@ interface Props {
   onSelect: (id: string) => void;
   onClearPose: () => void;
 }
+
+const LEGEND_STATES: SimpleState[] = ['working', 'stretching', 'at-risk', 'quiet'];
 
 export default function BodyPanel({ partId, activePose, onClose, onClearPose }: Props) {
   const part = partId ? getBodyPart(partId) : null;
@@ -32,12 +43,39 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
           </button>
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5">
-          <p className="text-ink-100 leading-relaxed">{activePose.description}</p>
+          {/* Plain-language description first — for everyone */}
+          {activePose.plainLanguage && (
+            <p className="text-ink-50 leading-relaxed text-base">{activePose.plainLanguage}</p>
+          )}
 
-          <section>
-            <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Intent</h3>
-            <p className="text-sm text-ink-100 leading-relaxed italic">{activePose.intent}</p>
-          </section>
+          {/* Injury sites near the top — students need to see this */}
+          {activePose.injurySites && activePose.injurySites.length > 0 && (
+            <section className="bg-[#e8b04a]/10 border border-[#e8b04a]/40 rounded-md p-3 space-y-2">
+              <h3 className="text-xs uppercase tracking-widest text-[#e8b04a] flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-sm bg-[#e8b04a]" />
+                Where tension goes — and where injuries happen
+              </h3>
+              <ul className="space-y-2 text-sm text-ink-100 leading-relaxed">
+                {activePose.injurySites.map((s, i) => (
+                  <li key={i}>
+                    <span className="text-[#e8b04a] font-medium">{s.muscle ? muscleLabelFromSlug(s.muscle) : s.region}:</span>{' '}
+                    <span>{s.note}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Detailed description */}
+          <details>
+            <summary className="text-xs uppercase tracking-widest text-ink-300 cursor-pointer hover:text-ink-100">
+              Full description &amp; intent
+            </summary>
+            <div className="mt-3 space-y-3">
+              <p className="text-sm text-ink-100 leading-relaxed">{activePose.description}</p>
+              <p className="text-sm text-ink-200 leading-relaxed italic">{activePose.intent}</p>
+            </div>
+          </details>
 
           <section>
             <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Cues</h3>
@@ -65,21 +103,36 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
             </section>
           )}
 
+          {/* Primary muscles list — the "stars" of this pose */}
+          {activePose.primaryMuscles && activePose.primaryMuscles.length > 0 && (
+            <section className="border-t border-ink-700/60 pt-5">
+              <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Star muscles in this pose</h3>
+              <p className="text-xs text-ink-300 mb-2">
+                The 4-6 muscles that are the main story. Everything else on the body fades back.
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {activePose.primaryMuscles.map((slug) => (
+                  <span key={slug} className="text-xs px-2 py-0.5 rounded-full border border-[#d65a3a]/60 text-ink-100 bg-[#d65a3a]/10">
+                    {muscleLabelFromSlug(slug)}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Color legend */}
           <section className="border-t border-ink-700/60 pt-5">
-            <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Muscle states (legend)</h3>
-            <p className="text-xs text-ink-300 mb-3">
-              Click any muscle on the body to see its specific state in this pose.
-            </p>
+            <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Colors</h3>
             <ul className="space-y-2">
-              {(['concentric', 'eccentric', 'isometric', 'passive', 'loaded-passive', 'antagonist'] as const).map((s) => (
+              {LEGEND_STATES.map((s) => (
                 <li key={s} className="flex gap-2 items-start">
                   <span
                     className="mt-1 inline-block w-3 h-3 rounded-sm flex-shrink-0 border border-ink-600"
-                    style={{ backgroundColor: STATE_COLORS[s] }}
+                    style={{ backgroundColor: SIMPLE_STATE_COLORS[s] }}
                   />
                   <div className="text-xs leading-relaxed">
-                    <div className="text-ink-50 font-medium">{STATE_LABELS[s]}</div>
-                    <div className="text-ink-300">{STATE_DESCRIPTIONS[s]}</div>
+                    <div className="text-ink-50 font-medium">{SIMPLE_STATE_LABELS[s]}</div>
+                    <div className="text-ink-300">{SIMPLE_STATE_DESCRIPTIONS[s]}</div>
                   </div>
                 </li>
               ))}
@@ -98,7 +151,7 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
           Each muscle and bone comes from <a href="https://z-anatomy.com" target="_blank" rel="noreferrer" className="underline decoration-ink-500">Z-Anatomy</a>, a libre 3D atlas. Annotations are written through the lens of Ashtanga Vinyasa.
         </p>
         <p className="text-sm leading-relaxed">
-          Click a muscle for its origin, insertion, and yoga role. Pick a pose from the left to color every muscle by what it&apos;s doing in that pose.
+          Click a muscle for its origin, insertion, and yoga role. Pick a pose on the left to color every muscle by what it&apos;s doing in that pose.
         </p>
         <p className="text-xs uppercase tracking-widest text-ink-300 mt-4">
           Origin (green) and insertion (pink) dots appear when a muscle is selected.
@@ -108,9 +161,14 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
   }
 
   // A part is selected. If a pose is also active, show its state at the top.
-  const poseState = activePose && part.kind === 'muscle' ? getStateForPart(activePose, part) : null;
+  const simpleState = activePose && part.kind === 'muscle' ? getSimpleStateForPart(activePose, part) : null;
+  const isPrimary = activePose && part.kind === 'muscle' ? isPrimaryForPart(activePose, part) : false;
+  const isAtRisk = activePose && part.kind === 'muscle' ? isAtRiskForPart(activePose, part) : false;
   const poseStateNote = activePose && part.kind === 'muscle'
     ? findStateNote(activePose, part.id)
+    : null;
+  const injuryNote = activePose && part.kind === 'muscle' && isAtRisk
+    ? findInjuryNote(activePose, part.id)
     : null;
 
   return (
@@ -119,6 +177,7 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
         <div className="min-w-0">
           <p className="text-xs uppercase tracking-widest mb-1" style={{ color: part.kind === 'muscle' ? '#c45050' : '#e8dec5' }}>
             {REGION_LABELS[part.region]} · {part.kind}
+            {isPrimary && <span className="ml-2 text-[#d65a3a]">· STAR of this pose</span>}
           </p>
           <h2 className="font-serif text-2xl text-ink-50 leading-tight">
             {part.name}
@@ -130,29 +189,38 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
 
       <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5">
         {/* Pose state at the top if a pose is active */}
-        {activePose && (
-          <section className="bg-ink-900/60 border border-ink-700 rounded-md p-3 space-y-2">
+        {activePose && simpleState && (
+          <section
+            className="border rounded-md p-3 space-y-2"
+            style={{
+              backgroundColor: SIMPLE_STATE_COLORS[simpleState] + '14',
+              borderColor: SIMPLE_STATE_COLORS[simpleState] + '60',
+            }}
+          >
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs uppercase tracking-widest text-ink-300">In {activePose.english}</p>
               <span className="text-[10px] text-ink-400 italic font-serif">{activePose.sanskrit}</span>
             </div>
-            {poseState ? (
-              <>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="inline-block w-3 h-3 rounded-sm border border-ink-600"
-                    style={{ backgroundColor: STATE_COLORS[poseState] }}
-                  />
-                  <span className="text-sm text-ink-50 font-medium">{STATE_LABELS[poseState]}</span>
-                </div>
-                {poseStateNote && <p className="text-xs text-ink-200 leading-relaxed">{poseStateNote}</p>}
-              </>
-            ) : (
-              <p className="text-xs text-ink-300 italic">
-                This muscle is unloaded in this pose — no specific role.
-              </p>
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-block w-3 h-3 rounded-sm border border-ink-600"
+                style={{ backgroundColor: SIMPLE_STATE_COLORS[simpleState] }}
+              />
+              <span className="text-sm text-ink-50 font-medium">{SIMPLE_STATE_LABELS[simpleState]}</span>
+            </div>
+            {injuryNote && (
+              <p className="text-xs text-ink-100 leading-relaxed">{injuryNote}</p>
+            )}
+            {!injuryNote && poseStateNote && (
+              <p className="text-xs text-ink-100 leading-relaxed">{poseStateNote}</p>
             )}
           </section>
+        )}
+
+        {activePose && !simpleState && part.kind === 'muscle' && (
+          <p className="text-xs text-ink-400 italic">
+            Quiet in this pose — no specific role.
+          </p>
         )}
 
         {part.summary && <p className="text-ink-100 leading-relaxed">{part.summary}</p>}
@@ -230,4 +298,26 @@ function findStateNote(pose: Pose, partId: string): string | undefined {
     }
   }
   return undefined;
+}
+
+function findInjuryNote(pose: Pose, partId: string): string | undefined {
+  if (!pose.injurySites) return undefined;
+  const m = partId.match(/^muscle_(.+?)_([lr])$/);
+  if (!m) return undefined;
+  const slug = m[1];
+  const side = m[2] as 'l' | 'r';
+  for (const s of pose.injurySites) {
+    if (!s.muscle || s.muscle !== slug) continue;
+    const ss = s.side || 'both';
+    if (ss === 'both' || ss === side) return s.note;
+  }
+  return undefined;
+}
+
+/** Turn a muscle slug like 'long_head_of_biceps_femoris' into 'Long Head Of Biceps Femoris' */
+function muscleLabelFromSlug(slug: string): string {
+  return slug
+    .split('_')
+    .map((w) => w[0]?.toUpperCase() + w.slice(1))
+    .join(' ');
 }
