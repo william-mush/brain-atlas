@@ -601,15 +601,6 @@ export const BIBLIOGRAPHY: BiblioEntry[] = [
     note: 'Evan Thompson\'s mature statement of the enactive program, picking up where Varela left off. The book that completes the bridge from autopoiesis through phenomenology to the contemplative material that Thompson would take up in full in 2014.',
   },
   {
-    id: 'siegel-1989',
-    type: 'paper',
-    authors: 'Siegel RK',
-    year: 1989,
-    title: 'Intoxication: Life in Pursuit of Artificial Paradise',
-    venue: 'E. P. Dutton',
-    note: 'Cited not in this essay but worth noting in the historical record: Siegel\'s argument that pharmacological alteration of consciousness is a near-universal human behavior with cross-species parallels. Useful context for thinking about why the brain has receptor systems that respond to plant-derived compounds at all.',
-  },
-  {
     id: 'bryant-2009',
     type: 'book',
     authors: 'Bryant EF',

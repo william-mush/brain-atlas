@@ -245,6 +245,22 @@ export default function AwarenessHub() {
             one matters.
           </p>
         </Link>
+        <Link
+          href="/awareness/glossary"
+          className="block rounded-lg border border-neural-moss/40 bg-ink-800/40 hover:bg-ink-800 transition p-5"
+        >
+          <p className="text-[11px] uppercase tracking-[0.22em] mb-2 text-neural-moss">
+            Reference
+          </p>
+          <p className="font-serif text-lg text-ink-50 mb-1">
+            Glossary
+          </p>
+          <p className="text-ink-300 text-sm">
+            Sanskrit, Pāli, Tibetan, Chinese, and Arabic terms used
+            across the wing — proper diacritics, short glosses, links
+            to fuller treatment.
+          </p>
+        </Link>
       </aside>
     </main>
   );

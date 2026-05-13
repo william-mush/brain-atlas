@@ -36,6 +36,7 @@ describe('route existence', () => {
       '/awareness/theories',
       '/awareness/east-west',
       '/awareness/bibliography',
+      '/awareness/glossary',
       '/compendium',
       '/explore',
     ];
