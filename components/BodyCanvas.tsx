@@ -26,6 +26,11 @@ interface Props {
   hoveredId: string | null;
   visibleIds: Set<string>;
   activePose: Pose | null;
+  /** Lens filter for pose state coloring. If provided and a pose is active,
+   *  only muscles whose simple-state is in this set receive full coloring.
+   *  Other muscles dim toward the background. If undefined, all four states
+   *  render normally (the default, no-filter view). */
+  activeLenses?: Set<SimpleState>;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -125,6 +130,7 @@ function Scene({
   hoveredId,
   visibleIds,
   activePose,
+  activeLenses,
   onSelect,
   onHover,
   skinOpacity,
@@ -182,6 +188,13 @@ function Scene({
       {visibleMeshes.map(({ part, mesh }) => {
         const simpleState = getSimpleStateForPart(activePose, part);
         const isPrimary = isPrimaryForPart(activePose, part);
+        // Lens filter: when a pose is active AND the user has narrowed the
+        // view to specific states, mark meshes whose state is NOT in the
+        // active set as out-of-lens. They render dimmed by BodyMesh.
+        const inLens =
+          !activePose || !activeLenses || activeLenses.size === 0
+            ? true
+            : simpleState != null && activeLenses.has(simpleState);
         return (
           <BodyMesh
             key={part.id}
@@ -193,6 +206,7 @@ function Scene({
             poseActive={!!activePose}
             simpleState={simpleState}
             isPrimary={isPrimary}
+            inLens={inLens}
             onSelect={onSelect}
             onHover={onHover}
           />
@@ -254,6 +268,10 @@ interface BodyMeshProps {
   poseActive: boolean;
   simpleState: SimpleState | null;
   isPrimary: boolean;
+  /** Set to false when the lens filter is excluding this mesh's state.
+   *  Renders the mesh in heavily-dimmed-background mode regardless of
+   *  whether its underlying state would otherwise be "interesting." */
+  inLens?: boolean;
   onSelect: (id: string | null) => void;
   onHover: (id: string | null) => void;
 }
@@ -267,6 +285,7 @@ function BodyMesh({
   poseActive,
   simpleState,
   isPrimary,
+  inLens = true,
   onSelect,
   onHover,
 }: BodyMeshProps) {
@@ -311,7 +330,11 @@ function BodyMesh({
     //   3. Everything else (quiet muscles, all bones) → heavily dimmed so
     //      the primaries POP and the body reads at a glance
     const poseContext = poseActive && !isBone;
-    const isInteresting = poseContext && simpleState && simpleState !== 'quiet';
+    // A muscle is "interesting" only if its state is non-quiet AND it
+    // passes the lens filter. Out-of-lens muscles fade into the background
+    // the same way quiet muscles do.
+    const isInteresting =
+      poseContext && simpleState && simpleState !== 'quiet' && inLens;
 
     if (isSelected) {
       material.emissive = baseColor.clone().multiplyScalar(0.55);
@@ -355,7 +378,7 @@ function BodyMesh({
     }
     material.depthWrite = material.opacity > 0.6;
     material.needsUpdate = true;
-  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, simpleState, isPrimary]);
+  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, simpleState, isPrimary, inLens]);
 
   return (
     <mesh

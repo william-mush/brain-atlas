@@ -6,7 +6,16 @@ import BodyPanel from './BodyPanel';
 import BodyList from './BodyList';
 import PoseSelector from './PoseSelector';
 import { BODY_PARTS, getBodyPart, type BodyRegion, type BoneGroup, BONE_GROUP_LABELS } from '@/lib/body';
-import { POSES, getPose, SIMPLE_STATE_COLORS, SIMPLE_STATE_LABELS, type SimpleState } from '@/lib/poses';
+import {
+  POSES,
+  getPose,
+  SIMPLE_STATE_COLORS,
+  SIMPLE_STATE_LABELS,
+  SIMPLE_STATE_DESCRIPTIONS,
+  type SimpleState,
+} from '@/lib/poses';
+
+const ALL_LENSES: SimpleState[] = ['working', 'stretching', 'at-risk', 'quiet'];
 
 const BodyCanvas = dynamic(() => import('./BodyCanvas'), { ssr: false });
 
@@ -73,7 +82,36 @@ export default function BodyExplorer() {
   const [visibleIds, setVisibleIds] = useState<Set<string>>(INITIAL_VISIBLE);
   const [enabledRegions, setEnabledRegions] = useState<Set<BodyRegion>>(INITIAL_REGIONS);
   const [activePoseId, setActivePoseId] = useState<string | null>(null);
+  // Lens filter — which simple states are currently visible when a pose is
+  // active. Start with all four; clicking one in the legend isolates it,
+  // clicking it again restores the all-lenses view.
+  const [activeLenses, setActiveLenses] = useState<Set<SimpleState>>(
+    () => new Set(ALL_LENSES),
+  );
   const [fullscreen, setFullscreen] = useState(false);
+
+  // When the active pose changes, reset the lens filter to show all states.
+  useEffect(() => {
+    setActiveLenses(new Set(ALL_LENSES));
+  }, [activePoseId]);
+
+  const toggleLens = (lens: SimpleState) => {
+    setActiveLenses((prev) => {
+      const allOn = ALL_LENSES.every((l) => prev.has(l));
+      // If all lenses are currently on, clicking one isolates it.
+      if (allOn) return new Set([lens]);
+      // If only this lens is on, clicking it restores all.
+      if (prev.size === 1 && prev.has(lens)) return new Set(ALL_LENSES);
+      // Otherwise, toggle this lens in the current set.
+      const next = new Set(prev);
+      if (next.has(lens)) next.delete(lens);
+      else next.add(lens);
+      // Empty set is treated as "all on" — don't let the user end up seeing nothing.
+      if (next.size === 0) return new Set(ALL_LENSES);
+      return next;
+    });
+  };
+  const allLensesActive = activeLenses.size === ALL_LENSES.length;
 
   useEffect(() => {
     if (!fullscreen) return;
@@ -375,6 +413,7 @@ export default function BodyExplorer() {
           hoveredId={hoveredId}
           visibleIds={effectiveVisible}
           activePose={activePose}
+          activeLenses={activeLenses}
           onSelect={selectAndShow}
           onHover={setHoveredId}
         />
@@ -407,18 +446,63 @@ export default function BodyExplorer() {
           </div>
         )}
 
-        {/* Pose state legend — visible when a pose is active */}
+        {/* Pose state lens toggle — visible when a pose is active.
+            Each row is now a clickable filter: click one to isolate that
+            lens; click it again or click "All four" to restore the
+            unfiltered view. */}
         {activePose && (
-          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/85 px-3 py-2 rounded-md border border-ink-700 backdrop-blur text-[11px] text-ink-200 max-w-[220px]">
-            <div className="font-medium text-ink-50 mb-1.5 truncate">{activePose.english}</div>
-            <ul className="space-y-1.5">
-              {(['working', 'stretching', 'at-risk', 'quiet'] as const).map((s: SimpleState) => (
-                <li key={s} className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-sm flex-shrink-0 border border-ink-700" style={{ backgroundColor: SIMPLE_STATE_COLORS[s] }} />
-                  <span className="leading-tight">{SIMPLE_STATE_LABELS[s]}</span>
-                </li>
-              ))}
+          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/90 rounded-md border border-ink-700 backdrop-blur text-[11px] text-ink-200 max-w-[260px] overflow-hidden">
+            <div className="px-3 py-2 border-b border-ink-700 flex items-center gap-2">
+              <span className="font-medium text-ink-50 truncate flex-1">{activePose.english}</span>
+              {!allLensesActive && (
+                <button
+                  onClick={() => setActiveLenses(new Set(ALL_LENSES))}
+                  className="text-[10px] px-2 py-0.5 rounded-full border border-ink-600 text-ink-200 hover:bg-ink-800 hover:text-ink-50 transition flex-shrink-0"
+                  title="Show all four states"
+                >
+                  All
+                </button>
+              )}
+            </div>
+            <p className="px-3 pt-2 text-[10px] uppercase tracking-[0.16em] text-ink-400">
+              Show
+            </p>
+            <ul className="px-2 pb-2 pt-1 space-y-0.5">
+              {ALL_LENSES.map((s) => {
+                const active = activeLenses.has(s);
+                return (
+                  <li key={s}>
+                    <button
+                      onClick={() => toggleLens(s)}
+                      className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left transition ${
+                        active
+                          ? 'bg-ink-800 text-ink-50'
+                          : 'text-ink-400 hover:bg-ink-800/60'
+                      }`}
+                      title={SIMPLE_STATE_DESCRIPTIONS[s]}
+                    >
+                      <span
+                        className="inline-block w-3 h-3 rounded-sm flex-shrink-0 border border-ink-700"
+                        style={{
+                          backgroundColor: active
+                            ? SIMPLE_STATE_COLORS[s]
+                            : 'transparent',
+                          borderColor: active ? SIMPLE_STATE_COLORS[s] : '#3d3625',
+                        }}
+                      />
+                      <span className="leading-tight">{SIMPLE_STATE_LABELS[s]}</span>
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
+            {!allLensesActive && (
+              <p className="px-3 pb-2 pt-1 text-[10px] text-ink-400 italic leading-snug border-t border-ink-700/60">
+                Only {Array.from(activeLenses)
+                  .map((l) => SIMPLE_STATE_LABELS[l].toLowerCase())
+                  .join(' + ')} shown.
+              </p>
+            )}
           </div>
         )}
 
