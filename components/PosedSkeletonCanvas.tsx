@@ -84,14 +84,18 @@ const JOINT_TARGETS: Record<string, JointTarget> = {
 
 interface SceneProps {
   poseId: string;
+  /** When false, the scene won't register window-level arrow-key handlers.
+   *  Use for inset versions that share a page with another canvas that
+   *  owns the keyboard. Defaults to true. */
+  arrowKeys?: boolean;
 }
 
-function Scene({ poseId }: SceneProps) {
+function Scene({ poseId, arrowKeys = true }: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
   const { camera, controls } = useThree();
 
-  useArrowKeyControls(groupRef, camera, controls);
+  useArrowKeyControls(groupRef, camera, controls, { enabled: arrowKeys });
 
   // Capture rest rotations once
   const restRotations = useRef<Map<string, THREE.Euler>>(new Map());
@@ -158,12 +162,15 @@ function Scene({ poseId }: SceneProps) {
 
 interface Props {
   poseId: string;
+  /** When false, this canvas won't listen for arrow keys. Use for inset
+   *  versions sharing a page with another canvas that owns the keyboard. */
+  arrowKeys?: boolean;
 }
 
 const DEFAULT_CAMERA_POS: [number, number, number] = [0, 0.9, 3.5];
 const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0.9, 0];
 
-export default function PosedSkeletonCanvas({ poseId }: Props) {
+export default function PosedSkeletonCanvas({ poseId, arrowKeys = true }: Props) {
   return (
     <div className="absolute inset-0">
       <Canvas
@@ -181,7 +188,7 @@ export default function PosedSkeletonCanvas({ poseId }: Props) {
         <directionalLight position={[-6, 3, -4]} intensity={0.55} color="#9ec7e6" />
 
         <Suspense fallback={null}>
-          <Scene poseId={poseId} />
+          <Scene poseId={poseId} arrowKeys={arrowKeys} />
         </Suspense>
 
         <OrbitControls

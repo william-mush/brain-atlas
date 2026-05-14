@@ -157,12 +157,16 @@ function Scene({
   }, [resetTick, camera, controls]);
 
   useEffect(() => {
-    if (selectedId || hoveredId) setAutoRotate(false);
-    else {
+    // Don't auto-rotate when the user is engaged or when a pose is
+    // active. When a pose is loaded the user wants to study the muscle
+    // state, not chase a moving model.
+    if (selectedId || hoveredId || activePose) {
+      setAutoRotate(false);
+    } else {
       const t = setTimeout(() => setAutoRotate(true), 2400);
       return () => clearTimeout(t);
     }
-  }, [selectedId, hoveredId]);
+  }, [selectedId, hoveredId, activePose]);
 
   useFrame((_, delta) => {
     if (autoRotate && groupRef.current) {

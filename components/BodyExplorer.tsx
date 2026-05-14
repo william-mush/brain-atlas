@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import BodyPanel, { type PanelFocus } from './BodyPanel';
 import BodyList from './BodyList';
@@ -14,10 +15,12 @@ import {
   SIMPLE_STATE_DESCRIPTIONS,
   type SimpleState,
 } from '@/lib/poses';
+import { POSE_ANGLES } from '@/lib/pose-angles';
 
 const ALL_LENSES: SimpleState[] = ['working', 'stretching', 'at-risk', 'quiet'];
 
 const BodyCanvas = dynamic(() => import('./BodyCanvas'), { ssr: false });
+const SkeletonPoseInset = dynamic(() => import('./SkeletonPoseInset'), { ssr: false });
 
 const ALL_REGIONS: BodyRegion[] = [
   'head-neck',
@@ -77,11 +80,20 @@ function partsInAllBoneGroups(): Map<BoneGroup, string[]> {
 const BONE_GROUPS = partsInAllBoneGroups();
 
 export default function BodyExplorer() {
+  // Optional `?pose=<id>` query param pre-selects a pose on load.
+  // Used by /poses/[id] redirects so the URL space still works.
+  const searchParams = useSearchParams();
+  const initialPoseFromUrl = (() => {
+    const q = searchParams.get('pose');
+    if (!q) return null;
+    return POSES.some((p) => p.id === q) ? q : null;
+  })();
+
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [visibleIds, setVisibleIds] = useState<Set<string>>(INITIAL_VISIBLE);
   const [enabledRegions, setEnabledRegions] = useState<Set<BodyRegion>>(INITIAL_REGIONS);
-  const [activePoseId, setActivePoseId] = useState<string | null>(null);
+  const [activePoseId, setActivePoseId] = useState<string | null>(initialPoseFromUrl);
   // Lens filter — which simple states are currently visible when a pose is
   // active. Start with all four; clicking one in the legend isolates it,
   // clicking it again restores the all-lenses view.
@@ -447,6 +459,14 @@ export default function BodyExplorer() {
           onSelect={selectAndShow}
           onHover={setHoveredId}
         />
+        {/* Skeleton-in-pose inset: only renders when a pose is active. */}
+        {activePoseId && (
+          <SkeletonPoseInset
+            poseId={activePoseId}
+            hasAngles={POSE_ANGLES.some((p) => p.id === activePoseId)}
+            poseName={activePose?.english}
+          />
+        )}
         <button
           onClick={() => setFullscreen((v) => !v)}
           className="absolute top-3 left-3 z-20 flex items-center gap-1.5 text-[11px] text-ink-100 bg-ink-900/80 px-3 py-1.5 rounded-full border border-ink-700 hover:bg-ink-800 hover:border-ink-500 backdrop-blur transition"

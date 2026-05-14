@@ -18,12 +18,16 @@ export function useArrowKeyControls(
   camera: THREE.Camera,
   controls: unknown,
   options?: {
+    /** Disable to opt out of arrow-key handling (useful for inset canvases
+     *  that share a page with another canvas that owns the keyboard). */
+    enabled?: boolean;
     rotateStep?: number; // radians per keypress
     zoomStep?: number; // fraction of distance per keypress
     minDistance?: number;
     maxDistance?: number;
   },
 ) {
+  const enabled = options?.enabled ?? true;
   const rotateStep = options?.rotateStep ?? Math.PI / 12; // 15° per press
   const zoomStep = options?.zoomStep ?? 0.1;
   const minDistance = options?.minDistance ?? 1.0;
@@ -31,6 +35,7 @@ export function useArrowKeyControls(
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (!enabled) return;
 
     const handler = (e: KeyboardEvent) => {
       // Don't steal keys from inputs / contenteditable.
@@ -71,5 +76,5 @@ export function useArrowKeyControls(
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [groupRef, camera, controls, rotateStep, zoomStep, minDistance, maxDistance]);
+  }, [enabled, groupRef, camera, controls, rotateStep, zoomStep, minDistance, maxDistance]);
 }
