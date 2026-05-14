@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
-import BodyPanel from './BodyPanel';
+import BodyPanel, { type PanelFocus } from './BodyPanel';
 import BodyList from './BodyList';
 import PoseSelector from './PoseSelector';
 import { BODY_PARTS, getBodyPart, type BodyRegion, type BoneGroup, BONE_GROUP_LABELS } from '@/lib/body';
@@ -88,26 +88,47 @@ export default function BodyExplorer() {
   const [activeLenses, setActiveLenses] = useState<Set<SimpleState>>(
     () => new Set(ALL_LENSES),
   );
+  // Right-panel focus when a pose is active. Three modes: overview /
+  // state-detail / muscle-focus. Reset to overview whenever the pose
+  // changes (so the user lands cleanly on the new pose).
+  const [focus, setFocus] = useState<PanelFocus>({ kind: 'overview' });
   const [fullscreen, setFullscreen] = useState(false);
 
-  // When the active pose changes, reset the lens filter to show all states.
+  // When the active pose changes, reset the lens filter and focus.
   useEffect(() => {
     setActiveLenses(new Set(ALL_LENSES));
+    setFocus({ kind: 'overview' });
   }, [activePoseId]);
 
   const toggleLens = (lens: SimpleState) => {
     setActiveLenses((prev) => {
       const allOn = ALL_LENSES.every((l) => prev.has(l));
       // If all lenses are currently on, clicking one isolates it.
-      if (allOn) return new Set([lens]);
-      // If only this lens is on, clicking it restores all.
-      if (prev.size === 1 && prev.has(lens)) return new Set(ALL_LENSES);
+      if (allOn) {
+        // Also drill the right panel into this state — same intent.
+        if (activePoseId) setFocus({ kind: 'state-detail', state: lens });
+        return new Set([lens]);
+      }
+      // If only this lens is on, clicking it restores all (and returns the
+      // right panel to overview).
+      if (prev.size === 1 && prev.has(lens)) {
+        if (activePoseId) setFocus({ kind: 'overview' });
+        return new Set(ALL_LENSES);
+      }
       // Otherwise, toggle this lens in the current set.
       const next = new Set(prev);
       if (next.has(lens)) next.delete(lens);
       else next.add(lens);
       // Empty set is treated as "all on" — don't let the user end up seeing nothing.
-      if (next.size === 0) return new Set(ALL_LENSES);
+      if (next.size === 0) {
+        if (activePoseId) setFocus({ kind: 'overview' });
+        return new Set(ALL_LENSES);
+      }
+      // If exactly one lens remains, drill into it.
+      if (next.size === 1 && activePoseId) {
+        const [only] = Array.from(next);
+        setFocus({ kind: 'state-detail', state: only });
+      }
       return next;
     });
   };
@@ -153,6 +174,15 @@ export default function BodyExplorer() {
         next.add(id);
         return next;
       });
+      // When a pose is active, clicking a body part drills the right panel
+      // into muscle-focus mode (rather than the old behavior of replacing
+      // the pose summary with anatomy). The pose context is preserved.
+      if (activePoseId) {
+        setFocus({ kind: 'muscle-focus', partId: id });
+      }
+    } else if (activePoseId) {
+      // Deselection while a pose is active returns to overview.
+      setFocus({ kind: 'overview' });
     }
     setSelectedId(id);
   };
@@ -456,7 +486,10 @@ export default function BodyExplorer() {
               <span className="font-medium text-ink-50 truncate flex-1">{activePose.english}</span>
               {!allLensesActive && (
                 <button
-                  onClick={() => setActiveLenses(new Set(ALL_LENSES))}
+                  onClick={() => {
+                    setActiveLenses(new Set(ALL_LENSES));
+                    setFocus({ kind: 'overview' });
+                  }}
                   className="text-[10px] px-2 py-0.5 rounded-full border border-ink-600 text-ink-200 hover:bg-ink-800 hover:text-ink-50 transition flex-shrink-0"
                   title="Show all four states"
                 >
@@ -521,9 +554,20 @@ export default function BodyExplorer() {
         <BodyPanel
           partId={selectedId}
           activePose={activePose}
+          focus={focus}
           onClose={() => setSelectedId(null)}
           onSelect={selectAndShow}
           onClearPose={() => setActivePoseId(null)}
+          onSetFocus={(f) => {
+            setFocus(f);
+            // If the panel asks to focus a muscle, select it on the 3D body too.
+            if (f.kind === 'muscle-focus') {
+              setSelectedId(f.partId);
+            } else if (f.kind === 'overview') {
+              // Returning to overview clears the muscle selection.
+              setSelectedId(null);
+            }
+          }}
         />
       </aside>
     </div>

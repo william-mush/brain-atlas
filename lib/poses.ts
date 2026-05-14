@@ -1328,3 +1328,116 @@ export function getStateForPart(pose: Pose | null, part: BodyPart): MuscleState 
   }
   return match ? match.state : null;
 }
+
+// ============================================================
+// Helpers for the right-panel pose drill-down (state-detail view,
+// muscle-focus view with "peers in the same state" lists).
+// ============================================================
+
+/** Map a MuscleStateEntry to the SimpleState bucket for grouping. */
+export function simpleStateOfEntry(
+  pose: Pose,
+  entry: MuscleStateEntry,
+): SimpleState {
+  // At-risk override: if the muscle (with matching side, or 'both')
+  // appears in injurySites, that wins.
+  if (pose.injurySites) {
+    const entrySide = entry.side || 'both';
+    for (const site of pose.injurySites) {
+      if (!site.muscle || site.muscle !== entry.muscle) continue;
+      const siteSide = site.side || 'both';
+      if (siteSide === 'both' || entrySide === 'both' || siteSide === entrySide) {
+        return 'at-risk';
+      }
+    }
+  }
+  return simplify(entry.state);
+}
+
+/**
+ * All MuscleStateEntries in this pose that bucket into the given SimpleState,
+ * sorted with primary muscles first. Used by the state-detail view.
+ *
+ * Note: this does NOT include muscles named only in injurySites with no
+ * explicit state entry. Such muscles are surfaced separately via injurySites.
+ */
+export function muscleEntriesByState(
+  pose: Pose,
+  state: SimpleState,
+): MuscleStateEntry[] {
+  const primarySet = new Set(pose.primaryMuscles ?? []);
+  const matching = pose.states.filter(
+    (e) => simpleStateOfEntry(pose, e) === state,
+  );
+  matching.sort((a, b) => {
+    const ap = primarySet.has(a.muscle) ? 0 : 1;
+    const bp = primarySet.has(b.muscle) ? 0 : 1;
+    if (ap !== bp) return ap - bp;
+    return a.muscle.localeCompare(b.muscle);
+  });
+  return matching;
+}
+
+/**
+ * Peers in the same SimpleState as the given muscle entry — all other
+ * muscle entries in this pose that share its state, with the focal entry
+ * excluded. Used by the muscle-focus view.
+ */
+export function peersOfMuscleInState(
+  pose: Pose,
+  focal: MuscleStateEntry,
+): MuscleStateEntry[] {
+  const focalState = simpleStateOfEntry(pose, focal);
+  return muscleEntriesByState(pose, focalState).filter(
+    (e) => !(e.muscle === focal.muscle && (e.side || 'both') === (focal.side || 'both')),
+  );
+}
+
+/**
+ * Resolve a body part id (like 'muscle_latissimus_dorsi_l') to its
+ * MuscleStateEntry within a pose, or null if the muscle isn't in the pose.
+ * Prefers side-specific over 'both'.
+ */
+export function entryForPart(
+  pose: Pose | null,
+  part: BodyPart,
+): MuscleStateEntry | null {
+  if (!pose || part.kind !== 'muscle') return null;
+  const m = part.id.match(/^muscle_(.+?)_([lr])$/);
+  if (!m) return null;
+  const slug = m[1];
+  const side = m[2] as 'l' | 'r';
+  let fallback: MuscleStateEntry | null = null;
+  for (const entry of pose.states) {
+    if (entry.muscle !== slug) continue;
+    const entrySide = entry.side || 'both';
+    if (entrySide === side) return entry;
+    if (entrySide === 'both' && !fallback) fallback = entry;
+  }
+  return fallback;
+}
+
+/** Count of muscle entries per simple state. Used to render counts in headers.
+ *  Includes injurySites entries that don't have a state of their own (they
+ *  contribute to the at-risk count). */
+export function muscleCountsByState(pose: Pose): Record<SimpleState, number> {
+  const counts: Record<SimpleState, number> = {
+    working: 0,
+    stretching: 0,
+    'at-risk': 0,
+    quiet: 0,
+  };
+  for (const entry of pose.states) {
+    counts[simpleStateOfEntry(pose, entry)]++;
+  }
+  // Add injurySites that don't already correspond to a state entry.
+  if (pose.injurySites) {
+    const stateMuscles = new Set(pose.states.map((e) => e.muscle));
+    for (const site of pose.injurySites) {
+      if (site.muscle && !stateMuscles.has(site.muscle)) {
+        counts['at-risk']++;
+      }
+    }
+  }
+  return counts;
+}
