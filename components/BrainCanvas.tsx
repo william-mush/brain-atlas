@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useArrowKeyControls } from '@/lib/use-arrow-key-controls';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { REGIONS, type BrainRegion } from '@/lib/regions';
@@ -157,6 +158,9 @@ function Scene({
   const groupRef = useRef<THREE.Group>(null);
   const { camera, controls } = useThree();
   const [autoRotate, setAutoRotate] = useState(true);
+
+  // Arrow-key controls: Left/Right rotate, Up/Down zoom.
+  useArrowKeyControls(groupRef, camera, controls);
 
   // Reset the view when the resetTick changes.
   useEffect(() => {

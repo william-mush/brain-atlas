@@ -1,10 +1,11 @@
 'use client';
 
 import { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { POSE_ANGLES } from '@/lib/pose-angles';
+import { useArrowKeyControls } from '@/lib/use-arrow-key-controls';
 
 const MODEL_URL = '/models/skeleton.glb';
 
@@ -222,6 +223,11 @@ interface SceneProps {
 
 function Scene({ jointRotations }: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
+  const groupRef = useRef<THREE.Group>(null);
+  const { camera, controls } = useThree();
+
+  // Arrow-key controls: Left/Right rotate, Up/Down zoom.
+  useArrowKeyControls(groupRef, camera, controls);
 
   // Capture each bone's rest local rotation once at load
   const restRotations = useRef<Map<string, THREE.Euler>>(new Map());
@@ -283,7 +289,11 @@ function Scene({ jointRotations }: SceneProps) {
     });
   });
 
-  return <primitive object={gltf.scene} />;
+  return (
+    <group ref={groupRef}>
+      <primitive object={gltf.scene} />
+    </group>
+  );
 }
 
 export default function SkeletonExplorer() {
@@ -445,7 +455,7 @@ export default function SkeletonExplorer() {
           />
         </Canvas>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
-          Drag to rotate · right-drag to pan · scroll to zoom
+          Drag or ← → to rotate · ↑ ↓ to zoom · right-drag to pan
         </div>
       </main>
     </div>

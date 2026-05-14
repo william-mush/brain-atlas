@@ -534,7 +534,7 @@ export default function BrainExplorer() {
         )}
 
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
-          Drag to rotate · right-drag to pan · scroll to zoom{fullscreen ? ' · Esc to exit' : ''}
+          Drag or ← → to rotate · ↑ ↓ to zoom · right-drag to pan{fullscreen ? ' · Esc to exit' : ''}
         </div>
         {!fullscreen && (
           <a

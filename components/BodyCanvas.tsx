@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import { useArrowKeyControls } from '@/lib/use-arrow-key-controls';
 import { BODY_PARTS, ATTACHMENTS, type BodyPart } from '@/lib/body';
 import {
   getSimpleStateForPart,
@@ -140,6 +141,9 @@ function Scene({
   const groupRef = useRef<THREE.Group>(null);
   const { camera, controls } = useThree();
   const [autoRotate, setAutoRotate] = useState(true);
+
+  // Arrow-key controls: Left/Right rotate, Up/Down zoom.
+  useArrowKeyControls(groupRef, camera, controls);
 
   useEffect(() => {
     if (resetTick === 0) return;
