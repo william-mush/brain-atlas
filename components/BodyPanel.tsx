@@ -8,9 +8,12 @@ import {
   SIMPLE_STATE_COLORS,
   SIMPLE_STATE_LABELS,
   SIMPLE_STATE_DESCRIPTIONS,
+  STATE_LABELS,
   type Pose,
   type SimpleState,
+  type MuscleState,
 } from '@/lib/poses';
+import { POSE_ANGLES } from '@/lib/pose-angles';
 
 interface Props {
   partId: string | null;
@@ -103,22 +106,13 @@ export default function BodyPanel({ partId, activePose, onClose, onClearPose }: 
             </section>
           )}
 
-          {/* Primary muscles list — the "stars" of this pose */}
-          {activePose.primaryMuscles && activePose.primaryMuscles.length > 0 && (
-            <section className="border-t border-ink-700/60 pt-5">
-              <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-2">Star muscles in this pose</h3>
-              <p className="text-xs text-ink-300 mb-2">
-                The 4-6 muscles that are the main story. Everything else on the body fades back.
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {activePose.primaryMuscles.map((slug) => (
-                  <span key={slug} className="text-xs px-2 py-0.5 rounded-full border border-[#d65a3a]/60 text-ink-100 bg-[#d65a3a]/10">
-                    {muscleLabelFromSlug(slug)}
-                  </span>
-                ))}
-              </div>
-            </section>
-          )}
+          {/* Muscle involvement — every muscle that has a story in this pose,
+              grouped by simple state, with the detailed state and any note. */}
+          <PoseMuscleInvolvement pose={activePose} />
+
+          {/* Bone involvement — derived from pose-angles.ts, the joints that
+              actually move in this pose. */}
+          <PoseBoneInvolvement poseId={activePose.id} />
 
           {/* Color legend */}
           <section className="border-t border-ink-700/60 pt-5">
@@ -320,4 +314,198 @@ function muscleLabelFromSlug(slug: string): string {
     .split('_')
     .map((w) => w[0]?.toUpperCase() + w.slice(1))
     .join(' ');
+}
+
+// Map detailed MuscleState → SimpleState for grouping the involvement view.
+const STATE_TO_SIMPLE: Record<MuscleState, SimpleState> = {
+  concentric: 'working',
+  isometric: 'working',
+  eccentric: 'working',
+  passive: 'stretching',
+  'loaded-passive': 'stretching',
+  antagonist: 'quiet',
+  unloaded: 'quiet',
+};
+
+// Order groups so the most consequential states come first.
+const GROUP_ORDER: SimpleState[] = ['at-risk', 'working', 'stretching', 'quiet'];
+
+interface PoseMuscleInvolvementProps {
+  pose: Pose;
+}
+
+function PoseMuscleInvolvement({ pose }: PoseMuscleInvolvementProps) {
+  if (!pose.states || pose.states.length === 0) return null;
+
+  // Bucket states by simple state. A muscle that is also in injurySites
+  // gets surfaced under 'at-risk' regardless of its detailed state.
+  const atRiskSlugs = new Set(
+    (pose.injurySites ?? [])
+      .map((s) => s.muscle)
+      .filter((m): m is string => Boolean(m)),
+  );
+  const primarySlugs = new Set(pose.primaryMuscles ?? []);
+
+  const groups: Record<SimpleState, typeof pose.states> = {
+    working: [],
+    stretching: [],
+    'at-risk': [],
+    quiet: [],
+  };
+  for (const entry of pose.states) {
+    const bucket = atRiskSlugs.has(entry.muscle)
+      ? 'at-risk'
+      : STATE_TO_SIMPLE[entry.state];
+    groups[bucket].push(entry);
+  }
+
+  // Sort within each group: primary muscles first.
+  for (const k of GROUP_ORDER) {
+    groups[k].sort((a, b) => {
+      const ap = primarySlugs.has(a.muscle) ? 0 : 1;
+      const bp = primarySlugs.has(b.muscle) ? 0 : 1;
+      if (ap !== bp) return ap - bp;
+      return a.muscle.localeCompare(b.muscle);
+    });
+  }
+
+  return (
+    <section className="border-t border-ink-700/60 pt-5">
+      <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-1">
+        Muscle involvement
+      </h3>
+      <p className="text-xs text-ink-300 mb-3">
+        Every muscle that has a job in this pose, grouped by what it&apos;s doing.
+      </p>
+      <div className="space-y-4">
+        {GROUP_ORDER.map((g) => {
+          const entries = groups[g];
+          if (entries.length === 0) return null;
+          return (
+            <div key={g}>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span
+                  className="inline-block w-2.5 h-2.5 rounded-sm border border-ink-700"
+                  style={{ backgroundColor: SIMPLE_STATE_COLORS[g] }}
+                />
+                <span className="text-[11px] uppercase tracking-[0.16em] text-ink-200 font-medium">
+                  {SIMPLE_STATE_LABELS[g]}
+                </span>
+                <span className="text-[10px] text-ink-500">({entries.length})</span>
+              </div>
+              <ul className="space-y-1.5 pl-4">
+                {entries.map((entry, i) => {
+                  const isPrimary = primarySlugs.has(entry.muscle);
+                  const side =
+                    entry.side && entry.side !== 'both'
+                      ? ` (${entry.side.toUpperCase()})`
+                      : '';
+                  return (
+                    <li key={`${entry.muscle}-${i}`} className="text-xs leading-relaxed">
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <span
+                          className={
+                            isPrimary
+                              ? 'text-ink-50 font-medium'
+                              : 'text-ink-100'
+                          }
+                        >
+                          {muscleLabelFromSlug(entry.muscle)}
+                          {side}
+                        </span>
+                        {isPrimary && (
+                          <span className="text-[9px] uppercase tracking-[0.15em] text-ink-400">
+                            primary
+                          </span>
+                        )}
+                        <span className="text-[10px] text-ink-400 italic">
+                          {STATE_LABELS[entry.state].split('—')[1]?.trim() ?? entry.state}
+                        </span>
+                      </div>
+                      {entry.note && (
+                        <p className="text-ink-300 mt-0.5 leading-snug">{entry.note}</p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// Bone-rotation thresholds for "this joint is meaningfully involved."
+const BONE_INVOLVED_THRESHOLD = 5; // degrees
+
+// Friendlier display labels for the slider keys used in pose-angles.ts.
+function boneLabel(key: string): string {
+  // key looks like "UpperArm_r__x" or "region:lumbar__x"
+  const [bone, axis] = key.split('__');
+  if (bone.startsWith('region:')) {
+    const region = bone.slice('region:'.length);
+    return region.charAt(0).toUpperCase() + region.slice(1) + ' spine';
+  }
+  // Side suffix
+  const sideMatch = bone.match(/_(l|r)$/);
+  const side = sideMatch ? (sideMatch[1] === 'l' ? 'Left ' : 'Right ') : '';
+  const stem = sideMatch ? bone.slice(0, -2) : bone;
+  // Common stems
+  const stemLabels: Record<string, string> = {
+    UpperArm: 'shoulder',
+    Forearm: 'elbow',
+    Hand: 'wrist',
+    Thigh: 'hip',
+    Shin: 'knee',
+    Foot: 'ankle',
+  };
+  const stemDisplay = stemLabels[stem] ?? stem.toLowerCase();
+  // Axis annotation
+  const axisLabels: Record<string, string> = {
+    x: 'flex/extend',
+    y: 'rotate',
+    z: 'abduct',
+  };
+  const axisDisplay = axisLabels[axis] ?? axis;
+  return `${side}${stemDisplay} — ${axisDisplay}`;
+}
+
+interface PoseBoneInvolvementProps {
+  poseId: string;
+}
+
+function PoseBoneInvolvement({ poseId }: PoseBoneInvolvementProps) {
+  const pose = POSE_ANGLES.find((p) => p.id === poseId);
+  if (!pose) return null;
+
+  const entries = Object.entries(pose.angles)
+    .filter(([, deg]) => Math.abs(deg) >= BONE_INVOLVED_THRESHOLD)
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
+
+  if (entries.length === 0) return null;
+
+  return (
+    <section className="border-t border-ink-700/60 pt-5">
+      <h3 className="text-xs uppercase tracking-widest text-ink-300 mb-1">
+        Joints &amp; bones engaged
+      </h3>
+      <p className="text-xs text-ink-300 mb-3">
+        Which joints leave neutral and by how much. Larger angles =
+        more dramatic shape change.
+      </p>
+      <ul className="space-y-1">
+        {entries.map(([key, deg]) => (
+          <li key={key} className="flex items-baseline gap-2 text-xs">
+            <span className="text-ink-100 flex-1">{boneLabel(key)}</span>
+            <span className="font-mono text-ink-300 text-[11px]">
+              {deg > 0 ? '+' : ''}
+              {Math.round(deg)}°
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }

@@ -507,7 +507,7 @@ export default function BodyExplorer() {
         )}
 
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-ink-300 bg-ink-900/70 px-3 py-1.5 rounded-full border border-ink-700 backdrop-blur pointer-events-none">
-          Drag to rotate · right-drag to pan · scroll to zoom
+          Drag to rotate · shift+drag or right-drag to move · scroll to zoom
         </div>
 
         {!fullscreen && (
