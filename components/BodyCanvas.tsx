@@ -299,15 +299,23 @@ function BodyMesh({
 
   const isBone = part.kind === 'bone';
 
+  // Out-of-lens muscles drop their state color and render in a neutral
+  // background gray. If we kept the state color and just dropped opacity,
+  // strong reds and blues would still read as colored — defeating the
+  // point of "this layer is off."
+  const isMuscleOutOfLens = !isBone && poseActive && !inLens;
+
   // Base color: bones cream, muscles either state-colored or default red.
+  // Out-of-lens muscles get the neutral gray reserved for quiet/background.
   const baseColorHex = useMemo(() => {
     if (isBone) return '#e8dec5';
+    if (isMuscleOutOfLens) return '#3d3625'; // ink-700, neutral background
     if (poseActive) {
       if (simpleState && simpleState !== 'quiet') return SIMPLE_STATE_COLORS[simpleState];
       return SIMPLE_STATE_COLORS.quiet;
     }
     return '#c45050';
-  }, [isBone, poseActive, simpleState]);
+  }, [isBone, isMuscleOutOfLens, poseActive, simpleState]);
 
   const material = useMemo(() => {
     const baseColor = new THREE.Color(baseColorHex);
@@ -339,7 +347,14 @@ function BodyMesh({
     const isInteresting =
       poseContext && simpleState && simpleState !== 'quiet' && inLens;
 
-    if (isSelected) {
+    // Out-of-lens muscles are completely backgrounded — no hover/select
+    // emphasis. They're not part of the current view; they shouldn't
+    // demand attention even when the cursor crosses them.
+    if (isMuscleOutOfLens) {
+      material.emissive = baseColor.clone().multiplyScalar(0.02);
+      material.emissiveIntensity = 0.1;
+      material.opacity = 0.12;
+    } else if (isSelected) {
       material.emissive = baseColor.clone().multiplyScalar(0.55);
       material.emissiveIntensity = 1.0;
       material.opacity = 1.0;
@@ -381,7 +396,21 @@ function BodyMesh({
     }
     material.depthWrite = material.opacity > 0.6;
     material.needsUpdate = true;
-  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, simpleState, isPrimary, inLens]);
+  }, [isSelected, isHovered, dimmed, material, isBone, skinOpacity, baseColorHex, poseActive, simpleState, isPrimary, inLens, isMuscleOutOfLens]);
+
+  // Out-of-lens muscles are non-interactive — the lens means "ignore
+  // these for now." Strip the handlers so they don't capture clicks or
+  // light up on hover. Raycasting can be disabled by setting raycast
+  // to the no-op, which is cleaner than no-op handlers.
+  if (isMuscleOutOfLens) {
+    return (
+      <mesh
+        geometry={sourceMesh.geometry}
+        material={material}
+        raycast={() => null}
+      />
+    );
+  }
 
   return (
     <mesh

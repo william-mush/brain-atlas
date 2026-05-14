@@ -93,6 +93,11 @@ interface SceneProps {
 function Scene({ poseId, arrowKeys = true }: SceneProps) {
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
+  // Inner group: receives the per-pose root rotation/translation so the
+  // body tips into the correct world-space orientation (forward fold
+  // for Down Dog, horizontal for plank, etc.). The outer groupRef is
+  // what user interaction (arrow keys, drag) rotates around.
+  const poseRootRef = useRef<THREE.Group>(null);
   const { camera, controls } = useThree();
 
   useArrowKeyControls(groupRef, camera, controls, { enabled: arrowKeys });
@@ -151,11 +156,33 @@ function Scene({ poseId, arrowKeys = true }: SceneProps) {
         b.rotation.copy(rest);
       }
     });
+
+    // Apply pose root rotation/translation to the inner group.
+    if (poseRootRef.current) {
+      const rr = pose.rootRotation;
+      if (rr) {
+        poseRootRef.current.rotation.set(
+          (rr[0] * Math.PI) / 180,
+          (rr[1] * Math.PI) / 180,
+          (rr[2] * Math.PI) / 180,
+        );
+      } else {
+        poseRootRef.current.rotation.set(0, 0, 0);
+      }
+      const rt = pose.rootTranslation;
+      if (rt) {
+        poseRootRef.current.position.set(rt[0], rt[1], rt[2]);
+      } else {
+        poseRootRef.current.position.set(0, 0, 0);
+      }
+    }
   });
 
   return (
     <group ref={groupRef}>
-      <primitive object={gltf.scene} />
+      <group ref={poseRootRef}>
+        <primitive object={gltf.scene} />
+      </group>
     </group>
   );
 }

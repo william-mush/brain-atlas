@@ -24,6 +24,24 @@ export interface PoseAngles {
   sanskrit: string;
   /** Slider key (`${boneId}__${axis}`) → degrees. Missing keys default to 0. */
   angles: Record<string, number>;
+  /**
+   * Optional rotation of the entire scene root, in degrees, applied as
+   * Euler [x, y, z]. Use to tip the body into the correct world-space
+   * orientation for poses that aren't vertical-standing — Down Dog
+   * (~90° forward pitch around X), inversions, prone poses, etc.
+   *
+   * This is a substitute for proper inverse kinematics (which would
+   * keep the hands/feet on the floor automatically). With root rotation
+   * we get the gross orientation right; the hands and feet still float
+   * relative to a real ground plane.
+   */
+  rootRotation?: [number, number, number];
+  /**
+   * Optional translation of the root, in scene units. Use with
+   * rootRotation to lift the body so feet still appear "on the floor"
+   * after rotation. Almost always paired with rootRotation.
+   */
+  rootTranslation?: [number, number, number];
 }
 
 export const POSE_ANGLES: PoseAngles[] = [
@@ -80,6 +98,15 @@ export const POSE_ANGLES: PoseAngles[] = [
     id: 'down-dog',
     english: 'Downward-Facing Dog',
     sanskrit: 'Adho Mukha Svanasana',
+    // Pitch the whole body forward so the trunk reaches toward the
+    // floor — the visual inverted-V. The joint angles below are stated
+    // in the body's own frame, so once the trunk is horizontal the
+    // shoulder-flex carries the arms toward the ground (which is what
+    // happens in real Down Dog: arms reach away from the hips, and
+    // because the hips are stacked over the heels, the arms point at
+    // the floor in front of the body).
+    rootRotation: [-45, 0, 0],
+    rootTranslation: [0, 0.2, 0],
     angles: {
       // Approximate the hip hinge by folding the spine forward at the
       // lumbar (most of the angle) and thoracic (a bit more)
@@ -172,6 +199,9 @@ export const POSE_ANGLES: PoseAngles[] = [
     id: 'plank',
     english: 'Plank',
     sanskrit: 'Phalakasana',
+    // Tip the body forward 90° so it's horizontal (face down).
+    rootRotation: [-90, 0, 0],
+    rootTranslation: [0, -0.5, 0],
     angles: {
       // Shoulders flexed 90° forward (the body is the lever, arms reach
       // down to floor — equivalent to flexing the shoulder so the arm
@@ -193,6 +223,9 @@ export const POSE_ANGLES: PoseAngles[] = [
     id: 'chaturanga',
     english: 'Four-Limbed Staff',
     sanskrit: 'Chaturanga Dandasana',
+    // Same horizontal orientation as plank.
+    rootRotation: [-90, 0, 0],
+    rootTranslation: [0, -0.5, 0],
     angles: {
       'UpperArm_r__x': 90,
       'UpperArm_l__x': 90,
@@ -213,6 +246,10 @@ export const POSE_ANGLES: PoseAngles[] = [
     id: 'up-dog',
     english: 'Upward-Facing Dog',
     sanskrit: 'Urdhva Mukha Svanasana',
+    // Horizontal orientation with the chest open and arms straight under
+    // shoulders — similar plane to plank but with backbend.
+    rootRotation: [-90, 0, 0],
+    rootTranslation: [0, -0.5, 0],
     angles: {
       // Spine in deep extension across all regions
       'region:lumbar__x': -25,

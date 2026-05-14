@@ -633,23 +633,27 @@ function Collapsible({ title, count, defaultOpen = true, actions, children }: Co
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border-b border-ink-700/60 last:border-b-0">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="w-full px-4 py-2.5 flex items-center justify-between gap-2 hover:bg-ink-800/50 transition"
-      >
-        <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ink-200">
+      {/* The header isn't a <button> because `actions` may contain
+          nested buttons (e.g. all/none) — and <button> inside <button>
+          is invalid HTML and causes hydration errors in Next 16. We use
+          a flex row with the clickable title region on the left and
+          the actions on the right, both at the same level. */}
+      <div className="w-full px-4 py-2.5 flex items-center justify-between gap-2">
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-ink-200 hover:text-ink-50 transition flex-1 min-w-0 text-left"
+          aria-expanded={open}
+        >
           <span className={`inline-block transition-transform text-ink-400 ${open ? 'rotate-90' : ''}`}>
             ▸
           </span>
-          <span>{title}</span>
+          <span className="truncate">{title}</span>
           {count !== undefined && (
             <span className="text-ink-500 font-mono normal-case tracking-normal">({count})</span>
           )}
-        </span>
-        {actions && (
-          <span onClick={(e) => e.stopPropagation()}>{actions}</span>
-        )}
-      </button>
+        </button>
+        {actions}
+      </div>
       {open && <div className="px-4 pb-3 pt-1">{children}</div>}
     </div>
   );
