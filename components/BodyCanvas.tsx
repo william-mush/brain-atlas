@@ -19,8 +19,11 @@ useGLTF.preload(MODEL_URL);
 
 // Camera in front of the body, slightly elevated. The body spans roughly
 // y in [-1.5, 1.5] so the target sits at y=0 (centered on chest).
-const DEFAULT_CAMERA_POS: [number, number, number] = [0.0, 0.3, 6.5];
-const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 0, 0];
+// Body model Y range is roughly 0 (feet) to 3 (head). Target the
+// approximate centroid so the body frames vertically rather than from
+// the feet up.
+const DEFAULT_CAMERA_POS: [number, number, number] = [0.0, 1.4, 7.5];
+const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 1.4, 0];
 
 interface Props {
   selectedId: string | null;
@@ -140,7 +143,11 @@ function Scene({
   const gltf = useGLTF(MODEL_URL);
   const groupRef = useRef<THREE.Group>(null);
   const { camera, controls } = useThree();
-  const [autoRotate, setAutoRotate] = useState(true);
+  // Auto-rotate is off by default — it was previously kicking in when
+  // the page first loaded and the body drifted before the user
+  // engaged. With pose work the body needs to hold still so muscles
+  // can be read in a stable orientation.
+  const autoRotate = false;
 
   // Arrow-key controls: Left/Right rotate, Up/Down zoom.
   useArrowKeyControls(groupRef, camera, controls);
@@ -155,18 +162,6 @@ function Scene({
       c.update();
     }
   }, [resetTick, camera, controls]);
-
-  useEffect(() => {
-    // Don't auto-rotate when the user is engaged or when a pose is
-    // active. When a pose is loaded the user wants to study the muscle
-    // state, not chase a moving model.
-    if (selectedId || hoveredId || activePose) {
-      setAutoRotate(false);
-    } else {
-      const t = setTimeout(() => setAutoRotate(true), 2400);
-      return () => clearTimeout(t);
-    }
-  }, [selectedId, hoveredId, activePose]);
 
   useFrame((_, delta) => {
     if (autoRotate && groupRef.current) {

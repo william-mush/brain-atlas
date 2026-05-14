@@ -112,36 +112,42 @@ export default function BodyExplorer() {
     setFocus({ kind: 'overview' });
   }, [activePoseId]);
 
+  // Independent layer toggles: each lens has its own on/off state.
+  // Clicking a lens flips just its own state. Layered combinations are
+  // possible (working + at-risk, stretching alone, etc.). A "Solo"
+  // button per lens isolates just that one. The "All" button restores
+  // all four. The right panel follows: if exactly one lens is active,
+  // we drill into state-detail; if multiple or all, we return to
+  // overview (which itself surfaces the state-drill entry points).
   const toggleLens = (lens: SimpleState) => {
     setActiveLenses((prev) => {
-      const allOn = ALL_LENSES.every((l) => prev.has(l));
-      // If all lenses are currently on, clicking one isolates it.
-      if (allOn) {
-        // Also drill the right panel into this state — same intent.
-        if (activePoseId) setFocus({ kind: 'state-detail', state: lens });
-        return new Set([lens]);
+      const next = new Set(prev);
+      if (next.has(lens)) next.delete(lens);
+      else next.add(lens);
+      // Don't allow zero — the user can't read anything that way.
+      if (next.size === 0) return prev;
+      // Sync the right panel.
+      if (activePoseId) {
+        if (next.size === 1) {
+          const [only] = Array.from(next);
+          setFocus({ kind: 'state-detail', state: only });
+        } else {
+          setFocus({ kind: 'overview' });
+        }
       }
-      // If only this lens is on, clicking it restores all (and returns the
-      // right panel to overview).
+      return next;
+    });
+  };
+  // Solo a single lens — turn off all others. Click again to bring all back.
+  const soloLens = (lens: SimpleState) => {
+    setActiveLenses((prev) => {
+      // If we're already isolated to this lens, restore all.
       if (prev.size === 1 && prev.has(lens)) {
         if (activePoseId) setFocus({ kind: 'overview' });
         return new Set(ALL_LENSES);
       }
-      // Otherwise, toggle this lens in the current set.
-      const next = new Set(prev);
-      if (next.has(lens)) next.delete(lens);
-      else next.add(lens);
-      // Empty set is treated as "all on" — don't let the user end up seeing nothing.
-      if (next.size === 0) {
-        if (activePoseId) setFocus({ kind: 'overview' });
-        return new Set(ALL_LENSES);
-      }
-      // If exactly one lens remains, drill into it.
-      if (next.size === 1 && activePoseId) {
-        const [only] = Array.from(next);
-        setFocus({ kind: 'state-detail', state: only });
-      }
-      return next;
+      if (activePoseId) setFocus({ kind: 'state-detail', state: lens });
+      return new Set([lens]);
     });
   };
   const allLensesActive = activeLenses.size === ALL_LENSES.length;
@@ -496,12 +502,13 @@ export default function BodyExplorer() {
           </div>
         )}
 
-        {/* Pose state lens toggle — visible when a pose is active.
-            Each row is now a clickable filter: click one to isolate that
-            lens; click it again or click "All four" to restore the
-            unfiltered view. */}
+        {/* Pose state lens panel — visible when a pose is active.
+            Each row has a checkbox-style toggle (independent on/off) and
+            a "solo" affordance for one-click isolation. The four states
+            layer freely; you can show any combination. The "All" button
+            in the header restores the default all-on view. */}
         {activePose && (
-          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/90 rounded-md border border-ink-700 backdrop-blur text-[11px] text-ink-200 max-w-[260px] overflow-hidden">
+          <div className="absolute bottom-16 left-3 z-20 bg-ink-900/90 rounded-md border border-ink-700 backdrop-blur text-[11px] text-ink-200 w-[260px] overflow-hidden">
             <div className="px-3 py-2 border-b border-ink-700 flex items-center gap-2">
               <span className="font-medium text-ink-50 truncate flex-1">{activePose.english}</span>
               {!allLensesActive && (
@@ -518,24 +525,29 @@ export default function BodyExplorer() {
               )}
             </div>
             <p className="px-3 pt-2 text-[10px] uppercase tracking-[0.16em] text-ink-400">
-              Show
+              Layers — click to toggle
             </p>
             <ul className="px-2 pb-2 pt-1 space-y-0.5">
               {ALL_LENSES.map((s) => {
                 const active = activeLenses.has(s);
+                const isSolo = active && activeLenses.size === 1;
                 return (
-                  <li key={s}>
+                  <li key={s} className="flex items-stretch gap-1">
                     <button
                       onClick={() => toggleLens(s)}
-                      className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left transition ${
+                      className={`flex-1 flex items-center gap-2 px-2 py-1.5 rounded text-left transition ${
                         active
                           ? 'bg-ink-800 text-ink-50'
                           : 'text-ink-400 hover:bg-ink-800/60'
                       }`}
-                      title={SIMPLE_STATE_DESCRIPTIONS[s]}
+                      title={
+                        active
+                          ? `Hide ${SIMPLE_STATE_LABELS[s].toLowerCase()} — ${SIMPLE_STATE_DESCRIPTIONS[s]}`
+                          : `Show ${SIMPLE_STATE_LABELS[s].toLowerCase()} — ${SIMPLE_STATE_DESCRIPTIONS[s]}`
+                      }
                     >
                       <span
-                        className="inline-block w-3 h-3 rounded-sm flex-shrink-0 border border-ink-700"
+                        className="inline-block w-3 h-3 rounded-sm flex-shrink-0 border"
                         style={{
                           backgroundColor: active
                             ? SIMPLE_STATE_COLORS[s]
@@ -545,15 +557,30 @@ export default function BodyExplorer() {
                       />
                       <span className="leading-tight">{SIMPLE_STATE_LABELS[s]}</span>
                     </button>
+                    <button
+                      onClick={() => soloLens(s)}
+                      className={`text-[10px] uppercase tracking-[0.1em] px-1.5 rounded transition border ${
+                        isSolo
+                          ? 'border-ink-500 text-ink-50 bg-ink-700'
+                          : 'border-ink-700 text-ink-400 hover:text-ink-100 hover:border-ink-500'
+                      }`}
+                      title={
+                        isSolo
+                          ? 'Restore the other layers'
+                          : `Solo — hide all other layers`
+                      }
+                    >
+                      {isSolo ? 'solo' : 'solo'}
+                    </button>
                   </li>
                 );
               })}
             </ul>
             {!allLensesActive && (
               <p className="px-3 pb-2 pt-1 text-[10px] text-ink-400 italic leading-snug border-t border-ink-700/60">
-                Only {Array.from(activeLenses)
+                Showing: {Array.from(activeLenses)
                   .map((l) => SIMPLE_STATE_LABELS[l].toLowerCase())
-                  .join(' + ')} shown.
+                  .join(' · ')}
               </p>
             )}
           </div>
