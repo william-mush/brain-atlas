@@ -117,10 +117,11 @@ interface Props {
   poseId: string;
 }
 
-// Body Y range is approximately 0 (feet) to 3 (head); X is left/right;
-// Z is depth (offset around 1.5-1.9). Camera pulled back along Z to see
-// the body from the front.
-const DEFAULT_CAMERA_POS: [number, number, number] = [0, 1.5, 8.0];
+// The v3 auto-rigged body has bounds X ±0.57, Y 0-3 (vertical, feet to
+// head), Z 1.43-1.88 (depth, body sits ~1.65 away from origin along Z).
+// Camera position pulls back further along Z to see the body from
+// the front, while looking at its center.
+const DEFAULT_CAMERA_POS: [number, number, number] = [0, 1.5, 7.5];
 const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 1.5, 1.65];
 
 export default function PosedRiggedBodyCanvas({ poseId }: Props) {
