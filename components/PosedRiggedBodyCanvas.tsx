@@ -117,8 +117,11 @@ interface Props {
   poseId: string;
 }
 
-const DEFAULT_CAMERA_POS: [number, number, number] = [0, 1.4, 5.5];
-const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 1.4, 0];
+// Body Y range is approximately 0 (feet) to 3 (head); X is left/right;
+// Z is depth (offset around 1.5-1.9). Camera pulled back along Z to see
+// the body from the front.
+const DEFAULT_CAMERA_POS: [number, number, number] = [0, 1.5, 8.0];
+const DEFAULT_CAMERA_TARGET: [number, number, number] = [0, 1.5, 1.65];
 
 export default function PosedRiggedBodyCanvas({ poseId }: Props) {
   return (
