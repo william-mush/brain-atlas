@@ -1241,6 +1241,136 @@ POSES.push(
       { muscle: 'ascending_part_of_trapezius_muscle', state: 'isometric' },
     ],
   },
+
+  // ============================================================
+  // URDHVA DHANURASANA — Wheel Pose
+  // The full backbend, taught as the closing posture of the Ashtanga
+  // Primary Series. Hands and feet on the floor, body arched up into
+  // an inverted U. Demands open hips, open shoulders, strong glutes
+  // and back, and a spine that has been progressively warmed for
+  // extension across the practice that precedes it.
+  // ============================================================
+  {
+    id: 'wheel',
+    sanskrit: 'Urdhva Dhanurasana',
+    english: 'Wheel Pose',
+    sequence: 'Closing — the full backbend',
+    plainLanguage:
+      'The big backbend. Lying on your back, knees bent and feet on the floor, hands by the ears with fingertips toward the shoulders — then press evenly through hands and feet to lift the hips up and arc the whole body into an inverted bow. The deepest backbend most practitioners will work with regularly. Demands open hips and shoulders that have been earned across the practice, not forced.',
+    description:
+      'A full backbend supported on hands and feet. The body arcs into an upside-down U, with the chest reaching back and the hips pressing forward and up. The extension is distributed across the entire spine — lumbar, thoracic, and cervical — and supported by strong leg, glute, and arm engagement. Pre-requisites for a safe Wheel: open hip flexors, open chest and front shoulders, scapulae that can stabilize under load, a spine that has been progressively warmed by the earlier poses, and the executive attention to actively engage rather than collapse.',
+    intent:
+      'The deepest opening of the front body the Primary Series asks for. Combines hip extension, spinal extension across all regions, and overhead shoulder reach into one integrated shape. As a closing posture, it metabolizes the heat the practice has built and opens what previous backbends have prepared.',
+    cues: [
+      'Set up carefully. Hands directly under the shoulders, fingertips pointing toward the heels. Feet hip-width, parallel, close enough to the hips that the shins are roughly vertical when the hips lift.',
+      'Press the feet down firmly before the hands. Lift the hips first — that\'s a small backbend on its own, which gives the chest space.',
+      'Then press through the hands and lift onto the crown of the head — pause and check. Elbows squeezing toward each other, not splaying out.',
+      'Straighten the arms last. Keep pressing the floor away through the index-finger knuckles. The arms work as hard as the legs.',
+      'Engage the glutes strongly. They protect the lumbar by extending the hip and lifting the pelvis.',
+      'Reach the chest back and through. The thoracic spine does as much extension as it can, so the lumbar doesn\'t carry the whole backbend.',
+      'Externally rotate the upper arms. This gives the shoulders room and keeps the elbows tracking inward.',
+      'Soft, long neck. Let the head hang heavy if it wants to, but don\'t crank it.',
+      'Come down with as much care as you went up. Tuck the chin, lower onto the back of the head, then the shoulders, then the hips.',
+    ],
+    watchFor: [
+      'Lumbar compression. If the backbend lives entirely in the lower back, the rest of the body needs more participation — particularly the thoracic spine, hip flexors, and arms.',
+      'Elbows splaying out. The biggest sign that the chest is closed and the shoulders haven\'t opened enough.',
+      'Heels lifting off the floor. The hip flexors and quads are too tight to allow the hips to come up — work the prep poses longer.',
+      'Knees splaying out. Inner thighs need to stay engaged to keep the hip-width and femur tracking.',
+      'Holding the breath. If you can\'t breathe in the pose, you\'re forcing it.',
+      'Coming up before the spine is warm. Wheel is a closing pose for a reason — it asks for the heat of the earlier practice.',
+    ],
+    primaryMuscles: [
+      'gluteus_maximus_muscle',
+      'long_head_of_triceps_brachii',
+      'longissimus_thoracis_muscle',
+      'pectoralis_minor_muscle',
+      'psoas_major',
+    ],
+    injurySites: [
+      {
+        muscle: 'multifidus_lumborum_muscle',
+        side: 'both',
+        note: 'Lumbar compression is the classic Wheel injury. The lumbar segments are highly mobile in extension; without active distribution across the rest of the spine, the back-bend lives here and irritates the facet joints. The fix is not "engage the abs harder" — the fix is "open the hip flexors and the thoracic spine so they take their share."',
+      },
+      {
+        muscle: 'supraspinatus_muscle',
+        side: 'both',
+        note: 'Wrist and shoulder impingement risk. The hands carry significant load while the shoulders are in deep flexion + external rotation — a position the supraspinatus tendon doesn\'t love. If the chest hasn\'t opened enough, the upper arm rotates internally and the tendon is pinched between the humerus and the acromion.',
+      },
+      {
+        region: 'wrist',
+        note: 'Wrists bear a third of the body weight in deep extension. Spread the fingers wide, root through the index-finger knuckle, and build tolerance gradually. If wrists complain consistently, drop back to bridge with a block or skip Wheel for the day.',
+      },
+    ],
+    states: [
+      // GLUTES — the engine
+      { muscle: 'gluteus_maximus_muscle', state: 'concentric', note: 'PRIMARY engine. Strong glute contraction extends the hips and lifts the pelvis off the floor. The most important muscle in the pose.' },
+      { muscle: 'gluteus_medius_muscle', state: 'isometric', note: 'Keeps the femurs from splaying out, which protects the knees and sacrum.' },
+      { muscle: 'gluteus_minimus_muscle', state: 'isometric' },
+      // HIP FLEXORS — major stretch
+      { muscle: 'psoas_major', state: 'loaded-passive', note: 'PRIMARY stretch. Psoas lengthens across the deep hip extension. Often the limiting factor in how high the hips can lift.' },
+      { muscle: 'iliacus_muscle', state: 'loaded-passive', note: 'Iliacus stretches alongside psoas.' },
+      { muscle: 'rectus_femoris_muscle', state: 'loaded-passive', note: 'The two-joint quad — extends the knee AND flexes the hip. Stretched at the hip side while engaged at the knee.' },
+      // QUADS — extending the knees against bent-knee load
+      { muscle: 'vastus_lateralis_muscle', state: 'concentric' },
+      { muscle: 'vastus_medialis_muscle', state: 'concentric' },
+      { muscle: 'vastus_intermedius_muscle', state: 'concentric' },
+      // ABDOMEN — major stretch
+      { muscle: 'rectus_abdominis_muscle', state: 'loaded-passive', note: 'Front abdominal wall lengthens across the entire arc of the backbend. Big visible stretch.' },
+      { muscle: 'external_abdominal_oblique_muscle', state: 'loaded-passive' },
+      { muscle: 'internal_abdominal_oblique_muscle', state: 'loaded-passive' },
+      { muscle: 'transversus_abdominis_muscle', state: 'isometric', note: 'TVA stays gently active to keep the lumbar from over-collapsing. Engaged, not gripped.' },
+      // BACK — strong concentric work
+      { muscle: 'longissimus_thoracis_muscle', state: 'concentric', note: 'PRIMARY. Erector spinae actively extends the entire spine. Massive engagement.' },
+      { muscle: 'longissimus_lumborum_muscle', state: 'concentric' },
+      { muscle: 'iliocostalis_thoracis_muscle', state: 'concentric' },
+      { muscle: 'iliocostalis_lumborum_muscle', state: 'concentric' },
+      { muscle: 'spinalis_thoracis_muscle', state: 'concentric' },
+      { muscle: 'multifidus_thoracis_muscle', state: 'concentric' },
+      { muscle: 'multifidus_lumborum_muscle', state: 'isometric', note: 'Multifidus is the segmental stabilizer here — distributes the extension across vertebrae rather than letting it crunch into a few segments. Critical for spinal safety.' },
+      { muscle: 'quadratus_lumborum_muscle', state: 'isometric' },
+      // CHEST — massive stretch
+      { muscle: 'sternocostal_head_of_pectoralis_major_muscle', state: 'loaded-passive', note: 'Pec major stretches across the open chest. Big sensation.' },
+      { muscle: 'clavicular_head_of_pectoralis_major_muscle', state: 'loaded-passive' },
+      { muscle: 'pectoralis_minor_muscle', state: 'loaded-passive', note: 'PRIMARY stretch. Pec minor pulls the scapulae forward in everyday life; in Wheel it must lengthen so the shoulders can flex overhead.' },
+      // SHOULDERS — open and stabilized
+      { muscle: 'latissimus_dorsi_muscle', state: 'loaded-passive', note: 'Lats stretch across the overhead reach of the arms. Often the limiter for how straight the arms can get.' },
+      { muscle: 'teres_major_muscle', state: 'loaded-passive' },
+      // ROTATOR CUFF — external rotation under load
+      { muscle: 'infraspinatus_muscle', state: 'concentric', note: '"Hug the elbows in" — external rotators work to keep the shoulders organized.' },
+      { muscle: 'teres_minor_muscle', state: 'concentric' },
+      { muscle: 'supraspinatus_muscle', state: 'isometric', note: 'Supraspinatus is under load throughout. Common irritation point — see injury notes.' },
+      { muscle: 'subscapularis_muscle', state: 'antagonist', note: 'Subscap stays released. Activating it would internally rotate the shoulders and splay the elbows.' },
+      // SCAPULAR STABILIZERS
+      { muscle: 'transverse_part_of_trapezius_muscle', state: 'concentric', note: 'Middle trap and rhomboids retract the scapulae, opening the chest.' },
+      { muscle: 'ascending_part_of_trapezius_muscle', state: 'concentric', note: 'Lower trap pulls scapulae down, critical for safe overhead shoulder reach.' },
+      { muscle: 'rhomboid_major_muscle', state: 'concentric' },
+      { muscle: 'rhomboid_minor_muscle', state: 'concentric' },
+      { muscle: 'descending_part_of_trapezius_muscle', state: 'antagonist', note: 'Upper trap should NOT shrug — the most common compensation when lower trap is weak.' },
+      { muscle: 'serratus_anterior_muscle', state: 'isometric', note: 'Serratus stabilizes the scapulae against the rib cage under load.' },
+      // ARMS — pressing the floor away
+      { muscle: 'long_head_of_triceps_brachii', state: 'concentric', note: 'PRIMARY. Triceps extend the elbows and "press the floor away." Major work.' },
+      { muscle: 'lateral_head_of_triceps_brachii', state: 'concentric' },
+      { muscle: 'medial_head_of_triceps_brachii', state: 'concentric' },
+      { muscle: 'anconeus_muscle', state: 'isometric' },
+      { muscle: 'long_head_of_biceps_brachii', state: 'antagonist', note: 'Biceps must release — gripping them would bend the elbows and collapse the pose.' },
+      // NECK — long and uncranked.
+      // (Forearm flexors/extensors carry real load in Wheel but aren't
+      // included in the Z-Anatomy mesh data we're working from, so we
+      // can't show them. The injurySites entry for the wrist captures
+      // the structural concern.)
+      { muscle: 'sternocleidomastoid_muscle', state: 'loaded-passive', note: 'SCM lengthens as the head drops back. Don\'t force it.' },
+      // CALVES — feet pressing down
+      { muscle: 'medial_head_of_gastrocnemius', state: 'concentric', note: 'Calves engage to root through the heels.' },
+      { muscle: 'lateral_head_of_gastrocnemius', state: 'concentric' },
+      { muscle: 'soleus_muscle', state: 'concentric' },
+      // ADDUCTORS — keeping the knees in
+      { muscle: 'adductor_longus', state: 'isometric', note: 'Inner thighs engage to keep the femurs tracking inward (preventing knee splay).' },
+      { muscle: 'adductor_magnus', state: 'isometric' },
+      { muscle: 'adductor_brevis', state: 'isometric' },
+    ],
+  },
 );
 
 // Lazy import overlay map at access time to avoid circular import.
