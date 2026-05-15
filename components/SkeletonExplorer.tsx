@@ -136,6 +136,150 @@ const GROUPS: JointGroup[] = [
           { boneId: 'Neck_C7', weight: 0.16 },
         ],
       },
+      // ============================================================
+      // SPINAL LATERAL FLEXION (side-bend, Z-axis in bone-frame)
+      // Critical for Trikonasana, Parsvakonasana, side bends, half-moon.
+      // Anatomical ranges:
+      //   Lumbar: ~20° each side
+      //   Thoracic: ~25° each side (more mobile than flexion/extension)
+      //   Cervical: ~45° each side
+      // Sign: positive = side-bend to the right (right ear toward right shoulder).
+      // ============================================================
+      {
+        id: 'region:lumbar-side',
+        label: 'Lumbar side-bend  — −left  /  right +',
+        axis: 'z',
+        min: -25,
+        max: 25,
+        distribute: [
+          { boneId: 'Spine_L1', weight: 0.18 },
+          { boneId: 'Spine_L2', weight: 0.20 },
+          { boneId: 'Spine_L3', weight: 0.22 },
+          { boneId: 'Spine_L4', weight: 0.20 },
+          { boneId: 'Spine_L5', weight: 0.20 },
+        ],
+      },
+      {
+        id: 'region:thoracic-side',
+        label: 'Thoracic side-bend  — −left  /  right +',
+        axis: 'z',
+        min: -30,
+        max: 30,
+        distribute: [
+          { boneId: 'Spine_T1', weight: 0.05 },
+          { boneId: 'Spine_T2', weight: 0.06 },
+          { boneId: 'Spine_T3', weight: 0.07 },
+          { boneId: 'Spine_T4', weight: 0.07 },
+          { boneId: 'Spine_T5', weight: 0.08 },
+          { boneId: 'Spine_T6', weight: 0.09 },
+          { boneId: 'Spine_T7', weight: 0.09 },
+          { boneId: 'Spine_T8', weight: 0.10 },
+          { boneId: 'Spine_T9', weight: 0.10 },
+          { boneId: 'Spine_T10', weight: 0.10 },
+          { boneId: 'Spine_T11', weight: 0.10 },
+          { boneId: 'Spine_T12', weight: 0.09 },
+        ],
+      },
+      {
+        id: 'region:cervical-side',
+        label: 'Cervical side-bend  — −left  /  right +',
+        axis: 'z',
+        min: -45,
+        max: 45,
+        distribute: [
+          { boneId: 'Neck_C3', weight: 0.20 },
+          { boneId: 'Neck_C4', weight: 0.22 },
+          { boneId: 'Neck_C5', weight: 0.22 },
+          { boneId: 'Neck_C6', weight: 0.20 },
+          { boneId: 'Neck_C7', weight: 0.16 },
+        ],
+      },
+      // ============================================================
+      // SPINAL ROTATION (twist, Y-axis in bone-frame)
+      // Critical for Marichyasana, Parivrtta Trikonasana, twists generally.
+      // Anatomical ranges:
+      //   Lumbar: ~5–13° each side (limited — spine isn't built to twist
+      //     at the lumbar; most "lumbar twist" sensation is actually
+      //     thoracic. Range is small.)
+      //   Thoracic: ~35° each side (where most of the twist happens)
+      //   Cervical: ~70° each side
+      // Sign: positive = rotation to the right.
+      // ============================================================
+      {
+        id: 'region:lumbar-twist',
+        label: 'Lumbar twist  — −left  /  right +',
+        axis: 'y',
+        min: -12,
+        max: 12,
+        distribute: [
+          { boneId: 'Spine_L1', weight: 0.22 },
+          { boneId: 'Spine_L2', weight: 0.22 },
+          { boneId: 'Spine_L3', weight: 0.20 },
+          { boneId: 'Spine_L4', weight: 0.18 },
+          { boneId: 'Spine_L5', weight: 0.18 },
+        ],
+      },
+      {
+        id: 'region:thoracic-twist',
+        label: 'Thoracic twist  — −left  /  right +',
+        axis: 'y',
+        min: -40,
+        max: 40,
+        distribute: [
+          { boneId: 'Spine_T1', weight: 0.10 },
+          { boneId: 'Spine_T2', weight: 0.10 },
+          { boneId: 'Spine_T3', weight: 0.10 },
+          { boneId: 'Spine_T4', weight: 0.09 },
+          { boneId: 'Spine_T5', weight: 0.09 },
+          { boneId: 'Spine_T6', weight: 0.08 },
+          { boneId: 'Spine_T7', weight: 0.08 },
+          { boneId: 'Spine_T8', weight: 0.07 },
+          { boneId: 'Spine_T9', weight: 0.07 },
+          { boneId: 'Spine_T10', weight: 0.06 },
+          { boneId: 'Spine_T11', weight: 0.05 },
+          { boneId: 'Spine_T12', weight: 0.05 },
+        ],
+      },
+      {
+        id: 'region:cervical-twist',
+        label: 'Cervical twist  — −left  /  right +',
+        axis: 'y',
+        min: -70,
+        max: 70,
+        distribute: [
+          { boneId: 'Neck_C3', weight: 0.18 },
+          { boneId: 'Neck_C4', weight: 0.20 },
+          { boneId: 'Neck_C5', weight: 0.22 },
+          { boneId: 'Neck_C6', weight: 0.20 },
+          { boneId: 'Neck_C7', weight: 0.20 },
+        ],
+      },
+      // ============================================================
+      // HIP HINGE (compound: pelvis + counter-rotated thighs)
+      // The rig's root is the pelvis, with the legs hanging from it.
+      // A real hip hinge tilts the pelvis forward at the hip joints
+      // while the legs stay vertical in world space.
+      //
+      // We model this by tipping the Pelvis forward AND counter-
+      // rotating both thighs by the same amount in the opposite
+      // direction. Net visual: torso folds forward at the hips; legs
+      // stay vertical. This is what Uttanasana, Padangusthasana,
+      // Parsvottanasana actually look like.
+      //
+      // Sign: positive = forward fold at the hips.
+      // ============================================================
+      {
+        id: 'region:hip-hinge',
+        label: 'Hip hinge  — fold forward +',
+        axis: 'x',
+        min: -30,
+        max: 110,
+        distribute: [
+          { boneId: 'Pelvis', weight: 1.0 },
+          { boneId: 'Thigh_l', weight: -1.0 },
+          { boneId: 'Thigh_r', weight: -1.0 },
+        ],
+      },
       // Atlas — head nod (atlanto-occipital). Total range ~15-20° nod.
       { id: 'Neck_C1_Atlas', label: 'Head nod (atlanto-occipital)', axis: 'x', min: -25, max: 25 },
       // Axis — head rotation (atlanto-axial). Real range ~45° each side.

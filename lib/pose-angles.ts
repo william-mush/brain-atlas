@@ -71,14 +71,18 @@ export const POSE_ANGLES: PoseAngles[] = [
     english: 'Standing Forward Fold',
     sanskrit: 'Uttanasana',
     angles: {
-      // Major lumbar + thoracic flexion replaces the hip-hinge
-      'region:lumbar__x': 60,
-      'region:thoracic__x': 35,
-      // Head drops forward
-      'region:cervical__x': 50,
-      // Arms hang relaxed forward
-      'UpperArm_r__x': 30,
-      'UpperArm_l__x': 30,
+      // HIP HINGE — pelvis tips forward, legs stay vertical. This is
+      // the new compound rig capability (pelvis rotates + thighs
+      // counter-rotate). 90° puts the trunk roughly horizontal.
+      'region:hip-hinge__x': 95,
+      // Mild lumbar rounding into the deeper fold
+      'region:lumbar__x': 15,
+      'region:thoracic__x': 10,
+      // Head hangs heavy
+      'region:cervical__x': 30,
+      // Arms hang relaxed (gravity carries them)
+      'UpperArm_r__x': 15,
+      'UpperArm_l__x': 15,
     },
   },
 
@@ -301,27 +305,30 @@ export const POSE_ANGLES: PoseAngles[] = [
   // ============================================================
   // 10. PADANGUSTHASANA — Standing Forward Fold with Toe Grip
   // Like Uttanasana but with index fingers under the big toes.
-  // Same fold shape; the arms reach down rather than hang free.
-  // Same rig limitation: pelvis can't tilt at the hip, so we
-  // approximate the hip hinge with deep spinal flexion.
+  // Same shape as Uttanasana with index fingers hooked under the
+  // big toes. Uses the hip-hinge compound to fold the trunk forward
+  // over straight legs.
   // ============================================================
   {
     id: 'padangusthasana',
     english: 'Standing Forward Fold with Toe Grip',
     sanskrit: 'Padangusthasana',
     angles: {
-      'region:lumbar__x': 60,
-      'region:thoracic__x': 35,
-      'region:cervical__x': 20,
-      // Arms reach down toward the toes — heavy shoulder flexion
-      // (in the rig's frame the arms are still hanging in line with
-      // the trunk, so we don't need much extra angle here)
+      // Hip hinge — deeper than plain Uttanasana since the toe-grip
+      // pulls the practitioner further into the fold
+      'region:hip-hinge__x': 100,
+      // Slight spinal rounding completes the line
+      'region:lumbar__x': 12,
+      'region:thoracic__x': 8,
+      'region:cervical__x': 15,
+      // Arms reach down to grip toes — slight shoulder extension
+      // (in folded position, "down to the toes" means arms continue
+      // along the line of the now-horizontal trunk)
       'UpperArm_r__x': 5,
       'UpperArm_l__x': 5,
       // Elbows slightly bent — index fingers hooked under toes
       'Forearm_r__x': -15,
       'Forearm_l__x': -15,
-      // Legs straight, no hip flexion since spine carries it
     },
   },
 
@@ -340,25 +347,32 @@ export const POSE_ANGLES: PoseAngles[] = [
     english: 'Extended Triangle Pose',
     sanskrit: 'Utthita Trikonasana',
     angles: {
-      // Wide stance: hips abducted in both directions
-      'Thigh_r__z': -35,   // right thigh out to right
-      'Thigh_l__z': 35,    // left thigh out to left
-      // Right (front) hip externally rotated so foot points forward
+      // WIDE STANCE — abduction at the hip (legs out to the sides).
+      // Modest values since real Trikonasana stance is wide but legs
+      // remain near vertical in world space (the abduction here is
+      // just enough to widen the base; the feet are visibly apart
+      // but the legs aren't sticking out horizontally).
+      'Thigh_r__z': -20,
+      'Thigh_l__z': 20,
+      // RIGHT (FRONT) HIP — externally rotated 90° so the foot points
+      // to the side (toward the front of the mat in classical setup).
       'Thigh_r__y': 60,
-      // Left (back) hip slightly turned for the 45° foot angle
-      'Thigh_l__y': -10,
-      // Torso side-bends to the right at the lumbar
-      // (positive Z rotation around the spine = right lateral flexion
-      // in the rig's frame, distributed via the spine sliders we have)
-      // The rig only has X-axis spinal sliders, so we approximate the
-      // side bend with a slight forward fold at the lumbar
-      'region:lumbar__x': 25,
-      // Arms in a long T-line, opened to a vertical line in space:
-      // bottom (right) arm reaches down; top (left) arm reaches up
-      'UpperArm_r__z': -90,  // right arm abducted out to side
-      'UpperArm_l__z': 90,   // left arm abducted out to side
-      // Head turns up to gaze at the top hand
-      'Neck_C2_Axis__y': -30,
+      // LEFT (BACK) HIP — at ~45° foot angle
+      'Thigh_l__y': -15,
+      // TORSO — strong side-bend to the right.
+      // Most of the lateral flexion sensation comes from the lumbar
+      // and lower thoracic in real Trikonasana.
+      'region:lumbar-side__z': 22,
+      'region:thoracic-side__z': 25,
+      // Very mild rotation as the chest opens toward the ceiling
+      'region:thoracic-twist__y': -20,
+      // ARMS — both abducted to a T, then the side-bend tips the line
+      // to vertical. We just abduct here; the spinal side-bend does
+      // the rest of the work.
+      'UpperArm_r__z': -90,
+      'UpperArm_l__z': 90,
+      // GAZE — look up at the top hand
+      'region:cervical-twist__y': -45,
     },
   },
 
@@ -374,25 +388,26 @@ export const POSE_ANGLES: PoseAngles[] = [
     english: 'Revolved Triangle Pose',
     sanskrit: 'Parivrtta Trikonasana',
     angles: {
-      // Stance — narrower than Trikonasana in many lineages, both
-      // feet face roughly forward
-      'Thigh_r__z': -25,
-      'Thigh_l__z': 25,
-      'Thigh_r__y': 20,
-      // Strong forward fold (rotates with the trunk)
-      'region:lumbar__x': 50,
-      'region:thoracic__x': 30,
-      // The twist: in the rig's frame we don't have Y-axis spinal
-      // rotation per-region, so we approximate the rotation by
-      // rotating the cervical and using the arm positions to
-      // communicate the twist
-      'Neck_C2_Axis__y': 60,
-      // Bottom arm (left, the one that crosses to the floor outside
-      // the right foot) reaches down across the body
+      // STANCE — narrower than Trikonasana in many lineages, both
+      // feet face roughly forward. Hips stay relatively square.
+      'Thigh_r__z': -15,
+      'Thigh_l__z': 15,
+      'Thigh_r__y': 5,
+      'Thigh_l__y': -15,
+      // HIP HINGE — fold forward over the front leg (rather than
+      // rounding the spine as we used to). The hinge tilts the
+      // pelvis with the legs staying vertical.
+      'region:hip-hinge__x': 75,
+      // TWIST to the left — bottom arm (left hand) crosses down to
+      // outside of right foot, top arm (right) reaches up. The
+      // thoracic does most of the twist; lumbar adds a small amount.
+      'region:thoracic-twist__y': -35,
+      'region:lumbar-twist__y': -8,
+      'region:cervical-twist__y': -45,
+      // ARMS — bottom arm down across the body, top arm straight up
       'UpperArm_l__x': 10,
-      // Top arm (right) reaches straight up — gaze follows
-      'UpperArm_r__x': 0,
-      'UpperArm_r__z': -160,  // arm overhead/back
+      'UpperArm_r__x': 5,
+      'UpperArm_r__z': -180,  // straight up
     },
   },
 
@@ -409,25 +424,26 @@ export const POSE_ANGLES: PoseAngles[] = [
     english: 'Extended Side Angle Pose',
     sanskrit: 'Utthita Parsvakonasana',
     angles: {
-      // Front (right) leg — Warrior II setup, 90° knee bend, hip
+      // FRONT (right) leg — Warrior II setup, 90° knee bend, hip
       // abducted and externally rotated
       'Thigh_r__x': 25,
       'Thigh_r__z': -45,
       'Thigh_r__y': 30,
       'Shin_r__x': -90,
-      // Back (left) leg straight, abducted
+      // BACK (left) leg straight, abducted
       'Thigh_l__x': 0,
       'Thigh_l__z': 45,
       'Shin_l__x': 0,
-      // Spine flexes laterally (we approximate with a lumbar fold
-      // since the rig lacks a true lateral-flex slider)
-      'region:lumbar__x': 20,
-      // Bottom (right) arm hangs down toward the floor on the
-      // outside of the front foot
+      // TORSO — real lateral flexion to the right over the front
+      // thigh, plus a mild rotation as the chest opens upward
+      'region:lumbar-side__z': 18,
+      'region:thoracic-side__z': 25,
+      'region:thoracic-twist__y': -15,
+      // ARMS — bottom (right) reaches down toward the floor outside
+      // the front foot; top (left) reaches over the ear in the long
+      // diagonal that defines Side Angle.
       'UpperArm_r__x': 30,
       'UpperArm_r__z': -100,
-      // Top (left) arm reaches over the ear in a long diagonal —
-      // shoulder abducted past horizontal
       'UpperArm_l__z': 160,
       // Head turns/tilts up under the top arm
       'Neck_C2_Axis__y': -25,
@@ -447,24 +463,26 @@ export const POSE_ANGLES: PoseAngles[] = [
     english: 'Intense Side Stretch Pose',
     sanskrit: 'Parsvottanasana',
     angles: {
-      // Front (right) leg — straight, hip square to the front
-      'Thigh_r__x': 5,
+      // FRONT (right) leg — straight, hip square to the front of the mat
+      'Thigh_r__x': 0,
       'Thigh_r__z': 0,
-      // Back (left) leg — straight, with the foot at ~45° (rotation
-      // at the hip, not the knee, in this rig)
-      'Thigh_l__x': -5,
-      'Thigh_l__y': -20,
-      // Deep forward fold over the front leg (mostly spinal flexion
-      // because the rig can't tilt the pelvis at the hip)
-      'region:lumbar__x': 55,
-      'region:thoracic__x': 35,
-      'region:cervical__x': 25,
-      // Arms — by default we leave them in a reverse-prayer-ish
-      // position by retracting the shoulders. In the rig's frame
-      // this is a slight internal rotation and a hint of extension.
+      // BACK (left) leg — straight, back foot turned out ~45° at the hip
+      'Thigh_l__x': 0,
+      'Thigh_l__y': -25,
+      'Thigh_l__z': 10,
+      // HIP HINGE — deep fold over the front leg. Pelvis tips forward
+      // while legs stay vertical; the trunk ends up horizontal.
+      'region:hip-hinge__x': 95,
+      // Mild spinal rounding to complete the line
+      'region:lumbar__x': 10,
+      'region:thoracic__x': 10,
+      'region:cervical__x': 15,
+      // ARMS — reverse-prayer-ish position behind the back: shoulders
+      // internally rotated, slight extension. (The rig can't model
+      // true reverse prayer; this is closest.)
       'UpperArm_r__x': -10,
       'UpperArm_l__x': -10,
-      'UpperArm_r__y': -45,  // internal rotation toward the back
+      'UpperArm_r__y': -45,
       'UpperArm_l__y': 45,
     },
   },
